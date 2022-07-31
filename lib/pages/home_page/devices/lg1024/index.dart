@@ -16,21 +16,132 @@ class LG1024HomePage extends StatefulWidget {
 class _LG1024HomePageState extends State<LG1024HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
-        DirectorySection(),
-        ToolBarListEditContainer(
-          children: [
-            ToolBarSection(),
-            ListAndEditContainer(
-              children: [
-                ListSection(),
-                EditSection(),
-              ],
-            )
-          ],
-        )
-      ],
+    // return Scaffold(
+    //   body: SingleChildScrollView(
+    //     child: Column(
+    //       children: const <Widget>[
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //         Text('hello'),
+    //       ],
+    //     ),
+    //   ),
+    // );
+    return Scaffold(
+      body: Row(
+        children: const [
+          DirectorySection(),
+          ToolBarListEditContainer(
+            children: [
+              ToolBarSection(),
+              ListAndEditContainer(
+                children: [
+                  ListSection(),
+                  EditSection(),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }

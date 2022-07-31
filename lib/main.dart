@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-
-import 'routes/route_path.dart';
+import 'package:smtpnotes/routes/route_path.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: RoutePath.getAppPathInstance().build(
+    return RoutePath.getAppPathInstance().build(
       context,
-      "stmpNotes",
-      ThemeData(
-        backgroundColor: HexColor("#FFFFFF"),
-      ),
-    ));
+      'snote',
+      ThemeData(),
+    );
   }
 }

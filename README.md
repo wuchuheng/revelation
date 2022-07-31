@@ -1,16 +1,9 @@
-# smtpnotes
+# 1开发相关说明
 
-A new Flutter project.
+## 1.1 添加图标
 
-## Getting Started
+在[`iconfont`](https://www.iconfont.cn),选择好图标后，以`unicode`方式下载，并解压，并把其中的 `iconfont.css` 和 `iconfont.ttf`
+置于`assets/fonts/`目录下。 
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+最后在项目目录下执行`flutter pub run iconfont_css_to_class:main`, 则图标的数据将生成在`lib/common/`目录下。 使用里面的数据
+就可以使用对应的图标了。 
