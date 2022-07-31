@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smtpnotes/model/directory_model.dart';
 import 'package:smtpnotes/pages/common_config.dart';
+import 'package:smtpnotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:smtpnotes/pages/home_page/devices/lg1024/directory_section/item_section.dart';
 
 class DirectorySection extends StatefulWidget {
@@ -70,21 +71,31 @@ class _DirectorySectionState extends State<DirectorySection> {
       DirectoryModel(id: 4, title: '2', count: 2, children: [])
     ]);
     double LRMargin = 10;
-
-    return Container(
-        color: Colors.green[100],
-        width: CommonConfig.lg1024DirectoryWidth,
-        padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-          child: ItemSection(
+    const double bottomBarHeight = 40;
+    final list = Container(
+      height: MediaQuery.of(context).size.height - bottomBarHeight,
+      child: SingleChildScrollView(
+        child: ItemSection(
             key: ValueKey(data.id),
             data: data,
             activeId: _activeId,
             onChange: (int newActiveId) => setState(
-              () => _activeId = newActiveId,
-            ),
-          ),
+                  () => _activeId = newActiveId,
+                )),
+      ),
+    );
+
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.green[100],
+        width: CommonConfig.lg1024DirectoryWidth,
+        padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            list,
+            const CreateButton(bottomBarHeight: bottomBarHeight),
+          ],
         ));
   }
 }

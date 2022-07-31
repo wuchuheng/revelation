@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:smtpnotes/model/directory_model.dart';
+import 'package:smtpnotes/pages/common_config.dart';
 import '../../../../../common/iconfont.dart';
 
 class ItemSection extends StatefulWidget {
@@ -44,45 +45,46 @@ class _ItemSectionState extends State<ItemSection> {
     bool isActive = widget.activeId == widget.data.id;
 
     return GestureDetector(
-        onTap: () {
-          widget.onChange(widget.data.id);
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            color: isActive ? HexColor('##E4C65E') : null,
-          ),
-          margin: const EdgeInsets.only(top: 5),
-          padding: EdgeInsets.only(left: padding, top: 5, bottom: 5, right: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  _getDirectIcon(),
-                  Icon(
-                    IconFont.icon_file_directory,
-                    size: 17.5,
+      onTap: () {
+        widget.onChange(widget.data.id);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          color: isActive ? HexColor('##E4C65E') : null,
+        ),
+        margin: const EdgeInsets.only(top: 5),
+        padding: EdgeInsets.only(left: padding, top: 5, bottom: 5, right: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                _getDirectIcon(),
+                Icon(
+                  IconFont.icon_file_directory,
+                  size: 17.5,
+                  color: isActive ? Colors.white : Colors.black,
+                ),
+                Text(
+                  ' ${widget.data.title}',
+                  style: TextStyle(
                     color: isActive ? Colors.white : Colors.black,
                   ),
-                  Text(
-                    ' ${widget.data.title}',
-                    style: TextStyle(
-                      color: isActive ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                '${widget.data.count}',
-                style: TextStyle(
-                  color: isActive ? Colors.white : Colors.grey[500],
                 ),
-              )
-            ],
-          ),
-        ));
+              ],
+            ),
+            Text(
+              '${widget.data.count}',
+              style: TextStyle(
+                color: isActive ? Colors.white : CommonConfig.textGrey,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
