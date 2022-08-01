@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/common/iconfont.dart';
-import 'package:smtpnotes/pages/common_config.dart';
+import 'package:snotes/common/iconfont.dart';
+import 'package:snotes/pages/common_config.dart';
 
 class CreateButton extends StatelessWidget {
   final double bottomBarHeight;

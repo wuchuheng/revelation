@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/pages/common_config.dart';
+import 'package:snotes/pages/common_config.dart';
 
 class EditSection extends StatefulWidget {
   const EditSection({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/model/directory_model.dart';
-import 'package:smtpnotes/pages/common_config.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/directory_section/item_section.dart';
+import 'package:snotes/model/directory_model.dart';
+import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section.dart';
 
 class DirectorySection extends StatefulWidget {
   const DirectorySection({Key? key}) : super(key: key);

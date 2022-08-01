@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/common/iconfont.dart';
+import 'package:snotes/common/iconfont.dart';
 
 class ItemSection extends StatelessWidget {
   const ItemSection({Key? key}) : super(key: key);

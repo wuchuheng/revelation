@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "smtpnotes" "\0"
+            VALUE "FileDescription", "snotes" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "smtpnotes" "\0"
+            VALUE "InternalName", "snotes" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "smtpnotes.exe" "\0"
-            VALUE "ProductName", "smtpnotes" "\0"
+            VALUE "OriginalFilename", "snotes.exe" "\0"
+            VALUE "ProductName", "snotes" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/routes/route_path.dart';
+import 'package:snotes/routes/route_path.dart';
 
 void main() {
   runApp(const App());

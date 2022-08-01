@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/components/list_and_edit_container.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/components/tool_bar_list_edit_container.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/directory_section/index.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/edit_section/index.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/list_section/index.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/tool_bar_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/components/list_and_edit_container.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/components/tool_bar_list_edit_container.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/index.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/edit_section/index.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/list_section/index.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/tool_bar_section.dart';
 
 class LG1024HomePage extends StatefulWidget {
   const LG1024HomePage({Key? key}) : super(key: key);

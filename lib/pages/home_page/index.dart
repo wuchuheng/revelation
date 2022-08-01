@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smtpnotes/pages/home_page/devices/lg1024/index.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/index.dart';
 
 class HomePage extends Page {
   @override

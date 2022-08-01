@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:smtpnotes/model/directory_model.dart';
-import 'package:smtpnotes/pages/common_config.dart';
+import 'package:snotes/model/directory_model.dart';
+import 'package:snotes/pages/common_config.dart';
 import '../../../../../common/iconfont.dart';
 
 class ItemSection extends StatefulWidget {
