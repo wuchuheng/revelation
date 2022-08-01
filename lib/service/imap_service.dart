@@ -9,35 +9,41 @@ import 'package:enough_mail/enough_mail.dart';
 
 class ImapService {
   String userName = '2831473954@qq.com';
-  String password = 'owtdtjnltfnndeghaa';
+  String password = 'owtdtjnltfnndegh';
   String imapServerHost = 'imap.qq.com';
   int imapServerPort = 993;
   bool isImapServerSecure = true;
   String dbName = 'snotes';
-  static final ImapClient _clientInstance = ImapClient(isLogEnabled: false);
+  static ImapClient _clientInstance = ImapClient(isLogEnabled: false);
 
-  Future<ImapClient> _getClient() async {
-    if (ImapService._clientInstance.isConnected) {
-      return ImapService._clientInstance;
-    }
+  Future<ImapClient> _reGetClient() async {
+    final client = ImapClient(isLogEnabled: false);
 
     try {
-      await ImapService._clientInstance.connectToServer(
+      await client.connectToServer(
         imapServerHost,
         imapServerPort,
         isSecure: isImapServerSecure,
         timeout: const Duration(seconds: 30),
       );
-      await ImapService._clientInstance.login(userName, password);
-      final mailboxes = await ImapService._clientInstance.listMailboxes();
+      await client.login(userName, password);
+      final mailboxes = await client.listMailboxes();
       if (!hasBox(mailboxName: dbName, mailboxes: mailboxes)) {
-        await createBox(
-            mailboxName: dbName, client: ImapService._clientInstance);
+        await createBox(mailboxName: dbName, client: client);
       }
-      await ImapService._clientInstance.selectMailboxByPath(dbName);
+      await client.selectMailboxByPath(dbName);
     } catch (e) {
       rethrow;
     }
+
+    return client;
+  }
+
+  Future<ImapClient> _getClient() async {
+    if (ImapService._clientInstance.isConnected) {
+      return ImapService._clientInstance;
+    }
+    ImapService._clientInstance = await _reGetClient();
 
     return ImapService._clientInstance;
   }
@@ -47,7 +53,7 @@ class ImapService {
     required String content,
   }) async {
     try {
-      final client = await _getClient();
+      final client = await _reGetClient();
       final oldUid = await _getUid(name: name);
       if (oldUid != null) {
         await _deleteMessageByUid(uid: oldUid, client: client);
@@ -56,6 +62,7 @@ class ImapService {
         ..addText(content)
         ..subject = name;
       await client.appendMessage(builder.buildMimeMessage());
+      await client.logout();
     } on ImapException catch (e) {
       print('IMAP failed with $e');
     }
