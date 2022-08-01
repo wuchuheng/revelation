@@ -40,6 +40,8 @@ dependencies:
     git:
       url: https://gitee.com/yin_shiyong/iconfont_css_to_class.git
       ref: 0.1.3
+  enough_mail: ^2.1.1
+  imap_client: ^0.1.1
 
 dev_dependencies:
   flutter_test:

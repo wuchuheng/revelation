@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/service/imap_service.dart';
+import 'package:snotes/service/note_service.dart';
 
 class CreateButton extends StatelessWidget {
   final double bottomBarHeight;
@@ -66,6 +68,10 @@ class CreateButton extends StatelessWidget {
     ];
   }
 
+  void testImap() async {
+    await NoteService().createFold('hello');
+  }
+
   Widget getLabel() {
     return Row(
       children: [
@@ -74,6 +80,10 @@ class CreateButton extends StatelessWidget {
           ' New Folder',
           style: TextStyle(color: CommonConfig.textGrey),
         ),
+        ElevatedButton(
+          onPressed: testImap,
+          child: Text('tmp'),
+        )
       ],
     );
   }
