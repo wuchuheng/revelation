@@ -42,6 +42,7 @@ dependencies:
       ref: 0.1.3
   enough_mail: ^2.1.1
   imap_client: ^0.1.1
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:
