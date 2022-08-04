@@ -10,6 +10,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //     body: Column(
+    //   children: [ElevatedButton(onPressed: () {}, child: Text('button'))],
+    // ));
     return RoutePath.getAppPathInstance().build(
       context,
       'snote',

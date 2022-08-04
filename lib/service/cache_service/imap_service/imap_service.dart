@@ -1,58 +1,20 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:crypto/crypto.dart';
+
 import 'package:enough_mail/enough_mail.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
-import '../cache_common_config.dart';
+import 'package:snotes/service/cache_service/imap_service/common.dart';
+import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
+import 'package:snotes/service/cache_service/utils/task_pool.dart';
 
-class NameInfo {
-  final String name;
-  final int timestamp;
+import 'register_service.dart';
 
-  NameInfo({
-    required this.name,
-    required this.timestamp,
-  });
-}
-
-class ImapService implements CacheIOAbstract {
-  String userName = '2831473954@qq.com';
-  String password = 'owtdtjnltfnndegh';
-  String imapServerHost = 'imap.qq.com';
-  int imapServerPort = 993;
-  bool isImapServerSecure = true;
-  String dbName = 'snotes';
-  static ImapClient _clientInstance = ImapClient(isLogEnabled: true);
+class ImapService extends Common implements CacheIOAbstract {
+  static ImapClient? _clientInstance;
   static ImapService? _instance;
-  static List<Function()> taskRegisterList = []; // 任务注册列表
-
-  Future<int> startTask() {
-    int taskNum = DateTime.now().microsecondsSinceEpoch;
-    Completer<int> c = Completer();
-    taskRegisterList.add(() {
-      print('${DateTime.now()} start task: $taskNum');
-      c.complete(taskNum);
-    });
-    if (taskRegisterList.length == 1) {
-      taskRegisterList[0]();
-    }
-
-    return c.future;
-  }
-
-  completeTask(int taskNum) {
-    print('${DateTime.now()} completed task: $taskNum');
-    taskRegisterList.removeAt(0);
-    if (taskRegisterList.isNotEmpty) {
-      try {
-        taskRegisterList[0]();
-      } catch (e) {
-        sleep(const Duration(seconds: 1));
-        taskRegisterList[0]();
-      }
-    }
-  }
+  static TaskPool taskPool = TaskPool.builder();
+  startTask() => taskPool.startTask();
+  completeTask(int taskNum) => taskPool.completeTask(taskNum);
+  static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
 
   static ImapService getInstance() {
     _instance ??= ImapService();
@@ -60,12 +22,13 @@ class ImapService implements CacheIOAbstract {
   }
 
   Future<ImapClient> _getClient() async {
-    if (_clientInstance.isConnected) {
-      return _clientInstance;
+    if (_clientInstance != null && _clientInstance!.isConnected) {
+      return _clientInstance!;
     }
-    ImapService._clientInstance = await _reGetClient();
+    ImapService._clientInstance = await Common().getClient();
+    await _clientInstance!.selectMailboxByPath(boxName);
 
-    return _clientInstance;
+    return _clientInstance!;
   }
 
   @override
@@ -74,7 +37,7 @@ class ImapService implements CacheIOAbstract {
     final instance = ImapService.getInstance();
     try {
       final client = await instance._getClient();
-      final uid = await instance._getUid(name: key);
+      final uid = await getUid(name: key, client: client);
       if (uid != null) {
         final data = await client.uidFetchMessage(uid, 'BODY[]');
         final body = data.messages[0].decodeTextPlainPart();
@@ -87,144 +50,73 @@ class ImapService implements CacheIOAbstract {
     }
   }
 
-  String _encodeName(String name) {
-    final now = DateTime.now().microsecondsSinceEpoch;
-    final timestring = DateTime.now().toString();
-
-    return '$name--$now-$timestring';
-  }
-
-  NameInfo _decode(String name) {
-    final res = name.split('--');
-    final timestamp = int.parse(res[1].split('-')[1]);
-
-    return NameInfo(name: res[0], timestamp: timestamp);
-  }
-
-  Future<int?> _getUid({
-    required String name,
-  }) async {
-    final client = await _getClient();
-    final res = await client.uidSearchMessagesWithQuery(
-        SearchQueryBuilder.from(name, SearchQueryType.subject));
-    if (res.matchingSequence != null &&
-        res.matchingSequence!.toList().isNotEmpty) {
-      final uids = res.matchingSequence!.toList();
-      final data = await client.uidFetchMessages(
-        MessageSequence.fromIds(uids, isUid: true),
-        'BODY[]',
-      );
-      int lastUpdateAt = 0;
-      int? uid;
-      for (final message in data.messages) {
-        final subject = message.getHeaderValue('Subject');
-        final nameInfo = _decode(subject!);
-        if (nameInfo.name == name && nameInfo.timestamp > lastUpdateAt) {
-          lastUpdateAt = nameInfo.timestamp;
-          uid = message.uid!;
-        }
-      }
-      if (uid != null) {
-        return uid;
-      }
-    }
-    return null;
-  }
-
-  Future<ImapClient> _reGetClient() async {
-    final client = ImapClient(isLogEnabled: false);
-
-    try {
-      await client.connectToServer(
-        imapServerHost,
-        imapServerPort,
-        isSecure: isImapServerSecure,
-        timeout: const Duration(seconds: 30),
-      );
-      await client.login(userName, password);
-      final mailboxes = await client.listMailboxes();
-      final isExistBox = hasBox(mailboxName: dbName, mailboxes: mailboxes);
-      if (!isExistBox) {
-        await createBox(mailboxName: dbName, client: client);
-      }
-      await client.selectMailboxByPath(dbName);
-    } catch (e) {
-      rethrow;
-    }
-
-    return client;
-  }
-
-  bool hasBox({required String mailboxName, required List<Mailbox> mailboxes}) {
-    for (var mailbox in mailboxes) {
-      if (mailbox.name == mailboxName) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  Future<void> createBox({
-    required String mailboxName,
-    required ImapClient client,
-  }) async {
-    try {
-      await client.createMailbox(mailboxName);
-    } on ImapException catch (e) {
-      sleep(const Duration(seconds: 1));
-      final mailboxes = await client.listMailboxes();
-      if (!hasBox(mailboxName: mailboxName, mailboxes: mailboxes)) {
-        rethrow;
-      }
-    }
-  }
-
   Future<void> initOnlineCache({required ImapClient client}) async {
     const data = '{}';
-    final name = _convertDataStringToRegisterName(data);
+    final name = convertDataStringToRegisterName(data);
     await set(name: name, value: data);
-  }
-
-  String _convertDataStringToRegisterName(String data) {
-    final bytes1 = utf8.encode(data);
-    String hashString = sha256.convert(bytes1).toString();
-
-    return '${CacheCommonConfig.registerSymbol}_$hashString';
   }
 
   Future<void> set({
     required String name,
     required String value,
   }) async {
-    int taskNum = await startTask();
-    final instance = getInstance();
-    try {
-      final client = await instance._getClient();
-      final oldUid = await instance._getUid(name: name);
-      final builder = MessageBuilder()
-        ..addText(value)
-        ..subject = _encodeName(name);
-      await client.appendMessage(builder.buildMimeMessage());
-      if (oldUid != null) {
-        await instance._deleteMessageByUid(uid: oldUid, client: client);
-      }
-    } on ImapException catch (e) {
-      print('IMAP failed with $e');
-    }
-    completeTask(taskNum);
+    await singleTaskPool.start(() async {
+      final client = await _getClient();
+      await write(name: name, value: value, client: client);
+      RegisterInfo data = await RegisterService().getRegister();
+      int? lastUid = await getLastUid(key: name, registerInfo: data);
+      data.uidMapKey[lastUid!] = name;
+      data.data[name] = RegisterItemInfo(
+          lastUpdatedAt: DateTime.now().toString(), uid: lastUid);
+      await RegisterService().setRegister(data: data);
+    });
   }
 
-  Future<void> _deleteMessageByUid({
-    required int uid,
-    required ImapClient client,
+  Future<int?> getLastUid({
+    required String key,
+    required RegisterInfo registerInfo,
   }) async {
-    final sequence = MessageSequence.fromId(uid, isUid: true);
-    await client.uidStore(sequence, ["\\Deleted"]);
-    await client.uidExpunge(sequence);
+    List<int> uids = [];
+    registerInfo.uidMapKey.forEach((key, _) => uids.add(key));
+    ImapClient client = await _getClient();
+    final res = await client.uidSearchMessagesWithQuery(
+      SearchQueryBuilder.from(
+        key,
+        SearchQueryType.subject,
+      ),
+    );
+
+    int? lastUid;
+    if (res.matchingSequence != null &&
+        res.matchingSequence!.toList().isNotEmpty) {
+      List<int> onlineUids = res.matchingSequence!.toList();
+      onlineUids = onlineUids.where((e) => !uids.contains(e)).toList();
+      int updatedAt = 0;
+
+      for (var uid in onlineUids) {
+        FetchImapResult res = await client.uidFetchMessage(
+            uid, 'BODY.PEEK[HEADER.FIELDS (subject)]');
+        String subject = res.messages[0].getHeaderValue('Subject')!;
+        final subjectList = subject.split('--');
+        subject = subjectList[0];
+        int newUpdatedAt = int.parse(subjectList[1].split('-')[0]);
+        if (subject == key && newUpdatedAt > updatedAt) {
+          lastUid = uid;
+        }
+      }
+      if (lastUid != null) {
+        return lastUid;
+      }
+    }
+    if (lastUid == null) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      return await getLastUid(key: key, registerInfo: registerInfo);
+    }
   }
 
   Future<bool> has({required String name}) async {
-    final res = await _getUid(name: name) != null;
+    final ImapClient client = await _getClient();
+    final res = await getUid(name: name, client: client) != null;
 
     return res;
   }
@@ -234,74 +126,12 @@ class ImapService implements CacheIOAbstract {
     final instance = getInstance();
     try {
       final client = await instance._getClient();
-      final uid = await instance._getUid(name: name);
+      final uid = await getUid(name: name, client: client);
       if (uid != null) {
-        await instance._deleteMessageByUid(uid: uid, client: client);
+        await deleteMessageByUid(uid: uid, client: client);
       }
     } on ImapException catch (e) {
       print('IMAP failed with $e');
-    }
-    completeTask(taskNum);
-  }
-
-  Future<List<MimeMessage>?> queryMessagesBySubject(
-      {required String subject}) async {
-    final client = await _getClient();
-    final res = await client.uidSearchMessagesWithQuery(
-        SearchQueryBuilder.from(subject, SearchQueryType.subject));
-
-    if (res.matchingSequence != null &&
-        res.matchingSequence!.toList().isNotEmpty) {
-      final uids = res.matchingSequence!.toList();
-      final data = await client.uidFetchMessages(
-        MessageSequence.fromIds(uids, isUid: true),
-        'BODY[]',
-      );
-      return data.messages;
-    }
-  }
-
-  @override
-  Future<bool> hasRegister() async {
-    int taskNum = await startTask();
-    final messages =
-        await queryMessagesBySubject(subject: CacheCommonConfig.registerSymbol);
-    if (messages != null) {
-      for (final message in messages) {
-        String subject = message.getHeaderValue('Subject')!;
-        subject = subject.split('_')[0];
-        if (subject == CacheCommonConfig.registerSymbol) {
-          return true;
-        }
-      }
-    }
-    completeTask(taskNum);
-
-    return false;
-  }
-
-  @override
-  Future<void> setRegister({required String data}) async {
-    int taskNum = await startTask();
-    final String name = _convertDataStringToRegisterName(data);
-    final client = await _getClient();
-    final res = await client.uidSearchMessagesWithQuery(
-      SearchQueryBuilder.from(
-        CacheCommonConfig.registerSymbol,
-        SearchQueryType.subject,
-      ),
-    );
-    completeTask(taskNum);
-    await set(name: name, value: data);
-    taskNum = await startTask();
-    if (res.matchingSequence != null &&
-        res.matchingSequence!.toList().isNotEmpty) {
-      final uids = res.matchingSequence!.toList();
-      for (final uid in uids) {
-        final sequence = MessageSequence.fromId(uid, isUid: true);
-        await client.uidStore(sequence, ["\\Deleted"]);
-        await client.uidExpunge(sequence);
-      }
     }
     completeTask(taskNum);
   }

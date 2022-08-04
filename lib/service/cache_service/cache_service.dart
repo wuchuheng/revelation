@@ -3,9 +3,10 @@
 // EMAIL_HOST=imap.qq.com
 // EMAIL_PORT=993
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/cache_service_abstract.dart';
+import 'package:snotes/service/cache_service/imap_service/register_service.dart';
 
 import 'imap_service/imap_service.dart'; // for the utf8.encode method
 
@@ -16,8 +17,8 @@ class CacheService implements CacheServiceAbstract {
   static Future<CacheService> getInstance() async {
     _instance ??= CacheService();
     if (!_isFirstSyncLocalAndOnlineData) {
-      _isFirstSyncLocalAndOnlineData = true;
       await _instance!._syncLocalAndOnlineData();
+      _isFirstSyncLocalAndOnlineData = true;
     }
 
     return _instance!;
@@ -25,12 +26,10 @@ class CacheService implements CacheServiceAbstract {
 
   // 同步线上和本地的数据
   Future<void> _syncLocalAndOnlineData() async {
-    bool hasOnlineRegister = await ImapService.getInstance().hasRegister();
-    final initData = jsonEncode(
-      {"lastUpdatedAt": DateTime.now().toString(), "data": {}},
-    );
+    bool hasOnlineRegister = await RegisterService().hasRegister();
+    final RegisterInfo initData = RegisterInfo(uidMapKey: {}, data: {});
     if (!hasOnlineRegister) {
-      await ImapService.getInstance().setRegister(data: initData);
+      await RegisterService().setRegister(data: initData);
     }
   }
 
