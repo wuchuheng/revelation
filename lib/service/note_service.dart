@@ -19,8 +19,7 @@ class NoteService {
       cacheServiceInstance.set(
           name: 'hello', content: '{"id": "replay", "pid": 212312312}'),
     ]);
-
-    // await ImapService().unset(name: 'tmp');
+    await cacheServiceInstance.unset(name: 'tmp');
     // await ImapService().get(name: 'tmp');
   }
 }

@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
+import 'package:snotes/service/cache_service/errors/unset_error.dart';
 import 'package:snotes/service/cache_service/imap_service/common.dart';
 import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
 import 'package:snotes/service/cache_service/utils/task_pool.dart';
 
+import '../errors/key_not_found_error.dart';
+import '../utils/logger.dart';
 import 'register_service.dart';
 
 class ImapService extends Common implements CacheIOAbstract {
@@ -63,12 +66,16 @@ class ImapService extends Common implements CacheIOAbstract {
     await singleTaskPool.start(() async {
       final client = await _getClient();
       await write(name: name, value: value, client: client);
-      RegisterInfo data = await RegisterService().getRegister();
-      int? lastUid = await getLastUid(key: name, registerInfo: data);
-      data.uidMapKey[lastUid!] = name;
-      data.data[name] = RegisterItemInfo(
+      RegisterInfo register = await RegisterService().getRegister();
+      int? lastUid = await getLastUid(key: name, registerInfo: register);
+      if (register.data[name]?.uid != null) {
+        register.uidMapKey.remove([register.data[name]?.uid]);
+      }
+
+      register.uidMapKey[lastUid!] = name;
+      register.data[name] = RegisterItemInfo(
           lastUpdatedAt: DateTime.now().toString(), uid: lastUid);
-      await RegisterService().setRegister(data: data);
+      await RegisterService().setRegister(data: register);
     });
   }
 
@@ -122,17 +129,29 @@ class ImapService extends Common implements CacheIOAbstract {
   }
 
   Future<void> unset({required String name}) async {
-    final taskNum = await startTask();
-    final instance = getInstance();
-    try {
-      final client = await instance._getClient();
-      final uid = await getUid(name: name, client: client);
-      if (uid != null) {
-        await deleteMessageByUid(uid: uid, client: client);
+    await singleTaskPool.start(() async {
+      Logger.info("online: Start unset key: $name.");
+      try {
+        final client = await _getClient();
+        final register = await RegisterService().getRegister();
+        if (!register.data.containsKey(name)) {
+          throw keyNotFoundError();
+        }
+        int? uid = register.data[name]!.uid;
+        register.data.remove(name);
+        if (uid != null) {
+          register.uidMapKey.remove(uid);
+        } else {
+          uid = await getLastUid(key: name, registerInfo: register);
+        }
+        await Future.wait([
+          deleteMessageByUid(uid: uid!, client: client),
+          RegisterService().setRegister(data: register)
+        ]);
+        Logger.info("online: complete unset key: $name.");
+      } on ImapException catch (e) {
+        throw UnsetError();
       }
-    } on ImapException catch (e) {
-      print('IMAP failed with $e');
-    }
-    completeTask(taskNum);
+    });
   }
 }
