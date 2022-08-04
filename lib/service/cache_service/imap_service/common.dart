@@ -184,4 +184,8 @@ class Common {
     }
     return [];
   }
+
+  String checkPlainText(String text) {
+    return text.replaceAll(RegExp(r'\r\n'), '');
+  }
 }

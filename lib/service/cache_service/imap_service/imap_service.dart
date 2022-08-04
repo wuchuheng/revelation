@@ -44,13 +44,14 @@ class ImapService extends Common implements CacheIOAbstract {
         if (register.data.containsKey(key)) {
           final int uid = register.data[key]!.uid;
           final data = await client.uidFetchMessage(uid, 'BODY[]');
-          final body = data.messages[0].decodeTextPlainPart();
+          String? body = data.messages[0].decodeTextPlainPart();
+          body = checkPlainText(body!);
           completer.complete(body);
         } else {
           completer.completeError(KeyNotFoundError());
         }
       } on ImapException catch (e) {
-        rethrow;
+        throw e;
       }
     });
 
@@ -63,6 +64,7 @@ class ImapService extends Common implements CacheIOAbstract {
     await set(key: name, value: data);
   }
 
+  @override
   Future<void> set({
     required String key,
     required String value,
@@ -123,8 +125,10 @@ class ImapService extends Common implements CacheIOAbstract {
       await Future.delayed(const Duration(milliseconds: 500));
       return await getLastUid(key: key, registerInfo: registerInfo);
     }
+    return null;
   }
 
+  @override
   Future<bool> has({required String key}) async {
     final ImapClient client = await _getClient();
     final res = await getUid(name: key, client: client) != null;
@@ -132,6 +136,7 @@ class ImapService extends Common implements CacheIOAbstract {
     return res;
   }
 
+  @override
   Future<void> unset({required String key}) async {
     await singleTaskPool.start(() async {
       Logger.info("online: Start unset key: $key.");

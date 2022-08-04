@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:enough_mail/enough_mail.dart';
-import 'package:flutter/rendering.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service_abstract.dart';
 import 'package:snotes/service/cache_service/utils/multiplex_task_pool.dart';
@@ -64,7 +63,7 @@ class RegisterService extends Common implements RegisterServiceAbstract {
         if (uid != null) {
           final data = await client.uidFetchMessage(uid, 'BODY[]');
           String? bodyJson = data.messages[0].decodeTextPlainPart();
-          bodyJson = bodyJson!.replaceAll(RegExp(r'\r\n'), '');
+          bodyJson = checkPlainText(bodyJson!);
           final Map<String, dynamic> body = jsonDecode(bodyJson);
           if (body.isNotEmpty) {
             return RegisterInfo.fromJson(body);
