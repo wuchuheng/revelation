@@ -36,21 +36,25 @@ class ImapService extends Common implements CacheIOAbstract {
 
   @override
   Future<String> get({required String key}) async {
-    final taskNum = await startTask();
-    final instance = ImapService.getInstance();
-    try {
-      final client = await instance._getClient();
-      final uid = await getUid(name: key, client: client);
-      if (uid != null) {
-        final data = await client.uidFetchMessage(uid, 'BODY[]');
-        final body = data.messages[0].decodeTextPlainPart();
-        completeTask(taskNum);
-        return body!;
+    Completer<String> completer = Completer();
+    await singleTaskPool.start(() async {
+      try {
+        final client = await _getClient();
+        RegisterInfo register = await RegisterService().getRegister();
+        if (register.data.containsKey(key)) {
+          final int uid = register.data[key]!.uid;
+          final data = await client.uidFetchMessage(uid, 'BODY[]');
+          final body = data.messages[0].decodeTextPlainPart();
+          completer.complete(body);
+        } else {
+          completer.completeError(KeyNotFoundError());
+        }
+      } on ImapException catch (e) {
+        rethrow;
       }
-      throw Error();
-    } on ImapException catch (e) {
-      rethrow;
-    }
+    });
+
+    return completer.future;
   }
 
   Future<void> initOnlineCache({required ImapClient client}) async {
@@ -69,7 +73,8 @@ class ImapService extends Common implements CacheIOAbstract {
       RegisterInfo register = await RegisterService().getRegister();
       int? lastUid = await getLastUid(key: name, registerInfo: register);
       if (register.data[name]?.uid != null) {
-        register.uidMapKey.remove([register.data[name]?.uid]);
+        int? removeId = register.data[name]?.uid;
+        register.uidMapKey.remove(removeId!);
       }
 
       register.uidMapKey[lastUid!] = name;
@@ -135,7 +140,7 @@ class ImapService extends Common implements CacheIOAbstract {
         final client = await _getClient();
         final register = await RegisterService().getRegister();
         if (!register.data.containsKey(name)) {
-          throw keyNotFoundError();
+          throw KeyNotFoundError();
         }
         int? uid = register.data[name]!.uid;
         register.data.remove(name);

@@ -1,1 +1,1 @@
-class keyNotFoundError extends Error {}
+class KeyNotFoundError extends Error {}

@@ -10,7 +10,7 @@ RegisterItemInfo _$RegisterItemInfoFromJson(Map<String, dynamic> json) =>
     RegisterItemInfo(
       lastUpdatedAt: json['lastUpdatedAt'] as String,
       deletedAt: json['deletedAt'] as String?,
-      uid: json['uid'] as int?,
+      uid: json['uid'],
     );
 
 Map<String, dynamic> _$RegisterItemInfoToJson(RegisterItemInfo instance) =>

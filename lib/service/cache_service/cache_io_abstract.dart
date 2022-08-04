@@ -6,9 +6,10 @@ part 'cache_io_abstract.g.dart';
 class RegisterItemInfo {
   final String lastUpdatedAt;
   final String? deletedAt;
-  final int? uid;
+  final int uid;
 
-  RegisterItemInfo({required this.lastUpdatedAt, this.deletedAt, this.uid});
+  RegisterItemInfo(
+      {required this.lastUpdatedAt, this.deletedAt, required this.uid});
 
   factory RegisterItemInfo.fromJson(Map<String, dynamic> json) =>
       _$RegisterItemInfoFromJson(json);
