@@ -60,25 +60,24 @@ class ImapService extends Common implements CacheIOAbstract {
   Future<void> initOnlineCache({required ImapClient client}) async {
     const data = '{}';
     final name = convertDataStringToRegisterName(data);
-    await set(name: name, value: data);
+    await set(key: name, value: data);
   }
 
   Future<void> set({
-    required String name,
+    required String key,
     required String value,
   }) async {
     await singleTaskPool.start(() async {
       final client = await _getClient();
-      await write(name: name, value: value, client: client);
+      await write(name: key, value: value, client: client);
       RegisterInfo register = await RegisterService().getRegister();
-      int? lastUid = await getLastUid(key: name, registerInfo: register);
-      if (register.data[name]?.uid != null) {
-        int? removeId = register.data[name]?.uid;
+      int? lastUid = await getLastUid(key: key, registerInfo: register);
+      if (register.data[key]?.uid != null) {
+        int? removeId = register.data[key]?.uid;
         register.uidMapKey.remove(removeId!);
       }
-
-      register.uidMapKey[lastUid!] = name;
-      register.data[name] = RegisterItemInfo(
+      register.uidMapKey[lastUid!] = key;
+      register.data[key] = RegisterItemInfo(
           lastUpdatedAt: DateTime.now().toString(), uid: lastUid);
       await RegisterService().setRegister(data: register);
     });
@@ -126,34 +125,30 @@ class ImapService extends Common implements CacheIOAbstract {
     }
   }
 
-  Future<bool> has({required String name}) async {
+  Future<bool> has({required String key}) async {
     final ImapClient client = await _getClient();
-    final res = await getUid(name: name, client: client) != null;
+    final res = await getUid(name: key, client: client) != null;
 
     return res;
   }
 
-  Future<void> unset({required String name}) async {
+  Future<void> unset({required String key}) async {
     await singleTaskPool.start(() async {
-      Logger.info("online: Start unset key: $name.");
+      Logger.info("online: Start unset key: $key.");
       try {
         final client = await _getClient();
         final register = await RegisterService().getRegister();
-        if (!register.data.containsKey(name)) {
+        if (!register.data.containsKey(key)) {
           throw KeyNotFoundError();
         }
-        int? uid = register.data[name]!.uid;
-        register.data.remove(name);
-        if (uid != null) {
-          register.uidMapKey.remove(uid);
-        } else {
-          uid = await getLastUid(key: name, registerInfo: register);
-        }
+        int uid = register.data[key]!.uid;
+        register.data.remove(key);
+        register.uidMapKey.remove(uid);
         await Future.wait([
-          deleteMessageByUid(uid: uid!, client: client),
+          deleteMessageByUid(uid: uid, client: client),
           RegisterService().setRegister(data: register)
         ]);
-        Logger.info("online: complete unset key: $name.");
+        Logger.info("online: complete unset key: $key.");
       } on ImapException catch (e) {
         throw UnsetError();
       }

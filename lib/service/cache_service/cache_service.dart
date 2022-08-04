@@ -35,15 +35,15 @@ class CacheService implements CacheServiceAbstract {
 
   @override
   Future<void> set({
-    required String name,
-    required String content,
+    required String key,
+    required String value,
   }) async {
-    await ImapService.getInstance().set(name: name, value: content);
+    await ImapService.getInstance().set(key: key, value: value);
   }
 
   @override
-  Future<void> unset({required String name}) async {
-    return await ImapService.getInstance().unset(name: name);
+  Future<void> unset({required String key}) async {
+    return await ImapService.getInstance().unset(key: key);
   }
 
   @override
@@ -52,7 +52,7 @@ class CacheService implements CacheServiceAbstract {
   }
 
   @override
-  Future<bool> has({required String name}) async {
-    return await ImapService.getInstance().has(name: name);
+  Future<bool> has({required String key}) async {
+    return await ImapService.getInstance().has(key: key);
   }
 }
