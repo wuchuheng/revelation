@@ -83,7 +83,7 @@ class RegisterService extends Common implements RegisterServiceAbstract {
     await singleTaskPool.start(() async {
       String dataJson = "";
       dataJson = jsonEncode(data);
-      final String name = convertDataStringToRegisterName(dataJson);
+      final String name = getRegisterName(dataJson);
       final client = await _getClient();
       final res = await client.uidSearchMessagesWithQuery(
         SearchQueryBuilder.from(

@@ -20,6 +20,6 @@ class NoteService {
           key: 'hello', value: '{"id": "replay", "pid": 212312312}'),
     ]);
     await cacheServiceInstance.unset(key: 'tmp');
-    String tmpData = await cacheServiceInstance.get(key: 'tmp');
+    // String tmpData = await cacheServiceInstance.get(key: 'tmp');
   }
 }

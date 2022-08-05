@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:snotes/service/cache_service/cache_service_abstract.dart';
+
 part 'cache_io_abstract.g.dart';
 
 @JsonSerializable()
@@ -7,9 +7,14 @@ class RegisterItemInfo {
   final String lastUpdatedAt;
   final String? deletedAt;
   final int uid;
+  final String hash;
 
-  RegisterItemInfo(
-      {required this.lastUpdatedAt, this.deletedAt, required this.uid});
+  RegisterItemInfo({
+    required this.lastUpdatedAt,
+    this.deletedAt,
+    required this.uid,
+    required this.hash,
+  });
 
   factory RegisterItemInfo.fromJson(Map<String, dynamic> json) =>
       _$RegisterItemInfoFromJson(json);
@@ -29,5 +34,3 @@ class RegisterInfo {
 
   Map<String, dynamic> toJson() => _$RegisterInfoToJson(this);
 }
-
-abstract class CacheIOAbstract extends CacheServiceAbstract {}

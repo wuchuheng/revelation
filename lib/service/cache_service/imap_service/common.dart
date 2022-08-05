@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
 import 'package:enough_mail/enough_mail.dart';
 import '../cache_common_config.dart';
+import '../utils/hash.dart';
 
 class NameInfo {
   final String name;
@@ -74,10 +73,8 @@ class Common {
     }
   }
 
-  String convertDataStringToRegisterName(String data) {
-    final bytes1 = utf8.encode(data);
-    String hashString =
-        sha256.convert(bytes1).toString().replaceAll(RegExp(r'\s+'), '');
+  String getRegisterName(String data) {
+    String hashString = Hash.convertStringToHash(data);
 
     return '${CacheCommonConfig.registerSymbol}_$hashString';
   }

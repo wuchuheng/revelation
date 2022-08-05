@@ -1,17 +1,17 @@
 import 'dart:async';
-
 import 'package:enough_mail/enough_mail.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/errors/unset_error.dart';
 import 'package:snotes/service/cache_service/imap_service/common.dart';
+import 'package:snotes/service/cache_service/utils/hash.dart';
 import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
 import 'package:snotes/service/cache_service/utils/task_pool.dart';
-
+import '../cache_service_abstract.dart';
 import '../errors/key_not_found_error.dart';
 import '../utils/logger.dart';
 import 'register_service.dart';
 
-class ImapService extends Common implements CacheIOAbstract {
+class ImapService extends Common implements CacheServiceAbstract {
   static ImapClient? _clientInstance;
   static ImapService? _instance;
   static TaskPool taskPool = TaskPool.builder();
@@ -60,7 +60,7 @@ class ImapService extends Common implements CacheIOAbstract {
 
   Future<void> initOnlineCache({required ImapClient client}) async {
     const data = '{}';
-    final name = convertDataStringToRegisterName(data);
+    final name = getRegisterName(data);
     await set(key: name, value: data);
   }
 
@@ -80,7 +80,10 @@ class ImapService extends Common implements CacheIOAbstract {
       }
       register.uidMapKey[lastUid!] = key;
       register.data[key] = RegisterItemInfo(
-          lastUpdatedAt: DateTime.now().toString(), uid: lastUid);
+        lastUpdatedAt: DateTime.now().toString(),
+        uid: lastUid,
+        hash: Hash.convertStringToHash(value),
+      );
       await RegisterService().setRegister(data: register);
     });
   }
