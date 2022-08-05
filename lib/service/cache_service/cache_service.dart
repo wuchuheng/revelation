@@ -8,7 +8,8 @@ import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/cache_service_abstract.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service.dart';
 
-import 'imap_service/imap_service.dart'; // for the utf8.encode method
+import 'imap_service/imap_service.dart';
+import 'local_cache_service/local_cache_service.dart'; // for the utf8.encode method
 
 class CacheService implements CacheServiceAbstract {
   static CacheService? _instance;
@@ -38,12 +39,18 @@ class CacheService implements CacheServiceAbstract {
     required String key,
     required String value,
   }) async {
-    await ImapService.getInstance().set(key: key, value: value);
+    await Future.wait([
+      LocalCacheService().set(key: key, value: value),
+      ImapService.getInstance().set(key: key, value: value),
+    ]);
   }
 
   @override
   Future<void> unset({required String key}) async {
-    return await ImapService.getInstance().unset(key: key);
+    await Future.wait([
+      LocalCacheService().unset(key: key),
+      ImapService.getInstance().unset(key: key),
+    ]);
   }
 
   @override
