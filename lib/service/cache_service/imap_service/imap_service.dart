@@ -150,7 +150,7 @@ class ImapService extends Common implements CacheServiceAbstract {
           throw KeyNotFoundError();
         }
         int uid = register.data[key]!.uid;
-        register.data.remove(key);
+        register.data[key]!.deletedAt = DateTime.now().toString();
         register.uidMapKey.remove(uid);
         await Future.wait([
           deleteMessageByUid(uid: uid, client: client),

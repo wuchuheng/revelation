@@ -5,7 +5,7 @@ part 'cache_io_abstract.g.dart';
 @JsonSerializable()
 class RegisterItemInfo {
   final String lastUpdatedAt;
-  final String? deletedAt;
+  String? deletedAt;
   final int uid;
   final String hash;
 
