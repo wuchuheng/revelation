@@ -1,37 +1,80 @@
-// EMAIL_ACCOUNT=2831473954@qq.com
-// EMAIL_PASSWORD=owtdtjnltfnndegh
-// EMAIL_HOST=imap.qq.com
-// EMAIL_PORT=993
 import 'dart:async';
 
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/cache_service_abstract.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service.dart';
+import 'package:snotes/service/cache_service/local_cache_service/local_cache_register_service.dart';
+import 'package:snotes/service/cache_service/sync_data.dart';
+import 'package:snotes/service/cache_service/utils/logger.dart';
+import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
 
-import 'imap_service/imap_service.dart';
 import 'local_cache_service/local_cache_service.dart'; // for the utf8.encode method
 
 class CacheService implements CacheServiceAbstract {
   static CacheService? _instance;
-  static bool _isFirstSyncLocalAndOnlineData = false; // 是否已经同步过一次数据了
+  static final SingleTaskPool _limitSyncTaskPool = SingleTaskPool();
+  static bool _isSyncing = false;
+
+  /// Synchronize online and local data
+  Future<void> _syncOnline() async {
+    Logger.info("Start online syncing");
+    try {
+      // init onlineData
+      RegisterService registerService = RegisterService();
+      RegisterInfo? hasRegisterInfo = await registerService.hasRegister();
+      if (hasRegisterInfo == null) {
+        final RegisterInfo initData = RegisterInfo(uidMapKey: {}, data: {});
+        await registerService.setRegister(data: initData);
+        hasRegisterInfo = initData;
+      }
+      RegisterInfo onlineRegister = hasRegisterInfo;
+      RegisterInfo localRegister =
+          await LocalCacheRegisterService().getRegister();
+      List<String> onlineKeys = onlineRegister.data.keys.toList();
+      List<String> localKeys = localRegister.data.keys.toList();
+      List<String> allKeys = onlineKeys;
+      for (String e in localKeys) {
+        if (!onlineKeys.contains(e)) onlineKeys.add(e);
+      }
+      for (String key in allKeys) {
+        await SyncData.onlineExistAndLocalNone(
+          onlineRegisterInfo: onlineRegister,
+          localRegisterInfo: localRegister,
+          key: key,
+        );
+        await SyncData.onlineExistAndLocalExist(
+            onlineRegisterInfo: onlineRegister,
+            localRegisterInfo: localRegister,
+            key: key);
+        await SyncData.onlineNoneAndLocalExist(
+            onlineRegisterInfo: onlineRegister,
+            localRegisterInfo: localRegister,
+            key: key);
+      }
+      Logger.info('Complete synchronization of data from local to online.');
+    } catch (e) {
+      Logger.error('Sync online error');
+      print(e);
+    }
+    await Future.delayed(const Duration(seconds: 10));
+    _syncOnline().then((value) => null);
+    Logger.info("Completed online syncing");
+  }
+
+  /// connect to the IMAP server with user's account
+  void connectToServer() {
+    _limitSyncTaskPool.start(() async {
+      if (!_isSyncing) {
+        _isSyncing = true;
+        _syncOnline().then((value) => null);
+      }
+    }).then((value) => null);
+  }
 
   static Future<CacheService> getInstance() async {
     _instance ??= CacheService();
-    if (!_isFirstSyncLocalAndOnlineData) {
-      await _instance!._syncLocalAndOnlineData();
-      _isFirstSyncLocalAndOnlineData = true;
-    }
 
     return _instance!;
-  }
-
-  // 同步线上和本地的数据
-  Future<void> _syncLocalAndOnlineData() async {
-    bool hasOnlineRegister = await RegisterService().hasRegister();
-    final RegisterInfo initData = RegisterInfo(uidMapKey: {}, data: {});
-    if (!hasOnlineRegister) {
-      await RegisterService().setRegister(data: initData);
-    }
   }
 
   @override
@@ -39,9 +82,10 @@ class CacheService implements CacheServiceAbstract {
     required String key,
     required String value,
   }) async {
+    connectToServer();
     await Future.wait([
       LocalCacheService().set(key: key, value: value),
-      ImapService.getInstance().set(key: key, value: value),
+      // ImapService.getInstance().set(key: key, value: value),
     ]);
   }
 
@@ -49,17 +93,18 @@ class CacheService implements CacheServiceAbstract {
   Future<void> unset({required String key}) async {
     await Future.wait([
       LocalCacheService().unset(key: key),
-      ImapService.getInstance().unset(key: key),
+      // ImapService.getInstance().unset(key: key),
     ]);
   }
 
   @override
   Future<String> get({required String key}) async {
-    return await ImapService.getInstance().get(key: key);
+    return await LocalCacheService().get(key: key);
   }
 
   @override
   Future<bool> has({required String key}) async {
-    return await ImapService.getInstance().has(key: key);
+    return await LocalCacheService().has(key: key);
+    // return await ImapService.getInstance().has(key: key);
   }
 }

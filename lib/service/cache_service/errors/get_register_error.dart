@@ -1,0 +1,1 @@
+class GetRegisterError extends Error {}

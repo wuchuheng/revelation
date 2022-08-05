@@ -11,15 +11,17 @@ class NoteService {
 
   createFold(String fold) async {
     final cacheServiceInstance = await CacheService.getInstance();
-    await Future.wait([
-      cacheServiceInstance.set(
-          key: 'tmp', value: '{"id": "replay", "pid": 1312312312}'),
-      cacheServiceInstance.set(
-          key: 'tmptmp', value: '{"id": "replay", "pid": 212312312}'),
-      cacheServiceInstance.set(
-          key: 'hello', value: '{"id": "replay", "pid": 212312312}'),
-    ]);
-    await cacheServiceInstance.unset(key: 'tmp');
+    cacheServiceInstance.connectToServer();
+    // await Future.wait([
+    //   cacheServiceInstance.set(
+    //       key: 'tmp', value: '{"id": "replay", "pid": 1312312312}'),
+    //   // cacheServiceInstance.set(
+    //   //     key: 'tmptmp', value: '{"id": "replay", "pid": 212312312}'),
+    //   // cacheServiceInstance.set(
+    //   //     key: 'hello', value: '{"id": "replay", "pid": 212312312}'),
+    // ]);
+    // await cacheServiceInstance.unset(key: 'tmp');
     // String tmpData = await cacheServiceInstance.get(key: 'tmp');
+    // print(tmpData);
   }
 }

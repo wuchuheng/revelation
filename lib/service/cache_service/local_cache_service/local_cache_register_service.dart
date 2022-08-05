@@ -27,6 +27,7 @@ class LocalCacheRegisterService implements RegisterServiceAbstract {
     return file;
   }
 
+  /// todo 这是个高频次调用方法，目前imap是连数据都传过来，这是没必要的，只要查看标题的hash是否与上次一样再查看数据体才能减少数据量。
   @override
   Future<RegisterInfo> getRegister() async {
     Completer<RegisterInfo> completer = Completer();
@@ -34,7 +35,7 @@ class LocalCacheRegisterService implements RegisterServiceAbstract {
       if (_data == null) {
         File file = await _getFile();
         final String contents = await file.readAsString();
-        _data = RegisterInfo.fromJson(jsonDecode(contents));
+        _data = RegisterInfo.fromJson(contents);
       }
       completer.complete(_data!);
     });
@@ -43,8 +44,8 @@ class LocalCacheRegisterService implements RegisterServiceAbstract {
   }
 
   @override
-  Future<bool> hasRegister() async {
-    return true;
+  Future<RegisterInfo?> hasRegister() async {
+    return await getRegister();
   }
 
   @override

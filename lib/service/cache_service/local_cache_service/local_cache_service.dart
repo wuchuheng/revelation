@@ -32,12 +32,13 @@ class LocalCacheService implements CacheServiceAbstract {
   @override
   Future<bool> has({required String key}) async {
     RegisterInfo registerInfo = await LocalCacheRegisterService().getRegister();
-    return registerInfo.data.containsKey(key);
+    return registerInfo.data.containsKey(key) &&
+        registerInfo.data[key]!.deletedAt == null;
   }
 
   @override
   Future<void> set({required String key, required String value}) async {
-    Logger.info('Start setting up local cache. key $key value: $value');
+    Logger.info('Start setting up local cache. key: $key value: $value');
     String path = await _path;
     String filePath = '$path/$key.json';
     File file = File(filePath);
@@ -55,12 +56,13 @@ class LocalCacheService implements CacheServiceAbstract {
 
   @override
   Future<void> unset({required String key}) async {
+    /// todo deleted event
     if (!await has(key: key)) {
       Logger.error('Not Found key: $key');
       throw KeyNotFoundError();
     }
     RegisterInfo registerInfo = await LocalCacheRegisterService().getRegister();
-    registerInfo.data.remove(key);
+    registerInfo.data[key]!.deletedAt = DateTime.now().toString();
     await LocalCacheRegisterService().setRegister(data: registerInfo);
   }
 }

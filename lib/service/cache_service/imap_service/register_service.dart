@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
+import 'package:snotes/service/cache_service/errors/get_register_error.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service_abstract.dart';
 import 'package:snotes/service/cache_service/utils/multiplex_task_pool.dart';
 import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
@@ -32,12 +33,14 @@ class RegisterService extends Common implements RegisterServiceAbstract {
   }
 
   @override
-  Future<bool> hasRegister() async {
-    return await hasRegisterTaskPool.start<bool>(() async {
+  Future<RegisterInfo?> hasRegister() async {
+    return await hasRegisterTaskPool.start<RegisterInfo?>(() async {
       final messages = await queryMessagesBySubject(
         subject: CacheCommonConfig.registerSymbol,
         client: await _getClient(),
       );
+      String jsonString = "";
+      int updatedAt = 0;
       for (final message in messages) {
         String subject = message.getHeaderValue('Subject')!;
         String onlineSubject = '';
@@ -45,36 +48,38 @@ class RegisterService extends Common implements RegisterServiceAbstract {
           onlineSubject =
               subject.substring(0, CacheCommonConfig.registerSymbol.length);
         }
-        if (onlineSubject == CacheCommonConfig.registerSymbol) {
-          return true;
+        int onlineUpdatedAt = int.parse(subject.split('--')[1].split('-')[0]);
+        if (onlineSubject == CacheCommonConfig.registerSymbol &&
+            onlineUpdatedAt > updatedAt) {
+          updatedAt = onlineUpdatedAt;
+          jsonString = checkPlainText(message.decodeTextPlainPart()!);
         }
       }
-      return false;
+      if (jsonString.isNotEmpty) {
+        return RegisterInfo.fromJson(jsonString);
+      }
+      return null;
     });
   }
 
   @override
   Future<RegisterInfo> getRegister() async {
     return await getRegisterTaskPool.start<RegisterInfo>(() async {
-      try {
-        final client = await _getClient();
-        final uid =
-            await _getUidForRegister(name: CacheCommonConfig.registerSymbol);
-        if (uid != null) {
-          final data = await client.uidFetchMessage(uid, 'BODY[]');
-          String? bodyJson = data.messages[0].decodeTextPlainPart();
-          bodyJson = checkPlainText(bodyJson!);
-          final Map<String, dynamic> body = jsonDecode(bodyJson);
-          if (body.isNotEmpty) {
-            return RegisterInfo.fromJson(body);
-          } else {
-            return RegisterInfo(uidMapKey: {}, data: {});
-          }
+      final client = await _getClient();
+      final uid =
+          await _getUidForRegister(name: CacheCommonConfig.registerSymbol);
+      if (uid != null) {
+        final data = await client.uidFetchMessage(uid, 'BODY[]');
+        String? bodyJson = data.messages[0].decodeTextPlainPart();
+        bodyJson = checkPlainText(bodyJson!);
+        final Map<String, dynamic> body = jsonDecode(bodyJson);
+        if (body.isNotEmpty) {
+          return RegisterInfo.fromJson(bodyJson);
+        } else {
+          return RegisterInfo(uidMapKey: {}, data: {});
         }
-        throw Error();
-      } on ImapException catch (e) {
-        rethrow;
       }
+      throw GetRegisterError();
     });
   }
 

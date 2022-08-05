@@ -39,13 +39,10 @@ class ImapService extends Common implements CacheServiceAbstract {
     Completer<String> completer = Completer();
     await singleTaskPool.start(() async {
       try {
-        final client = await _getClient();
         RegisterInfo register = await RegisterService().getRegister();
         if (register.data.containsKey(key)) {
           final int uid = register.data[key]!.uid;
-          final data = await client.uidFetchMessage(uid, 'BODY[]');
-          String? body = data.messages[0].decodeTextPlainPart();
-          body = checkPlainText(body!);
+          String body = await getValueByUid(uid: uid);
           completer.complete(body);
         } else {
           completer.completeError(KeyNotFoundError());
@@ -161,5 +158,13 @@ class ImapService extends Common implements CacheServiceAbstract {
         throw UnsetError();
       }
     });
+  }
+
+  Future<String> getValueByUid({required int uid}) async {
+    ImapClient client = await _getClient();
+    final data = await client.uidFetchMessage(uid, 'BODY[]');
+    String? body = data.messages[0].decodeTextPlainPart();
+    body = checkPlainText(body!);
+    return body;
   }
 }

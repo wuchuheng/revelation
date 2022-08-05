@@ -5,5 +5,6 @@ abstract class CacheServiceAbstract {
 
   Future<void> unset({required String key});
 
+  // todo 这里的Future<bool> --> Future<String>
   Future<bool> has({required String key});
 }

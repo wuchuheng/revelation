@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'cache_io_abstract.g.dart';
@@ -29,8 +31,11 @@ class RegisterInfo {
 
   RegisterInfo({required this.uidMapKey, required this.data});
 
-  factory RegisterInfo.fromJson(Map<String, dynamic> json) =>
-      _$RegisterInfoFromJson(json);
+  factory RegisterInfo.fromJson(String json) {
+    Map<String, dynamic> jsonMapData = jsonDecode(json);
+
+    return _$RegisterInfoFromJson(jsonMapData);
+  }
 
   Map<String, dynamic> toJson() => _$RegisterInfoToJson(this);
 }
