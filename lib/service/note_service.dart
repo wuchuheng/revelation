@@ -12,6 +12,16 @@ class NoteService {
   createFold(String fold) async {
     final cacheServiceInstance = await CacheService.getInstance();
     await cacheServiceInstance.connectToServer();
+    final subscriptionHandler = cacheServiceInstance.setEventSubscribe(key: 'tmp', callback: (a) {
+        print('set data $a');
+      });
+    cacheServiceInstance.unsetEventSubscribe(key: 'tmp', callback:  ({required String key}) {
+      print('unset data $key');
+    });
+    cacheServiceInstance.startSyncEvent(() => print('Start sync') );
+    cacheServiceInstance.completedSyncEvent(() => print('completed sync') );
+
+
     await Future.wait([
       cacheServiceInstance.set(
           key: 'tmp', value: '{"id": "replay", "pid": 1312312312}'),

@@ -4,20 +4,29 @@ import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/cache_service_abstract.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service.dart';
 import 'package:snotes/service/cache_service/local_cache_service/local_cache_register_service.dart';
+import 'package:snotes/service/cache_service/subscription/subscription.dart';
+import 'package:snotes/service/cache_service/subscription/subscription_abstract.dart';
+import 'package:snotes/service/cache_service/subscription/sync_event_subscription_abstract.dart';
 import 'package:snotes/service/cache_service/sync_data.dart';
 import 'package:snotes/service/cache_service/utils/logger.dart';
 import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
 
-import 'local_cache_service/local_cache_service.dart'; // for the utf8.encode method
+import 'local_cache_service/local_cache_service.dart';
+import 'subscription/unsubscribe.dart'; // for the utf8.encode method
 
-class CacheService implements CacheServiceAbstract {
+class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract, SyncEventSubscriptionAbstract {
   static CacheService? _instance;
-  static final SingleTaskPool _limitSyncTaskPool = SingleTaskPool();
-  static bool _isSyncing = false;
+  final SingleTaskPool _limitSyncTaskPool = SingleTaskPool();
+  bool _isSyncing = false;
+  final Map<String, Map<int, void Function(String value)>> _setEventCallbackList = {};
+  final Map<String, Map<int, void Function({required String key})>> _unsetEventCallbackList = {};
+  final Map<int, void Function()> _completeSyncEventList = {};
+  final Map<int, void Function()> _startSyncEventList = {};
 
   /// Synchronize online and local data
   Future<void> _syncOnline() async {
     Logger.info("Start synchronizing data");
+    Future.wait([ _hookStartSyncEvent() ]);
     try {
       // init onlineData
       RegisterService registerService = RegisterService();
@@ -51,6 +60,7 @@ class CacheService implements CacheServiceAbstract {
             key: key);
       }
       Logger.info('Completed data synchronization.');
+      Future.wait([ _hookCompletedSyncEvent() ]);
     } catch (e) {
       print(e);
     }
@@ -81,30 +91,73 @@ class CacheService implements CacheServiceAbstract {
     required String value,
   }) async {
     connectToServer();
-    await Future.wait([
-      LocalCacheService().set(key: key, value: value),
-      // ImapService.getInstance().set(key: key, value: value),
-    ]);
+    await LocalCacheService().set(key: key, value: value);
+    Future.wait([ _hookSetEvents(key: key, value: value) ]);
+  }
+  Future<void> _hookSetEvents({required String key, required String value,}) async {
+    if (_setEventCallbackList[key] != null && _setEventCallbackList[key]!.isNotEmpty) {
+      for (final callback in _setEventCallbackList[key]!.values) {
+        callback(value);
+      }
+    }
   }
 
   @override
   Future<void> unset({required String key}) async {
-    await Future.wait([
-      LocalCacheService().unset(key: key),
-      // ImapService.getInstance().unset(key: key),
-    ]);
+    LocalCacheService().unset(key: key);
+    Future.wait([_hookUnsetEvents(key: key)]);
+  }
+  Future<void> _hookUnsetEvents({required String key}) async {
+    if (_unsetEventCallbackList[key] != null && _unsetEventCallbackList[key]!.isNotEmpty) {
+      for (final callback in _unsetEventCallbackList[key]!.values) {
+        callback(key: key);
+      }
+    }
   }
 
   @override
-  Future<String> get({required String key}) async {
-    return await LocalCacheService().get(key: key);
+  Future<String> get({required String key}) => LocalCacheService().get(key: key);
+
+  @override
+  Future<bool> has({required String key}) => LocalCacheService().has(key: key);
+
+  @override
+  UnsubscribeAbstract completedSyncEvent(void Function() callback) {
+    int id = DateTime.now().microsecondsSinceEpoch;
+    _completeSyncEventList[id] = callback;
+    return Unsubscription(() => _completeSyncEventList.remove(id));
+  }
+  Future<void> _hookCompletedSyncEvent() async {
+    if (_completeSyncEventList.isNotEmpty) {
+      _completeSyncEventList.forEach((_, value) => value());
+    }
+  }
+  Future<void> _hookStartSyncEvent() async {
+    if (_startSyncEventList.isNotEmpty) {
+      _startSyncEventList.forEach((_, value) => value());
+    }
   }
 
   @override
-  Future<bool> has({required String key}) async {
-    return await LocalCacheService().has(key: key);
-    // return await ImapService.getInstance().has(key: key);
+  UnsubscribeAbstract startSyncEvent(void Function() callback) {
+    int id = DateTime.now().microsecondsSinceEpoch;
+    _startSyncEventList[id] = callback;
+    return Unsubscription(() => _startSyncEventList.remove(id));
   }
 
-  /// todo sync event
+  @override
+  UnsubscribeAbstract setEventSubscribe({required String key, required void Function(String value) callback}) {
+    int id = DateTime.now().microsecondsSinceEpoch;
+    if (_setEventCallbackList[key] ==  null) _setEventCallbackList[key] = {};
+    _setEventCallbackList[key]![id] = callback;
+    return Unsubscription(() => _setEventCallbackList[key]!.remove(id));
+  }
+
+  @override
+  UnsubscribeAbstract unsetEventSubscribe({required String key, required void Function({required String key}) callback}) {
+    int id = DateTime.now().microsecondsSinceEpoch;
+    if (_unsetEventCallbackList[key] ==  null)_unsetEventCallbackList[key] = {};
+    _unsetEventCallbackList[key]![id] = callback;
+    return Unsubscription(() =>_unsetEventCallbackList[key]!.remove(id));
+  }
 }
