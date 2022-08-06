@@ -1,25 +1,34 @@
 import 'dart:async';
+import 'dart:io';
 
 /// 多路任务复用池
 class MultiplexTaskPool {
-  List<Function<T>({required bool isResult, T? result})> callbackList = [];
+  List<Function<T>({required bool isResult, T? result, Exception? error})> callbackList = [];
 
   static MultiplexTaskPool builder() {
     return MultiplexTaskPool();
   }
 
-  Future<T> start<T>(Future<T> Function() callback) async {
+  Future<T> start<T>(Future<T> Function() callback) {
     Completer<T> completer = Completer();
     callbackList.add(
-      <B>({required bool isResult, B? result}) async {
+      <B>({required bool isResult, B? result, Exception? error}) {
         if (isResult) {
-          return completer.complete(result as T);
+          error != null ? completer.completeError(error) : completer.complete(result as T);
         } else {
-          T finalResult = await callback();
-          for (var i = 0; i < callbackList.length; i++) {
-            await callbackList[i](isResult: true, result: finalResult);
-          }
-          callbackList.clear();
+            callback().then((finalResult) {
+              for (var i = 0; i < callbackList.length; i++) {
+                callbackList[i](isResult: true, result: finalResult);
+              }
+              callbackList.clear();
+            }).catchError((e, track) {
+              print(e);
+              print(track);
+              for(var callback in callbackList) {
+                callback(isResult: true, result: null, error: e);
+              }
+              callbackList.clear();
+            });
         }
       },
     );

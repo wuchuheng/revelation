@@ -77,10 +77,9 @@ class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract,
       Logger.info('Completed data synchronization.');
       Future.wait([ _hookCompletedSyncEvent() ]);
     } on SocketException catch(e, stacktrace) {
-      print(e.message);
+      print(e);
       print(stacktrace);
     } catch(e)  {
-      print(e);
       rethrow;
     } finally {
       await Future.delayed(const Duration(seconds: 5));
@@ -125,6 +124,7 @@ class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract,
         _syncOnline().then((value) => null);
       }
     });
+
     return this;
   }
 
