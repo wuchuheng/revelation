@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:enough_mail/enough_mail.dart';
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/errors/unset_error.dart';
@@ -6,6 +7,7 @@ import 'package:snotes/service/cache_service/imap_service/common.dart';
 import 'package:snotes/service/cache_service/utils/hash.dart';
 import 'package:snotes/service/cache_service/utils/single_task_pool.dart';
 import 'package:snotes/service/cache_service/utils/task_pool.dart';
+
 import '../cache_service_abstract.dart';
 import '../errors/key_not_found_error.dart';
 import '../utils/logger.dart';
@@ -28,7 +30,9 @@ class ImapService extends Common implements CacheServiceAbstract {
     if (_clientInstance != null && _clientInstance!.isConnected) {
       return _clientInstance!;
     }
-    ImapService._clientInstance = await Common().getClient();
+    ImapService._clientInstance = await Common().getClient(
+      mailboxName: boxName,
+    );
     await _clientInstance!.selectMailboxByPath(boxName);
 
     return _clientInstance!;
@@ -110,16 +114,11 @@ class ImapService extends Common implements CacheServiceAbstract {
         FetchImapResult res = await client.uidFetchMessage(
             uid, 'BODY.PEEK[HEADER.FIELDS (subject)]');
         String subject = res.messages[0].getHeaderValue('Subject')!;
-        final subjectList = subject.split('--');
-        subject = subjectList[0];
-        int newUpdatedAt = int.parse(subjectList[1].split('-')[0]);
-        if (subject == key && newUpdatedAt > updatedAt) {
+        NameInfo nameInfo = decodeName(subject);
+        if (nameInfo.name == key && nameInfo.timestamp > updatedAt)
           lastUid = uid;
-        }
       }
-      if (lastUid != null) {
-        return lastUid;
-      }
+      if (lastUid != null) return lastUid;
     }
     if (lastUid == null) {
       await Future.delayed(const Duration(milliseconds: 500));

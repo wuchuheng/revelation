@@ -17,7 +17,7 @@ class CacheService implements CacheServiceAbstract {
 
   /// Synchronize online and local data
   Future<void> _syncOnline() async {
-    Logger.info("Start online syncing");
+    Logger.info("Start synchronizing data");
     try {
       // init onlineData
       RegisterService registerService = RegisterService();
@@ -28,8 +28,7 @@ class CacheService implements CacheServiceAbstract {
         hasRegisterInfo = initData;
       }
       RegisterInfo onlineRegister = hasRegisterInfo;
-      RegisterInfo localRegister =
-          await LocalCacheRegisterService().getRegister();
+      RegisterInfo localRegister = await LocalCacheRegisterService().getRegister();
       List<String> onlineKeys = onlineRegister.data.keys.toList();
       List<String> localKeys = localRegister.data.keys.toList();
       List<String> allKeys = onlineKeys;
@@ -51,24 +50,23 @@ class CacheService implements CacheServiceAbstract {
             localRegisterInfo: localRegister,
             key: key);
       }
-      Logger.info('Complete synchronization of data from local to online.');
+      Logger.info('Completed data synchronization.');
     } catch (e) {
-      Logger.error('Sync online error');
       print(e);
     }
     await Future.delayed(const Duration(seconds: 10));
     _syncOnline().then((value) => null);
-    Logger.info("Completed online syncing");
+    Logger.info("Synchronization of completed data");
   }
 
   /// connect to the IMAP server with user's account
-  void connectToServer() {
-    _limitSyncTaskPool.start(() async {
+  Future<void> connectToServer() async {
+    await _limitSyncTaskPool.start(() async {
       if (!_isSyncing) {
         _isSyncing = true;
         _syncOnline().then((value) => null);
       }
-    }).then((value) => null);
+    });
   }
 
   static Future<CacheService> getInstance() async {
@@ -107,4 +105,6 @@ class CacheService implements CacheServiceAbstract {
     return await LocalCacheService().has(key: key);
     // return await ImapService.getInstance().has(key: key);
   }
+
+  /// todo sync event
 }

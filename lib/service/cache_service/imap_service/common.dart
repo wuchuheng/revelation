@@ -1,14 +1,17 @@
 import 'package:enough_mail/enough_mail.dart';
+
 import '../cache_common_config.dart';
 import '../utils/hash.dart';
 
 class NameInfo {
   final String name;
   final int timestamp;
+  final String hash;
 
   NameInfo({
     required this.name,
     required this.timestamp,
+    required this.hash,
   });
 }
 
@@ -23,7 +26,8 @@ class Common {
   String registerMailBox = 'snotes_register';
 
   /// 获取IMAP客户端
-  Future<ImapClient> getClient() async {
+  Future<ImapClient> getClient(
+      {required String mailboxName, int retryCount = 0}) async {
     final client = ImapClient(isLogEnabled: false);
     try {
       await client.connectToServer(
@@ -33,19 +37,39 @@ class Common {
         timeout: const Duration(seconds: 30),
       );
       await client.login(userName, password);
-      final mailboxes = await client.listMailboxes();
-      bool isExistBox = hasBox(mailboxName: boxName, mailboxes: mailboxes);
-      if (!isExistBox) {
-        await createBox(mailboxName: boxName, client: client);
-      }
-      isExistBox = hasBox(mailboxName: registerMailBox, mailboxes: mailboxes);
-      if (!isExistBox) {
-        await createBox(mailboxName: registerMailBox, client: client);
-      }
+      await createdBox(boxName: boxName, client: client);
+      await createdBox(boxName: registerMailBox, client: client);
     } catch (e) {
       rethrow;
     }
     return client;
+  }
+
+  createdBox({
+    required String boxName,
+    int retryCount = 0,
+    required ImapClient client,
+  }) async {
+    final mailboxes = await client.listMailboxes();
+    bool isExistBox = hasBox(mailboxName: boxName, mailboxes: mailboxes);
+    try {
+      if (!isExistBox) {
+        await client.createMailbox(boxName);
+      }
+    } on ImapException catch (e) {
+      String expectMessage =
+          'Unable to find just created mailbox with the path [$boxName]. Please report this problem.';
+      if (retryCount < 5 && e.message == expectMessage) {
+        await Future.delayed(const Duration(seconds: 1));
+        return await createdBox(
+          boxName: boxName,
+          client: client,
+          retryCount: retryCount + 1,
+        );
+      } else {
+        rethrow;
+      }
+    }
   }
 
   bool hasBox({required String mailboxName, required List<Mailbox> mailboxes}) {
@@ -57,26 +81,8 @@ class Common {
     return false;
   }
 
-  Future<void> createBox({
-    required String mailboxName,
-    required ImapClient client,
-  }) async {
-    try {
-      await client.createMailbox(mailboxName);
-    } on ImapException catch (e) {
-      print(' create Box exception!');
-      await Future.delayed(const Duration(seconds: 1));
-      final mailboxes = await client.listMailboxes();
-      if (!hasBox(mailboxName: mailboxName, mailboxes: mailboxes)) {
-        rethrow;
-      }
-    }
-  }
-
   String getRegisterName(String data) {
-    String hashString = Hash.convertStringToHash(data);
-
-    return '${CacheCommonConfig.registerSymbol}_$hashString';
+    return CacheCommonConfig.registerSymbol;
   }
 
   Future<void> write(
@@ -89,7 +95,7 @@ class Common {
       final oldUid = await getUid(name: name, client: client);
       final builder = MessageBuilder()
         ..addText(value)
-        ..subject = _encodeName(name);
+        ..subject = encodeName(name: name, value: value);
       if (headers != null) {
         headers.forEach((key, value) => builder.addHeader(key, value));
       }
@@ -114,11 +120,21 @@ class Common {
     await client.uidExpunge(sequence);
   }
 
-  String _encodeName(String name) {
-    final now = DateTime.now().microsecondsSinceEpoch;
-    final timestring = DateTime.now().toString();
+  NameInfo decodeName(String name) {
+    final List<String> nameInfo = name.split('#');
+    return NameInfo(
+      name: nameInfo[0],
+      timestamp: int.parse(nameInfo[2]),
+      hash: nameInfo[1].replaceAll(RegExp(r'\s+'), ''),
+    );
+  }
 
-    return '$name--$now-$timestring';
+  String encodeName({required String name, required String value}) {
+    final now = DateTime.now().microsecondsSinceEpoch;
+    final timestamp = DateTime.now().toString();
+    final String hash = Hash.convertStringToHash(value);
+
+    return '$name#$hash#$now#$timestamp';
   }
 
   Future<int?> getUid({
@@ -139,7 +155,7 @@ class Common {
       int? uid;
       for (final message in data.messages) {
         final subject = message.getHeaderValue('Subject');
-        final nameInfo = decode(subject!);
+        final nameInfo = decodeName(subject!);
         if (nameInfo.name == name && nameInfo.timestamp > lastUpdateAt) {
           lastUpdateAt = nameInfo.timestamp;
           uid = message.uid!;
@@ -150,13 +166,6 @@ class Common {
       }
     }
     return null;
-  }
-
-  NameInfo decode(String name) {
-    final res = name.split('--');
-    final timestamp = int.parse(res[1].split('-')[1]);
-
-    return NameInfo(name: res[0], timestamp: timestamp);
   }
 
   Future<List<MimeMessage>> queryMessagesBySubject({
