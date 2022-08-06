@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:enough_mail/enough_mail.dart';
+import 'package:snotes/service/cache_service/utils/logger.dart';
 
 import '../cache_common_config.dart';
 import '../utils/hash.dart';
@@ -16,10 +19,10 @@ class NameInfo {
 }
 
 class Common {
-  String userName = '2831473954@qq.com';
-  String password = 'owtdtjnltfnndegh';
+  String userName = '';
+  String password = '';
   // String imapServerHost = 'imap.qq.com';
-  String imapServerHost = 'local.wuchuheng.com';
+  String imapServerHost = '';
   int imapServerPort = 993;
   bool isImapServerSecure = true;
   String boxName = 'snotes';
@@ -27,7 +30,7 @@ class Common {
 
   /// 获取IMAP客户端
   Future<ImapClient> getClient(
-      {required String mailboxName, int retryCount = 0}) async {
+      {int retryCount = 0}) async {
     final client = ImapClient(isLogEnabled: false);
     try {
       await client.connectToServer(

@@ -10,13 +10,14 @@ class SyncData {
     required RegisterInfo onlineRegisterInfo,
     required RegisterInfo localRegisterInfo,
     required String key,
+    required ImapService imapService,
   }) async {
     if (onlineRegisterInfo.data[key] == null ||
         onlineRegisterInfo.data[key]?.deletedAt != null ||
         await LocalCacheService().has(key: key)) {
       return;
     }
-    String value = await ImapService().get(key: key);
+    String value = await imapService.get(key: key);
     await LocalCacheService().set(
       key: key,
       value: value,
@@ -30,6 +31,7 @@ class SyncData {
     required RegisterInfo onlineRegisterInfo,
     required RegisterInfo localRegisterInfo,
     required String key,
+    required ImapService imapService,
   }) async {
     if (onlineRegisterInfo.data[key] == null ||
         onlineRegisterInfo.data[key]?.deletedAt != null ||
@@ -46,7 +48,7 @@ class SyncData {
     int localKeyUpdatedAt =
         TimerUtil.timeStringConvertMilliseconds(localKeyInfo.lastUpdatedAt);
     if (onlineKeyUpdatedAt > localKeyUpdatedAt) {
-      String value = await ImapService().get(key: key);
+      String value = await imapService.get(key: key);
       await LocalCacheService().set(
         key: key,
         value: value,
@@ -54,7 +56,7 @@ class SyncData {
       Logger.info('synchronization: online --> local. key: $key value: $value');
     } else {
       String value = await LocalCacheService().get(key: key);
-      await ImapService().set(key: key, value: value);
+      await imapService.set(key: key, value: value);
       Logger.info(
           'synchronization: local --> online . key: $key value: $value');
     }
@@ -65,6 +67,7 @@ class SyncData {
     required RegisterInfo onlineRegisterInfo,
     required RegisterInfo localRegisterInfo,
     required String key,
+    required ImapService imapService,
   }) async {
     if (onlineRegisterInfo.data.containsKey(key) &&
         onlineRegisterInfo.data[key]!.deletedAt == null) return;
@@ -81,14 +84,15 @@ class SyncData {
         await LocalCacheService().unset(key: key);
         Logger.info('synchronization: Delete local. key: $key value: $value');
       } else {
-        await ImapService().set(key: key, value: value);
+        await imapService.set(key: key, value: value);
         Logger.info(
             'synchronization: local --> online . key: $key value: $value');
       }
     } else {
-      await ImapService().set(key: key, value: value);
+      await imapService.set(key: key, value: value);
       Logger.info(
-          'synchronization: local --> online . key: $key value: $value');
+          'synchronization: local --> online . key: $key value: $value'
+      );
     }
   }
 }

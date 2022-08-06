@@ -56,7 +56,6 @@ class LocalCacheService implements CacheServiceAbstract {
 
   @override
   Future<void> unset({required String key}) async {
-    /// todo deleted event
     if (!await has(key: key)) {
       Logger.error('Not Found key: $key');
       throw KeyNotFoundError();

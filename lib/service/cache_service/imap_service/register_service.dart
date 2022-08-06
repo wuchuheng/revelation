@@ -23,16 +23,16 @@ class RegisterSubjectInfo extends NameInfo {
 }
 
 class RegisterService extends Common implements RegisterServiceAbstract {
-  static ImapClient? _clientInstance;
-  static List<Function({required bool isResult, bool? result})> callbackList = [];
-  static SingleTaskPool singleTaskPool = SingleTaskPool();
-  static MultiplexTaskPool getRegisterTaskPool = MultiplexTaskPool.builder(); // 多路任务复用池-用于getRegister方法
+  ImapClient? _clientInstance;
+  List<Function({required bool isResult, bool? result})> callbackList = [];
+  SingleTaskPool singleTaskPool = SingleTaskPool();
+  MultiplexTaskPool getRegisterTaskPool = MultiplexTaskPool.builder(); // 多路任务复用池-用于getRegister方法
 
   Future<ImapClient> _getClient() async {
     if (_clientInstance != null && _clientInstance!.isConnected) {
       return _clientInstance!;
     }
-    _clientInstance = await Common().getClient(mailboxName: registerMailBox);
+    _clientInstance = await getClient();
     await _clientInstance!.selectMailboxByPath(registerMailBox);
 
     return _clientInstance!;
@@ -43,7 +43,7 @@ class RegisterService extends Common implements RegisterServiceAbstract {
     try {
       final RegisterInfo res = await getRegister();
       return res;
-    } on NotFoundRegisterError catch(e) {
+    } on NotFoundRegisterError {
       return null;
     } catch(e) {
       rethrow;
@@ -54,7 +54,7 @@ class RegisterService extends Common implements RegisterServiceAbstract {
   static RegisterInfo? previousRegisterInfo;
 
   @override
-  Future<RegisterInfo> getRegister() {
+  Future<RegisterInfo> getRegister() async {
     Completer<RegisterInfo> completer = Completer();
     getRegisterTaskPool.start<RegisterInfo?>(() async {
       final client = await _getClient();
@@ -79,7 +79,12 @@ class RegisterService extends Common implements RegisterServiceAbstract {
         completer.completeError(NotFoundRegisterError());
       }
       return null;
+    }).catchError((e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      completer.completeError(e);
     });
+
     return completer.future;
   }
 
@@ -147,5 +152,25 @@ class RegisterService extends Common implements RegisterServiceAbstract {
       if (result != null) return result;
     }
     return null;
+  }
+
+  Future<RegisterService> connectToServer({
+    required String userName,
+    required String password,
+    required String imapServerHost,
+    required int imapServerPort,
+    required bool isImapServerSecure,
+    required String boxName,
+    required String registerMailBox,
+  }) async {
+    this.userName = userName;
+    this.password = password;
+    this.imapServerHost = imapServerHost;
+    this.imapServerPort = imapServerPort;
+    this.isImapServerSecure = isImapServerSecure;
+    this.boxName  = boxName;
+    this.registerMailBox = registerMailBox;
+    await _getClient();
+    return this;
   }
 }

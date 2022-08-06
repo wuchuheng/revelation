@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:snotes/service/cache_service/cache_io_abstract.dart';
 import 'package:snotes/service/cache_service/cache_service_abstract.dart';
+import 'package:snotes/service/cache_service/errors/not_found_imap_service_error.dart';
+import 'package:snotes/service/cache_service/errors/not_found_register_error.dart';
+import 'package:snotes/service/cache_service/imap_service/imap_service.dart';
 import 'package:snotes/service/cache_service/imap_service/register_service.dart';
 import 'package:snotes/service/cache_service/local_cache_service/local_cache_register_service.dart';
-import 'package:snotes/service/cache_service/subscription/subscription.dart';
 import 'package:snotes/service/cache_service/subscription/subscription_abstract.dart';
 import 'package:snotes/service/cache_service/subscription/sync_event_subscription_abstract.dart';
 import 'package:snotes/service/cache_service/sync_data.dart';
@@ -15,21 +18,30 @@ import 'local_cache_service/local_cache_service.dart';
 import 'subscription/unsubscribe.dart'; // for the utf8.encode method
 
 class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract, SyncEventSubscriptionAbstract {
-  static CacheService? _instance;
   final SingleTaskPool _limitSyncTaskPool = SingleTaskPool();
   bool _isSyncing = false;
   final Map<String, Map<int, void Function(String value)>> _setEventCallbackList = {};
   final Map<String, Map<int, void Function({required String key})>> _unsetEventCallbackList = {};
   final Map<int, void Function()> _completeSyncEventList = {};
   final Map<int, void Function()> _startSyncEventList = {};
+  ImapService? _imapService;
+  RegisterService? _registerService;
+  RegisterService _getRegister() {
+    if (_registerService == null) throw NotFoundRegisterError();
+    return _registerService!;
+  }
+  ImapService _getImapService() {
+    if (_imapService == null)  throw NotFoundImapServiceError();
+    return _imapService!;
+  }
 
   /// Synchronize online and local data
   Future<void> _syncOnline() async {
     Logger.info("Start synchronizing data");
-    Future.wait([ _hookStartSyncEvent() ]);
     try {
+      Future.wait([ _hookStartSyncEvent() ]);
       // init onlineData
-      RegisterService registerService = RegisterService();
+      RegisterService registerService = _getRegister();
       RegisterInfo? hasRegisterInfo = await registerService.hasRegister();
       if (hasRegisterInfo == null) {
         final RegisterInfo initData = RegisterInfo(uidMapKey: {}, data: {});
@@ -48,41 +60,72 @@ class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract,
         await SyncData.onlineExistAndLocalNone(
           onlineRegisterInfo: onlineRegister,
           localRegisterInfo: localRegister,
+          imapService: _getImapService(),
           key: key,
         );
         await SyncData.onlineExistAndLocalExist(
             onlineRegisterInfo: onlineRegister,
             localRegisterInfo: localRegister,
+            imapService: _getImapService(),
             key: key);
         await SyncData.onlineNoneAndLocalExist(
             onlineRegisterInfo: onlineRegister,
+            imapService: _getImapService(),
             localRegisterInfo: localRegister,
             key: key);
       }
       Logger.info('Completed data synchronization.');
       Future.wait([ _hookCompletedSyncEvent() ]);
-    } catch (e) {
+    } on SocketException catch(e, stacktrace) {
+      print(e.message);
+      print(stacktrace);
+    } catch(e)  {
       print(e);
+      rethrow;
+    } finally {
+      await Future.delayed(const Duration(seconds: 5));
+      Logger.info("Synchronization of completed data");
+      _syncOnline().then((value) => {});
     }
-    await Future.delayed(const Duration(seconds: 10));
-    _syncOnline().then((value) => null);
-    Logger.info("Synchronization of completed data");
   }
 
   /// connect to the IMAP server with user's account
-  Future<void> connectToServer() async {
+  Future<CacheService> connectToServer( {
+    required String userName,
+    required String password,
+    required String imapServerHost,
+    required int imapServerPort,
+    required bool isImapServerSecure,
+    String boxName  = 'snotes',
+    String registerMailBox = 'snotes_register'
+  }) async {
+    _registerService = await RegisterService().connectToServer(
+        userName: userName,
+        password: password,
+        imapServerHost: imapServerHost,
+        imapServerPort: imapServerPort,
+        isImapServerSecure: isImapServerSecure,
+        boxName: boxName,
+        registerMailBox: registerMailBox
+    );
+    _imapService = await ImapService(registerService: _getRegister())
+        .connectToServer(
+          userName: userName,
+          password: password,
+          imapServerHost: imapServerHost,
+          imapServerPort: imapServerPort,
+          isImapServerSecure: isImapServerSecure,
+          boxName: boxName,
+          registerMailBox: registerMailBox,
+          registerService: _registerService!,
+      );
     await _limitSyncTaskPool.start(() async {
       if (!_isSyncing) {
         _isSyncing = true;
         _syncOnline().then((value) => null);
       }
     });
-  }
-
-  static Future<CacheService> getInstance() async {
-    _instance ??= CacheService();
-
-    return _instance!;
+    return this;
   }
 
   @override
@@ -90,7 +133,6 @@ class CacheService implements CacheServiceAbstract, SubscriptionFactoryAbstract,
     required String key,
     required String value,
   }) async {
-    connectToServer();
     await LocalCacheService().set(key: key, value: value);
     Future.wait([ _hookSetEvents(key: key, value: value) ]);
   }

@@ -10,29 +10,27 @@ import 'package:snotes/service/cache_service/utils/task_pool.dart';
 
 import '../cache_service_abstract.dart';
 import '../errors/key_not_found_error.dart';
+import '../errors/not_found_register_error.dart';
 import '../utils/logger.dart';
 import 'register_service.dart';
 
 class ImapService extends Common implements CacheServiceAbstract {
-  static ImapClient? _clientInstance;
-  static ImapService? _instance;
-  static TaskPool taskPool = TaskPool.builder();
+  ImapClient? _clientInstance;
+  late RegisterService _registerService;
+  TaskPool taskPool = TaskPool.builder();
+  static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
+  ImapService({required RegisterService registerService}) {
+    _registerService = registerService;
+  }
   startTask() => taskPool.startTask();
   completeTask(int taskNum) => taskPool.completeTask(taskNum);
-  static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
-
-  static ImapService getInstance() {
-    _instance ??= ImapService();
-    return _instance!;
+  RegisterService _getRegisterService() {
+    return _registerService;
   }
 
   Future<ImapClient> _getClient() async {
-    if (_clientInstance != null && _clientInstance!.isConnected) {
-      return _clientInstance!;
-    }
-    ImapService._clientInstance = await Common().getClient(
-      mailboxName: boxName,
-    );
+    if (_clientInstance != null && _clientInstance!.isConnected) return _clientInstance!;
+    _clientInstance = await getClient();
     await _clientInstance!.selectMailboxByPath(boxName);
 
     return _clientInstance!;
@@ -43,7 +41,7 @@ class ImapService extends Common implements CacheServiceAbstract {
     Completer<String> completer = Completer();
     await singleTaskPool.start(() async {
       try {
-        RegisterInfo register = await RegisterService().getRegister();
+        RegisterInfo register = await _getRegisterService().getRegister();
         if (register.data.containsKey(key)) {
           final int uid = register.data[key]!.uid;
           String body = await getValueByUid(uid: uid);
@@ -52,7 +50,7 @@ class ImapService extends Common implements CacheServiceAbstract {
           completer.completeError(KeyNotFoundError());
         }
       } on ImapException catch (e) {
-        throw e;
+        rethrow;
       }
     });
 
@@ -70,10 +68,11 @@ class ImapService extends Common implements CacheServiceAbstract {
     required String key,
     required String value,
   }) async {
+    final registerService = _getRegisterService();
     await singleTaskPool.start(() async {
       final client = await _getClient();
       await write(name: key, value: value, client: client);
-      RegisterInfo register = await RegisterService().getRegister();
+      RegisterInfo register = await registerService.getRegister();
       int? lastUid = await getLastUid(key: key, registerInfo: register);
       if (register.data[key]?.uid != null) {
         int? removeId = register.data[key]?.uid;
@@ -85,7 +84,7 @@ class ImapService extends Common implements CacheServiceAbstract {
         uid: lastUid,
         hash: Hash.convertStringToHash(value),
       );
-      await RegisterService().setRegister(data: register);
+      await _getRegisterService().setRegister(data: register);
     });
   }
 
@@ -115,8 +114,7 @@ class ImapService extends Common implements CacheServiceAbstract {
             uid, 'BODY.PEEK[HEADER.FIELDS (subject)]');
         String subject = res.messages[0].getHeaderValue('Subject')!;
         NameInfo nameInfo = decodeName(subject);
-        if (nameInfo.name == key && nameInfo.timestamp > updatedAt)
-          lastUid = uid;
+        if (nameInfo.name == key && nameInfo.timestamp > updatedAt) lastUid = uid;
       }
       if (lastUid != null) return lastUid;
     }
@@ -141,7 +139,7 @@ class ImapService extends Common implements CacheServiceAbstract {
       Logger.info("online: Start unset key: $key.");
       try {
         final client = await _getClient();
-        final register = await RegisterService().getRegister();
+        final register = await _getRegisterService().getRegister();
         if (!register.data.containsKey(key)) {
           throw KeyNotFoundError();
         }
@@ -150,7 +148,7 @@ class ImapService extends Common implements CacheServiceAbstract {
         register.uidMapKey.remove(uid);
         await Future.wait([
           deleteMessageByUid(uid: uid, client: client),
-          RegisterService().setRegister(data: register)
+           _getRegisterService().setRegister(data: register)
         ]);
         Logger.info("online: complete unset key: $key.");
       } on ImapException catch (e) {
@@ -165,5 +163,26 @@ class ImapService extends Common implements CacheServiceAbstract {
     String? body = data.messages[0].decodeTextPlainPart();
     body = checkPlainText(body!);
     return body;
+  }
+
+  Future<ImapService> connectToServer({
+    required String userName,
+    required String password,
+    required String imapServerHost,
+    required int imapServerPort,
+    required bool isImapServerSecure,
+    required String boxName,
+    required String registerMailBox,
+    required RegisterService registerService,
+  }) async {
+    this.userName = userName;
+    this.password = password;
+    this.imapServerHost = imapServerHost;
+    this.imapServerPort = imapServerPort;
+    this.isImapServerSecure = isImapServerSecure;
+    this.boxName  = boxName;
+    this.registerMailBox = registerMailBox;
+    await _getClient();
+    return this;
   }
 }
