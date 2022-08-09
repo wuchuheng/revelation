@@ -191,7 +191,7 @@ packages:
     source: hosted
     version: "1.6.0"
   enough_mail:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: enough_mail
       url: "https://pub.dartlang.org"
@@ -326,15 +326,15 @@ packages:
       url: "https://gitee.com/yin_shiyong/iconfont_css_to_class.git"
     source: git
     version: "0.1.1"
-  imap_client:
+  imap_cache:
     dependency: "direct main"
     description:
-      name: imap_client
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
+      path: "../tmp/imap_cache"
+      relative: true
+    source: path
+    version: "0.0.4"
   intl:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: intl
       url: "https://pub.dartlang.org"
@@ -362,7 +362,7 @@ packages:
     source: hosted
     version: "4.6.0"
   json_serializable:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: json_serializable
       url: "https://pub.dartlang.org"
@@ -425,7 +425,7 @@ packages:
     source: hosted
     version: "1.8.1"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -569,13 +569,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
-  sqlite3:
-    dependency: "direct main"
-    description:
-      name: sqlite3
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.2"
   stack_trace:
     dependency: transitive
     description:

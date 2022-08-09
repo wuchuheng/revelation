@@ -1,0 +1,1 @@
+class NotLoginError extends Error{}

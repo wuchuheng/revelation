@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:snotes/model/directory_model.dart';
+import 'package:snotes/model/tree_item_model/tree_item_model.dart';
 import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
+import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+
 import '../../../../../common/iconfont.dart';
 
 class ItemSection extends StatefulWidget {
-  final DirectoryModel data;
+  final TreeItemModel data;
   final int level;
-  final int activeId;
-  final Function onChange;
 
   const ItemSection({
     super.key,
     required this.data,
     this.level = 0,
-    required this.activeId,
-    required this.onChange,
   });
 
   @override
@@ -24,6 +23,22 @@ class ItemSection extends StatefulWidget {
 
 class _ItemSectionState extends State<ItemSection> {
   bool isOpenFold = true;
+  ActiveTreeItem? activeTreeItem = DirectoryTreeService.activeTreeItemHook.data;
+  late Unsubscrible activeTreeItemEvent;
+
+  @override
+  void initState() {
+    super.initState();
+    activeTreeItemEvent = DirectoryTreeService.activeTreeItemHook.subscribe(
+      (data) => setState(() => activeTreeItem = data),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    activeTreeItemEvent.unsubscribe();
+  }
 
   Widget _getDirectIcon() {
     return GestureDetector(
@@ -42,11 +57,16 @@ class _ItemSectionState extends State<ItemSection> {
 
   Widget _getItem() {
     double padding = (10 * widget.level).toDouble();
-    bool isActive = widget.activeId == widget.data.id;
+    bool isActive = activeTreeItem?.treeItemModel.id == widget.data.id;
+    bool isInput = activeTreeItem?.isInput == true;
 
     return GestureDetector(
       onTap: () {
-        widget.onChange(widget.data.id);
+        DirectoryTreeService.activeTreeItemHook.setCallback((data) {
+          final newData = data ?? ActiveTreeItem(treeItemModel: widget.data, isInput: false);
+          newData.treeItemModel = widget.data;
+          return newData;
+        });
       },
       child: Container(
         decoration: BoxDecoration(
@@ -60,6 +80,8 @@ class _ItemSectionState extends State<ItemSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _getDirectIcon(),
                 Icon(
@@ -67,12 +89,32 @@ class _ItemSectionState extends State<ItemSection> {
                   size: 17.5,
                   color: isActive ? Colors.white : Colors.black,
                 ),
-                Text(
-                  ' ${widget.data.title}',
-                  style: TextStyle(
-                    color: isActive ? Colors.white : Colors.black,
-                  ),
-                ),
+                isInput
+                    ? Container(
+                        height: 17.5,
+                        width: 200,
+                        margin: const EdgeInsets.only(left: 4),
+                        child: TextField(
+                          autofocus: true,
+                          cursorColor: Colors.grey[700],
+                          maxLines: 1,
+                          style: const TextStyle(fontSize: 10),
+                          textAlignVertical: TextAlignVertical.center,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            border: OutlineInputBorder(borderSide: BorderSide.none),
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.only(left: 6),
+                            hintText: 'Folder Name',
+                          ),
+                        ),
+                      )
+                    : Text(
+                        ' ${widget.data.title}',
+                        style: TextStyle(
+                          color: isActive ? Colors.white : Colors.black,
+                        ),
+                      ),
               ],
             ),
             Text(
@@ -80,7 +122,7 @@ class _ItemSectionState extends State<ItemSection> {
               style: TextStyle(
                 color: isActive ? Colors.white : CommonConfig.textGrey,
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -93,13 +135,11 @@ class _ItemSectionState extends State<ItemSection> {
       children: [
         _getItem(),
         if (isOpenFold)
-          for (DirectoryModel item in widget.data.children)
+          for (TreeItemModel item in widget.data.children)
             ItemSection(
               key: ValueKey(item.id),
               data: item,
               level: widget.level + 1,
-              activeId: widget.activeId,
-              onChange: widget.onChange,
             )
       ],
     );

@@ -1,0 +1,1 @@
+class DirectoryTreeServiceNotInit extends Error {}

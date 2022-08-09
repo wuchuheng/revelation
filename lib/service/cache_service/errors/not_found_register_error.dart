@@ -1,1 +1,0 @@
-class NotFoundRegisterError extends Error {}

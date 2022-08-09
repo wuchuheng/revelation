@@ -1,1 +1,0 @@
-class UnsetError extends Error {}

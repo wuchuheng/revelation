@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/cache_service/cache_service.dart';
 
 void main() {
   runApp(const App());
@@ -11,10 +10,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //     body: Column(
-    //   children: [ElevatedButton(onPressed: () {}, child: Text('button'))],
-    // ));
     return RoutePath.getAppPathInstance().build(
       context,
       'snote',

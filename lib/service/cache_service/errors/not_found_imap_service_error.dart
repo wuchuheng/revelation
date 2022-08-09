@@ -1,1 +1,0 @@
-class NotFoundImapServiceError extends Error {}

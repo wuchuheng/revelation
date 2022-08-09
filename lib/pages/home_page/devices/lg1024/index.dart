@@ -20,7 +20,7 @@ class _LG1024HomePageState extends State<LG1024HomePage> {
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
-          DirectorySection(),
+          TreeSection(),
           ToolBarListEditContainer(
             children: [
               ToolBarSection(),
