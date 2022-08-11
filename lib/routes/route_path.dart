@@ -1,22 +1,44 @@
 import 'package:hi_router/hi_router.dart';
 import 'package:hi_router/route/route_abstract.dart';
+import 'package:snotes/model/user_account_model/user_account_model.dart';
+import 'package:snotes/pages/login_page/index.dart';
 
 import '../pages/home_page/index.dart';
+import '../service/cache_service.dart';
 
 /// 路由
 class RoutePath {
   static HiRouter? _appRoutePathInstance;
+  static pushHomePage() => RoutePath.getAppPathInstance().push('/');
   static pushLoginPage() => RoutePath.getAppPathInstance().push('/login');
-  static pushRegisterPage() => RoutePath.getAppPathInstance().push('/register');
-  static pushForgetPasswordPage() =>
-      RoutePath.getAppPathInstance().push('/forgetPassword');
 
   static HiRouter getAppPathInstance() {
-    _appRoutePathInstance ??= HiRouter({
-      '/': () => HomePage(),
-    });
+    _appRoutePathInstance ??= HiRouter(
+      {
+        '/': () => HomePage(),
+        '/login': () => LoginPage(),
+      },
+    );
     // 路由守卫
     _appRoutePathInstance!.before = (RoutePageInfo pageInfo) async {
+      final UserAccountModel? user = await UserAccountModel.getCacheAccount();
+      final loginPage = RoutePageInfo('/login', () => LoginPage());
+      if (user == null) {
+        return loginPage;
+      } else {
+        try {
+          await CacheService.login(
+            userName: user.userName,
+            password: user.password,
+            imapServerHost: user.imapServerHost,
+            imapServerPort: user.imapServerPort,
+            isImapServerSecure: user.isImapServerSecure,
+          );
+        } catch (e) {
+          return loginPage;
+        }
+      }
+
       return pageInfo;
     };
 

@@ -251,6 +251,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_spinkit:
+    dependency: "direct main"
+    description:
+      name: flutter_spinkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -292,10 +299,10 @@ packages:
   hi_router:
     dependency: "direct main"
     description:
-      name: hi_router
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.10"
+      path: "../tmp/hi_router_dart"
+      relative: true
+    source: path
+    version: "0.0.11"
   http:
     dependency: transitive
     description:
@@ -332,7 +339,7 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "0.0.4"
+    version: "0.0.6"
   intl:
     dependency: transitive
     description:
@@ -375,6 +382,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  local_cache:
+    dependency: "direct main"
+    description:
+      path: "../tmp/local_cache"
+      relative: true
+    source: path
+    version: "1.0.0"
   logging:
     dependency: transitive
     description:

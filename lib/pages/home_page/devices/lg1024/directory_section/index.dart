@@ -45,16 +45,17 @@ class _TreeSectionState extends State<TreeSection> {
     );
 
     return Container(
-        height: MediaQuery.of(context).size.height,
-        color: Colors.green[100],
-        width: CommonConfig.lg1024DirectoryWidth,
-        padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            list,
-            const CreateButton(bottomBarHeight: bottomBarHeight),
-          ],
-        ));
+      height: MediaQuery.of(context).size.height,
+      color: Colors.green[100],
+      width: CommonConfig.lg1024DirectoryWidth,
+      padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          list,
+          CreateButton(bottomBarHeight: bottomBarHeight),
+        ],
+      ),
+    );
   }
 }

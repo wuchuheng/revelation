@@ -18,6 +18,12 @@ class DirectoryTreeService {
   static Hook<List<TreeItemModel>> treeHook = HookEvent.builder([]);
 
   static Future<void> init() async {
+    final localIdMapTreeItem = await _getLocalTree();
+    final localTree = idMapTreeItemConvertToTree(localIdMapTreeItem);
+    treeHook.set(localTree);
+  }
+
+  static Future<Map<String, TreeItemModel>> _getLocalTree() async {
     ImapCache cacheService = CacheService.getImapCache();
     if (!await cacheService.has(key: key)) {
       await cacheService.set(key: key, value: '{}');
@@ -29,8 +35,13 @@ class DirectoryTreeService {
     jsonMapData.forEach((key, value) {
       localIdMapTreeItem[key] = TreeItemModel.fromJson(value as Map<String, dynamic>);
     });
-    final localTree = idMapTreeItemConvertToTree(localIdMapTreeItem);
-    treeHook.set(localTree);
+
+    return localIdMapTreeItem;
+  }
+
+  static Future<void> _setLocalTree(Map<String, TreeItemModel> data) async {
+    ImapCache cacheService = CacheService.getImapCache();
+    cacheService.set(key: key, value: jsonEncode(data));
   }
 
   static List<TreeItemModel> idMapTreeItemConvertToTree(Map<String, TreeItemModel> pidMapTreeItem) {
@@ -52,25 +63,25 @@ class DirectoryTreeService {
     return result;
   }
 
-  static create({
-    required int pid,
-    required int sortId,
-    required String title,
-  }) async {
-    // final now = DateTime.now();
-    // final int id = now.microsecondsSinceEpoch;
-    // idMapTreeItem[id.toString()] = TreeItem(
-    //   count: 1,
-    //   children: [],
-    //   isDelete: false,
-    //   title: title,
-    //   sortId: sortId,
-    //   updatedAt: now.toString(),
-    //   pid: pid,
-    //   id: id,
-    // );
-    // final String res = json.encode(idMapTreeItem);
-    // await CacheService.getImapCache().set(key: key, value: res);
-    // print(res);
+  static create() async {
+    final now = DateTime.now();
+    final int id = now.microsecondsSinceEpoch;
+    int pid = DirectoryTreeService.activeTreeItemHook.data?.treeItemModel.id ?? 0;
+    TreeItemModel newItem = TreeItemModel(
+      id: id,
+      pid: pid,
+      updatedAt: now.toString(),
+      sortId: 0,
+      isDelete: false,
+      title: 'New Folder',
+      count: 0,
+      children: [],
+    );
+    Map<String, TreeItemModel> localTree = await _getLocalTree();
+    localTree[id.toString()] = newItem;
+    await _setLocalTree(localTree);
+    activeTreeItemHook.setCallback((data) => ActiveTreeItem(treeItemModel: newItem, isInput: true));
+    final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);
+    treeHook.set(newTree);
   }
 }

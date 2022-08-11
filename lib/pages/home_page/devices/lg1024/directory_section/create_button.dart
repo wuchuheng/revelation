@@ -1,68 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
 import 'package:snotes/service/note_service.dart';
+
+class MenuItemData {
+  final String name;
+  final String value;
+
+  MenuItemData({required this.name, required this.value});
+}
 
 class CreateButton extends StatelessWidget {
   final double bottomBarHeight;
-  const CreateButton({Key? key, required this.bottomBarHeight})
-      : super(key: key);
+  List<MenuItemData> menuList = [
+    MenuItemData(name: 'Folder', value: 'Folder'),
+    MenuItemData(name: 'Smart Folder', value: 'Smart Folder'),
+  ];
 
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Alert!!"),
-          content: Text("You are awesome!"),
-          actions: [
-            MaterialButton(
-              child: Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  CreateButton({Key? key, required this.bottomBarHeight}) : super(key: key);
 
-  void handleSelect(int value, BuildContext context) {
-    // if value 1 show dialog
-    if (value == 1) {
-      _showDialog(context);
-      // if value 2 show dialog
-    } else if (value == 2) {
-      _showDialog(context);
+  void handleSelect(String value, BuildContext context) async {
+    if (value == menuList[0].value) {
+      await DirectoryTreeService.create();
+      return;
     }
   }
 
-  List<PopupMenuItem<int>> getPopupMenuItem(BuildContext context) {
+  List<PopupMenuItem<String>> getPopupMenuItem(BuildContext context) {
     const double fontSize = 17.0;
-    return [
-      PopupMenuItem(
-        value: 1,
-        // row with 2 children
-        child: Row(
-          children: const [
-            Icon(IconFont.icon_file_directory, size: fontSize),
-            SizedBox(width: 5),
-            Text("Folder", style: TextStyle(fontSize: fontSize))
-          ],
-        ),
-      ),
-      PopupMenuItem(
-        value: 2,
-        child: Row(
-          children: const [
-            Icon(IconFont.icon_setting, size: fontSize),
-            SizedBox(width: 5),
-            Text("Smart Folder", style: TextStyle(fontSize: fontSize))
-          ],
-        ),
-      )
-    ];
+    return menuList
+        .map((e) => PopupMenuItem(
+              value: e.value,
+              child: Row(
+                children: [
+                  const Icon(IconFont.icon_setting, size: fontSize),
+                  const SizedBox(width: 5),
+                  Text(e.name, style: const TextStyle(fontSize: fontSize))
+                ],
+              ),
+            ))
+        .toList();
   }
 
   void testImap() async {
@@ -77,10 +55,6 @@ class CreateButton extends StatelessWidget {
           ' New Folder',
           style: TextStyle(color: CommonConfig.textGrey),
         ),
-        ElevatedButton(
-          onPressed: testImap,
-          child: Text('tmp'),
-        )
       ],
     );
   }
@@ -100,7 +74,7 @@ class CreateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return getConTainer(
-      child: PopupMenuButton<int>(
+      child: PopupMenuButton<String>(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),

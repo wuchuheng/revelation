@@ -14,7 +14,7 @@ class ItemSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[200],
       ),
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,9 +29,8 @@ class ItemSection extends StatelessWidget {
           ),
           Row(
             children: [
-              Text('12:00', style: TextStyle(fontSize: fontSize)),
-              Text(' 温和给人的意图定性',
-                  style: TextStyle(color: color, fontSize: fontSize))
+              Text('12:00', style: const TextStyle(fontSize: fontSize)),
+              Text(' 温和给人的意图定性', style: TextStyle(color: color, fontSize: fontSize))
             ],
           ),
           Row(
