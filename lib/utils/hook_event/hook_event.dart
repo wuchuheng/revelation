@@ -11,8 +11,8 @@ class Hook<T> {
   }
 
   void setCallback(T Function(T data) callback) {
-    T newData = callback(data);
-    _onEvent.next(newData);
+    data = callback(data);
+    _onEvent.next(data);
   }
 
   Unsubscrible subscribe(void Function(T data) callback) => _onEvent.subscribe(callback);

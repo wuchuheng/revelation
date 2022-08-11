@@ -66,7 +66,7 @@ class DirectoryTreeService {
   static create() async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
-    int pid = DirectoryTreeService.activeTreeItemHook.data?.treeItemModel.id ?? 0;
+    int pid = activeTreeItemHook.data?.treeItemModel.id ?? 0;
     TreeItemModel newItem = TreeItemModel(
       id: id,
       pid: pid,
@@ -80,8 +80,9 @@ class DirectoryTreeService {
     Map<String, TreeItemModel> localTree = await _getLocalTree();
     localTree[id.toString()] = newItem;
     await _setLocalTree(localTree);
-    activeTreeItemHook.setCallback((data) => ActiveTreeItem(treeItemModel: newItem, isInput: true));
     final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);
     treeHook.set(newTree);
+    await Future.delayed(const Duration(seconds: 1));
+    activeTreeItemHook.setCallback((data) => ActiveTreeItem(treeItemModel: newItem, isInput: true));
   }
 }

@@ -40,6 +40,19 @@ class _ItemSectionState extends State<ItemSection> {
     activeTreeItemEvent.unsubscribe();
   }
 
+  /// Click on the title event.
+  void handleTap() {
+    DirectoryTreeService.activeTreeItemHook.setCallback(
+      (data) {
+        final newData = ActiveTreeItem(treeItemModel: widget.data, isInput: false);
+        if (data != null) {
+          newData.isInput = data.treeItemModel.id == widget.data.id && data.isInput;
+        }
+        return newData;
+      },
+    );
+  }
+
   Widget _getDirectIcon() {
     return GestureDetector(
       onTap: () => setState(() => isOpenFold = !isOpenFold),
@@ -58,16 +71,10 @@ class _ItemSectionState extends State<ItemSection> {
   Widget _getItem() {
     double padding = (10 * widget.level).toDouble();
     bool isActive = activeTreeItem?.treeItemModel.id == widget.data.id;
-    bool isInput = activeTreeItem?.isInput == true;
+    bool isInput = isActive && activeTreeItem?.isInput == true;
 
     return GestureDetector(
-      onTap: () {
-        DirectoryTreeService.activeTreeItemHook.setCallback((data) {
-          final newData = data ?? ActiveTreeItem(treeItemModel: widget.data, isInput: false);
-          newData.treeItemModel = widget.data;
-          return newData;
-        });
-      },
+      onTap: handleTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
