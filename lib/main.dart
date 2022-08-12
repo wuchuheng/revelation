@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/routes/route_path.dart';
 
@@ -12,8 +13,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RoutePath.getAppPathInstance().build(
       context,
-      'snote',
-      ThemeData(),
+      title: 'snote',
+      theme: ThemeData(),
+      builder: BotToastInit(),
+      navigatorObservers: [BotToastNavigatorObserver()],
     );
   }
 }

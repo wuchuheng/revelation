@@ -47,6 +47,9 @@ dependencies:
   imap_cache:
     path: ../tmp/imap_cache
   flutter_spinkit: ^5.1.0
+  desktop_context_menu: ^0.1.1
+  bot_toast: ^4.0.3
+  task_util: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:imap_cache/imap_cache.dart';
 import 'package:snotes/errors/not_login_error.dart';
+import 'package:snotes/pages/common_config.dart';
 
 import 'directory_tree_service/directory_tree_service.dart';
 
@@ -18,7 +19,7 @@ class CacheService {
     required int imapServerPort,
     required bool isImapServerSecure,
     int syncIntervalSeconds = 5,
-    bool isShowLog = true,
+    bool isShowLog = CommonConfig.isDebug,
   }) async {
     const String boxName = 'snotes';
     ImapCache cacheServiceInstance = await ImapCache().connectToServer(

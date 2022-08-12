@@ -4,14 +4,14 @@ part 'tree_item_model.g.dart';
 
 @JsonSerializable()
 class TreeItemModel {
-  final int id;
-  final int pid;
-  final int sortId;
-  final String title;
-  final bool isDelete;
-  final String updatedAt;
-  final List<TreeItemModel> children;
-  final int count;
+  int id;
+  int pid;
+  int sortId;
+  String title;
+  bool isDelete;
+  String updatedAt;
+  List<TreeItemModel> children;
+  int count;
 
   TreeItemModel({
     required this.count,
