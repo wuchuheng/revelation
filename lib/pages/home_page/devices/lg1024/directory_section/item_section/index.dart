@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snotes/model/tree_item_model/tree_item_model.dart';
 import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/direct_icon_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/folder_icon_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/input_section.dart';
 import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
-
-import '../../../../../common/iconfont.dart';
 
 class ItemSection extends StatefulWidget {
   final TreeItemModel data;
@@ -85,21 +86,6 @@ class _ItemSectionState extends State<ItemSection> {
     DirectoryTreeService.changedNodeHook.set(null);
   }
 
-  Widget _getDirectIcon() {
-    return GestureDetector(
-      onTap: () => setState(() => isOpenFold = !isOpenFold),
-      child: Container(
-          width: 20,
-          padding: const EdgeInsets.only(right: 4, left: 4),
-          child: widget.data.children.isNotEmpty
-              ? Icon(
-                  isOpenFold ? IconFont.icon_bottom : IconFont.icon_right,
-                  size: 13,
-                )
-              : null),
-    );
-  }
-
   /// the  dialog for delete the node
   void handleDeleteDialog() {
     showDialog<String>(
@@ -131,13 +117,15 @@ class _ItemSectionState extends State<ItemSection> {
     );
   }
 
+  void handleRenameFolder() => DirectoryTreeService.changedNodeHook.set(widget.data);
+
   /// show the  context  menu.
   _showContext() async {
-    final _menu = await showContextMenu(
+    final menu = await showContextMenu(
       menuItems: [
         ContextMenuItem(
-          title: '新建',
-          onTap: () {},
+          title: 'Rename Folder',
+          onTap: handleRenameFolder,
           shortcut: SingleActivator(
             LogicalKeyboardKey.keyN,
             meta: Platform.isMacOS,
@@ -167,7 +155,7 @@ class _ItemSectionState extends State<ItemSection> {
         ),
       ],
     );
-    _menu?.onTap?.call();
+    menu?.onTap?.call();
   }
 
   /// 点击
@@ -198,7 +186,25 @@ class _ItemSectionState extends State<ItemSection> {
     DirectoryTreeService.activeNodeHook.set(widget.data);
   }
 
-  Widget _getItem() {
+  Widget titleSection() {
+    return Text(
+      ' ${widget.data.title}',
+      style: TextStyle(
+        color: isActive ? Colors.white : Colors.black,
+      ),
+    );
+  }
+
+  Widget countSection() {
+    return Text(
+      '${widget.data.count}',
+      style: TextStyle(
+        color: isActive ? Colors.white : CommonConfig.textGrey,
+      ),
+    );
+  }
+
+  Widget nodeSection() {
     double padding = (10 * widget.level).toDouble();
     final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
 
@@ -226,49 +232,21 @@ class _ItemSectionState extends State<ItemSection> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _getDirectIcon(),
-                    Icon(
-                      IconFont.icon_file_directory,
-                      size: 17.5,
-                      color: isActive ? Colors.white : Colors.black,
+                    DirectIconSection(
+                      isOpenFolder: isOpenFold,
+                      onTap: () => setState(() => isOpenFold = !isOpenFold),
+                      isNotEmpty: widget.data.children.isNotEmpty,
                     ),
+                    FolderIconSection(isActive: isActive),
                     isChangeNode
-                        ? Container(
-                            height: 17.5,
-                            width: 200,
-                            margin: const EdgeInsets.only(left: 4),
-                            child: TextFormField(
-                              onChanged: DirectoryTreeService.update,
-                              onFieldSubmitted: handleSaveNodeName,
-                              initialValue: activeTreeItem?.title,
-                              autofocus: true,
-                              cursorColor: Colors.grey[700],
-                              maxLines: 1,
-                              style: const TextStyle(fontSize: 10),
-                              textAlignVertical: TextAlignVertical.center,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                border: OutlineInputBorder(borderSide: BorderSide.none),
-                                fillColor: Colors.white,
-                                contentPadding: EdgeInsets.only(left: 6),
-                                hintText: 'Folder Name',
-                              ),
-                            ),
+                        ? InputSection(
+                            onFieldSubmitted: handleSaveNodeName,
+                            initialValue: activeTreeItem?.title,
                           )
-                        : Text(
-                            ' ${widget.data.title}',
-                            style: TextStyle(
-                              color: isActive ? Colors.white : Colors.black,
-                            ),
-                          ),
+                        : titleSection(),
                   ],
                 ),
-                Text(
-                  '${widget.data.count}',
-                  style: TextStyle(
-                    color: isActive ? Colors.white : CommonConfig.textGrey,
-                  ),
-                ),
+                countSection(),
               ],
             ),
           ),
@@ -279,7 +257,7 @@ class _ItemSectionState extends State<ItemSection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _getItem(),
+        nodeSection(),
         if (isOpenFold)
           for (TreeItemModel item in widget.data.children)
             ItemSection(

@@ -14,7 +14,9 @@ class App extends StatelessWidget {
     return RoutePath.getAppPathInstance().build(
       context,
       title: 'snote',
-      theme: ThemeData(),
+      theme: ThemeData(
+        primarySwatch: Colors.yellow,
+      ),
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
     );

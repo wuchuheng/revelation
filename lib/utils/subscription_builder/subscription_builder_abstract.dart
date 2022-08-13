@@ -14,6 +14,7 @@ class Subscription<T> {
   @override
   Subscription<T> next(T data) {
     _idMapcallback.forEach((_, callback) => callback(data));
+
     return this;
   }
 

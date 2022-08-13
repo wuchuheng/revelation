@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
 import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
 
 import '../../../../../model/tree_item_model/tree_item_model.dart';
