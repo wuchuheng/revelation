@@ -16,7 +16,7 @@ class TreeSection extends StatefulWidget {
 
 class _TreeSectionState extends State<TreeSection> {
   List<TreeItemModel> treeItems = DirectoryTreeService.treeHook.value;
-  late Unsubscrible treeSubscriptHandler;
+  late Unsubscribe treeSubscriptHandler;
   @override
   void initState() {
     super.initState();

@@ -13,7 +13,7 @@ class DirectoryTreeService {
 
   /// The node  being modified.
   static HookImp<TreeItemModel?> changedNodeHook = Hook.builder(null);
-  static HookImp<TreeItemModel?> pointerTreeItemHook = Hook.builder(null); // 右键点击的项
+  static HookImp<TreeItemModel?> pointerNodeHook = Hook.builder(null); // 右键点击的项
   static HookImp<List<TreeItemModel>> treeHook = Hook.builder([]);
   static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
 

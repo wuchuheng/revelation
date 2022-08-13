@@ -28,43 +28,60 @@ class ItemSection extends StatefulWidget {
 
 class _ItemSectionState extends State<ItemSection> {
   bool isOpenFold = true;
-  late Unsubscrible activeNodeEvent;
-  late Unsubscrible pointNodeEvent;
-  late Unsubscrible changedNodeEvent;
+  final UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   bool _openContext = false;
   late bool isBorder;
+  bool isActive = false;
+  bool isChangeNode = false;
 
   @override
   void initState() {
     super.initState();
     final activeNode = DirectoryTreeService.activeNodeHook.value;
-    final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.value;
+    final pointerTreeItem = DirectoryTreeService.pointerNodeHook.value;
     isBorder = activeNode?.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
-    activeNodeEvent = DirectoryTreeService.activeNodeHook.subscribe((data) => setState(() {}));
-    changedNodeEvent = DirectoryTreeService.changedNodeHook.subscribe((data) => setState(() {}));
-    pointNodeEvent = DirectoryTreeService.pointerTreeItemHook.subscribe((data) {
-      final activeNode = DirectoryTreeService.activeNodeHook.value;
-      final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.value;
-      final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
-      if (newIsBorder != isBorder) {
-        setState(() => isBorder = newIsBorder);
-      } else if (isBorder) {
-        setState(() => isBorder = false);
-      }
-    });
+    final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
+    isActive = activeTreeItem?.id == widget.data.id;
+    unsubscribeCollect.addAll([
+      DirectoryTreeService.activeNodeHook.subscribe(activeNodeSubscription),
+      DirectoryTreeService.changedNodeHook.subscribe(changeNodeSubscription),
+      DirectoryTreeService.pointerNodeHook.subscribe(pointerNodeSubscription),
+    ]);
+  }
+
+  void changeNodeSubscription(TreeItemModel? data) {
+    final result = data?.id == widget.data.id;
+    if (result != isChangeNode) setState(() => isChangeNode = result);
+  }
+
+  void activeNodeSubscription(TreeItemModel? data) {
+    final newResult = data?.id == widget.data.id;
+    if (newResult != isActive) setState(() => isActive = newResult);
+  }
+
+  void pointerNodeSubscription(TreeItemModel? data) {
+    final activeNode = DirectoryTreeService.activeNodeHook.value;
+    final pointerTreeItem = DirectoryTreeService.pointerNodeHook.value;
+    final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
+    if (newIsBorder != isBorder) {
+      setState(() => isBorder = newIsBorder);
+    } else if (isBorder) {
+      setState(() => isBorder = false);
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    activeNodeEvent.unsubscribe();
-    pointNodeEvent.unsubscribe();
-    changedNodeEvent.unsubscribe();
+    unsubscribeCollect.unsubscribe();
   }
 
   /// Click on the title event.
   void handleTap() {
-    DirectoryTreeService.activeNodeHook.set(widget.data);
+    final value = DirectoryTreeService.activeNodeHook.value;
+    TreeItemModel? result;
+    if (value?.id != widget.data.id) result = widget.data;
+    DirectoryTreeService.activeNodeHook.set(result);
     DirectoryTreeService.changedNodeHook.set(null);
   }
 
@@ -158,7 +175,7 @@ class _ItemSectionState extends State<ItemSection> {
     if (_openContext) {
       _showContext();
       _openContext = false;
-      DirectoryTreeService.pointerTreeItemHook.set(null);
+      DirectoryTreeService.pointerNodeHook.set(null);
     }
   }
 
@@ -166,7 +183,7 @@ class _ItemSectionState extends State<ItemSection> {
   void handlePointerDown(PointerDownEvent e) {
     _openContext = e.kind == PointerDeviceKind.mouse && e.buttons == kSecondaryMouseButton;
     if (_openContext) {
-      DirectoryTreeService.pointerTreeItemHook.set(widget.data);
+      DirectoryTreeService.pointerNodeHook.set(widget.data);
     } else {
       setState(() {});
     }
@@ -184,9 +201,6 @@ class _ItemSectionState extends State<ItemSection> {
   Widget _getItem() {
     double padding = (10 * widget.level).toDouble();
     final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
-    final changedNode = DirectoryTreeService.changedNodeHook.value;
-    bool isActive = activeTreeItem?.id == widget.data.id;
-    bool isInput = changedNode != null && changedNode.id == widget.data.id;
 
     return Listener(
         onPointerDown: handlePointerDown,
@@ -218,7 +232,7 @@ class _ItemSectionState extends State<ItemSection> {
                       size: 17.5,
                       color: isActive ? Colors.white : Colors.black,
                     ),
-                    isInput
+                    isChangeNode
                         ? Container(
                             height: 17.5,
                             width: 200,
