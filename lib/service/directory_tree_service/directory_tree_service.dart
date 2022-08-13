@@ -9,12 +9,12 @@ import 'package:task_util/task_util.dart';
 
 class DirectoryTreeService {
   static String key = 'path';
-  static Hook<TreeItemModel?> activeNodeHook = HookEvent.builder(null);
+  static HookImp<TreeItemModel?> activeNodeHook = Hook.builder(null);
 
   /// The node  being modified.
-  static Hook<TreeItemModel?> changedNodeHook = HookEvent.builder(null);
-  static Hook<TreeItemModel?> pointerTreeItemHook = HookEvent.builder(null); // 右键点击的项
-  static Hook<List<TreeItemModel>> treeHook = HookEvent.builder([]);
+  static HookImp<TreeItemModel?> changedNodeHook = Hook.builder(null);
+  static HookImp<TreeItemModel?> pointerTreeItemHook = Hook.builder(null); // 右键点击的项
+  static HookImp<List<TreeItemModel>> treeHook = Hook.builder([]);
   static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
 
   static Future<void> init() async {
@@ -76,7 +76,7 @@ class DirectoryTreeService {
   static create() async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
-    int pid = activeNodeHook.data?.id ?? 0;
+    int pid = activeNodeHook.value?.id ?? 0;
     TreeItemModel newItem = TreeItemModel(
       id: id,
       pid: pid,
@@ -107,7 +107,7 @@ class DirectoryTreeService {
 
   static Future<void> update(String nodeName) async {
     Map<String, TreeItemModel> localTree = await _getLocalData();
-    String id = changedNodeHook.data!.id.toString();
+    String id = changedNodeHook.value!.id.toString();
     localTree[id]!.title = nodeName;
     await _setLocalTree(localTree);
     final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);

@@ -1,25 +1,25 @@
 import '../subscription_builder/subscription_builder_abstract.dart';
 
-class Hook<T> {
-  T data;
+class HookImp<T> {
+  T value;
   final Subscription<T> _onEvent = SubscriptionBuilder.builder();
-  Hook(this.data);
+  HookImp(this.value);
 
   void set(T newData) {
-    data = newData;
-    _onEvent.next(data);
+    value = newData;
+    _onEvent.next(value);
   }
 
   void setCallback(T Function(T data) callback) {
-    data = callback(data);
-    _onEvent.next(data);
+    value = callback(value);
+    _onEvent.next(value);
   }
 
   Unsubscrible subscribe(void Function(T data) callback) => _onEvent.subscribe(callback);
 }
 
-class HookEvent {
-  static Hook<T> builder<T>(T data) {
-    return Hook<T>(data);
+class Hook {
+  static HookImp<T> builder<T>(T data) {
+    return HookImp<T>(data);
   }
 }

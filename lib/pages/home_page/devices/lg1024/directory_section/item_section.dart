@@ -37,14 +37,14 @@ class _ItemSectionState extends State<ItemSection> {
   @override
   void initState() {
     super.initState();
-    final activeNode = DirectoryTreeService.activeNodeHook.data;
-    final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.data;
+    final activeNode = DirectoryTreeService.activeNodeHook.value;
+    final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.value;
     isBorder = activeNode?.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
     activeNodeEvent = DirectoryTreeService.activeNodeHook.subscribe((data) => setState(() {}));
     changedNodeEvent = DirectoryTreeService.changedNodeHook.subscribe((data) => setState(() {}));
     pointNodeEvent = DirectoryTreeService.pointerTreeItemHook.subscribe((data) {
-      final activeNode = DirectoryTreeService.activeNodeHook.data;
-      final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.data;
+      final activeNode = DirectoryTreeService.activeNodeHook.value;
+      final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.value;
       final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
       if (newIsBorder != isBorder) {
         setState(() => isBorder = newIsBorder);
@@ -183,8 +183,8 @@ class _ItemSectionState extends State<ItemSection> {
 
   Widget _getItem() {
     double padding = (10 * widget.level).toDouble();
-    final activeTreeItem = DirectoryTreeService.activeNodeHook.data;
-    final changedNode = DirectoryTreeService.changedNodeHook.data;
+    final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
+    final changedNode = DirectoryTreeService.changedNodeHook.value;
     bool isActive = activeTreeItem?.id == widget.data.id;
     bool isInput = changedNode != null && changedNode.id == widget.data.id;
 
