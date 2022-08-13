@@ -7,16 +7,12 @@ import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/utils/hook_event/hook_event.dart';
 import 'package:task_util/task_util.dart';
 
-class ActiveTreeItem {
-  TreeItemModel treeItemModel;
-  bool isInput;
-
-  ActiveTreeItem({required this.treeItemModel, required this.isInput});
-}
-
 class DirectoryTreeService {
   static String key = 'path';
-  static Hook<ActiveTreeItem?> activeTreeItemHook = HookEvent.builder(null);
+  static Hook<TreeItemModel?> activeNodeHook = HookEvent.builder(null);
+
+  /// The node  being modified.
+  static Hook<TreeItemModel?> changedNodeHook = HookEvent.builder(null);
   static Hook<TreeItemModel?> pointerTreeItemHook = HookEvent.builder(null); // 右键点击的项
   static Hook<List<TreeItemModel>> treeHook = HookEvent.builder([]);
   static SingleTaskPool singleTaskPool = SingleTaskPool.builder();
@@ -80,7 +76,7 @@ class DirectoryTreeService {
   static create() async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
-    int pid = activeTreeItemHook.data?.treeItemModel.id ?? 0;
+    int pid = activeNodeHook.data?.id ?? 0;
     TreeItemModel newItem = TreeItemModel(
       id: id,
       pid: pid,
@@ -96,13 +92,23 @@ class DirectoryTreeService {
     await _setLocalTree(localTree);
     final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);
     treeHook.set(newTree);
-    activeTreeItemHook.setCallback((data) => ActiveTreeItem(treeItemModel: newItem, isInput: true));
+    activeNodeHook.set(newItem);
+    changedNodeHook.set(newItem);
   }
 
   /// delete the node from the directory.
   static delete(String id) async {
     Map<String, TreeItemModel> localTree = await _getLocalData();
     localTree[id]!.isDelete = true;
+    await _setLocalTree(localTree);
+    final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);
+    treeHook.set(newTree);
+  }
+
+  static Future<void> update(String nodeName) async {
+    Map<String, TreeItemModel> localTree = await _getLocalData();
+    String id = changedNodeHook.data!.id.toString();
+    localTree[id]!.title = nodeName;
     await _setLocalTree(localTree);
     final List<TreeItemModel> newTree = idMapTreeItemConvertToTree(localTree);
     treeHook.set(newTree);

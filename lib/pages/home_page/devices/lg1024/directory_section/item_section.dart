@@ -28,22 +28,24 @@ class ItemSection extends StatefulWidget {
 
 class _ItemSectionState extends State<ItemSection> {
   bool isOpenFold = true;
-  late Unsubscrible activeTreeItemEvent;
-  late Unsubscrible pointerTreeItemEvent;
+  late Unsubscrible activeNodeEvent;
+  late Unsubscrible pointNodeEvent;
+  late Unsubscrible changedNodeEvent;
   bool _openContext = false;
   late bool isBorder;
 
   @override
   void initState() {
     super.initState();
-    final activeTreeItem = DirectoryTreeService.activeTreeItemHook.data;
+    final activeNode = DirectoryTreeService.activeNodeHook.data;
     final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.data;
-    isBorder = activeTreeItem?.treeItemModel.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
-    activeTreeItemEvent = DirectoryTreeService.activeTreeItemHook.subscribe((data) => setState(() {}));
-    pointerTreeItemEvent = DirectoryTreeService.pointerTreeItemHook.subscribe((data) {
-      final activeTreeItem = DirectoryTreeService.activeTreeItemHook.data;
+    isBorder = activeNode?.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
+    activeNodeEvent = DirectoryTreeService.activeNodeHook.subscribe((data) => setState(() {}));
+    changedNodeEvent = DirectoryTreeService.changedNodeHook.subscribe((data) => setState(() {}));
+    pointNodeEvent = DirectoryTreeService.pointerTreeItemHook.subscribe((data) {
+      final activeNode = DirectoryTreeService.activeNodeHook.data;
       final pointerTreeItem = DirectoryTreeService.pointerTreeItemHook.data;
-      final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeTreeItem?.treeItemModel.id;
+      final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
       if (newIsBorder != isBorder) {
         setState(() => isBorder = newIsBorder);
       } else if (isBorder) {
@@ -55,19 +57,15 @@ class _ItemSectionState extends State<ItemSection> {
   @override
   void dispose() {
     super.dispose();
-    activeTreeItemEvent.unsubscribe();
-    pointerTreeItemEvent.unsubscribe();
+    activeNodeEvent.unsubscribe();
+    pointNodeEvent.unsubscribe();
+    changedNodeEvent.unsubscribe();
   }
 
   /// Click on the title event.
   void handleTap() {
-    DirectoryTreeService.activeTreeItemHook.setCallback((data) {
-      final newData = ActiveTreeItem(treeItemModel: widget.data, isInput: false);
-      if (data != null) {
-        newData.isInput = data.treeItemModel.id == widget.data.id && data.isInput;
-      }
-      return newData;
-    });
+    DirectoryTreeService.activeNodeHook.set(widget.data);
+    DirectoryTreeService.changedNodeHook.set(null);
   }
 
   Widget _getDirectIcon() {
@@ -174,17 +172,28 @@ class _ItemSectionState extends State<ItemSection> {
     }
   }
 
+  void handleSaveNodeName(String? value) {
+    DirectoryTreeService.changedNodeHook.set(null);
+  }
+
+  void handleDoubleTapNode() {
+    DirectoryTreeService.changedNodeHook.set(widget.data);
+    DirectoryTreeService.activeNodeHook.set(widget.data);
+  }
+
   Widget _getItem() {
     double padding = (10 * widget.level).toDouble();
-    final activeTreeItem = DirectoryTreeService.activeTreeItemHook.data;
-    bool isActive = activeTreeItem?.treeItemModel.id == widget.data.id;
-    bool isInput = isActive && activeTreeItem?.isInput == true;
+    final activeTreeItem = DirectoryTreeService.activeNodeHook.data;
+    final changedNode = DirectoryTreeService.changedNodeHook.data;
+    bool isActive = activeTreeItem?.id == widget.data.id;
+    bool isInput = changedNode != null && changedNode.id == widget.data.id;
 
     return Listener(
         onPointerDown: handlePointerDown,
         onPointerUp: handlePointerUp,
         child: GestureDetector(
           onTap: handleTap,
+          onDoubleTap: handleDoubleTapNode,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(7),
@@ -214,7 +223,10 @@ class _ItemSectionState extends State<ItemSection> {
                             height: 17.5,
                             width: 200,
                             margin: const EdgeInsets.only(left: 4),
-                            child: TextField(
+                            child: TextFormField(
+                              onChanged: DirectoryTreeService.update,
+                              onFieldSubmitted: handleSaveNodeName,
+                              initialValue: activeTreeItem?.title,
                               autofocus: true,
                               cursorColor: Colors.grey[700],
                               maxLines: 1,
