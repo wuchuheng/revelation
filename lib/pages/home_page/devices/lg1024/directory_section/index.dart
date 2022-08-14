@@ -33,8 +33,8 @@ class _TreeSectionState extends State<TreeSection> {
   Widget build(BuildContext context) {
     double LRMargin = 10;
     const double bottomBarHeight = 40;
-    final list = Container(
-      height: MediaQuery.of(context).size.height - bottomBarHeight,
+    final list = SizedBox(
+      height: MediaQuery.of(context).size.height - bottomBarHeight - CommonConfig.titleBarHeight,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -44,18 +44,23 @@ class _TreeSectionState extends State<TreeSection> {
       ),
     );
 
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      color: CommonConfig.backgroundColor,
-      width: CommonConfig.lg1024DirectoryWidth,
-      padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          list,
-          CreateButton(bottomBarHeight: bottomBarHeight),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          color: CommonConfig.backgroundColor,
+          width: CommonConfig.lg1024DirectoryWidth,
+          padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.only(top: CommonConfig.titleBarHeight)),
+              list,
+              CreateButton(bottomBarHeight: bottomBarHeight),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

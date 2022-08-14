@@ -12,4 +12,5 @@ class CommonConfig {
   static final Color activeBorderColor = HexColor('#DC9607');
   static final Color backgroundColor = HexColor('#E3DEE2');
   static const bool isDebug = true;
+  static const double titleBarHeight = 30.0;
 }
