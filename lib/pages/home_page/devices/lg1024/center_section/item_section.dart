@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
+import 'package:snotes/pages/common_config.dart';
 
 class ItemSection extends StatelessWidget {
-  const ItemSection({Key? key}) : super(key: key);
+  final bool isFirst;
+
+  const ItemSection({Key? key, this.isFirst = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,12 @@ class ItemSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey[200],
       ),
-      padding: const EdgeInsets.all(8),
+      margin: EdgeInsets.only(
+        left: CommonConfig.centerSectionItemGap,
+        right: CommonConfig.centerSectionItemGap,
+        top: isFirst ? CommonConfig.centerSectionItemGap : 0,
+      ),
+      padding: const EdgeInsets.all(CommonConfig.centerSectionItemGap),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
