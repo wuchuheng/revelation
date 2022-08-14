@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/direct_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/folder_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/input_section.dart';
-import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
+import 'package:snotes/service/directory_tree_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 class ItemSection extends StatefulWidget {
@@ -138,17 +137,6 @@ class _ItemSectionState extends State<ItemSection> {
           onTap: handleDeleteDialog,
           shortcut: SingleActivator(
             LogicalKeyboardKey.keyC,
-            meta: Platform.isMacOS,
-            control: Platform.isWindows,
-          ),
-        ),
-        ContextMenuItem(
-          title: '粘贴',
-          onTap: () {
-            BotToast.showText(text: '你按了粘贴');
-          },
-          shortcut: SingleActivator(
-            LogicalKeyboardKey.keyV,
             meta: Platform.isMacOS,
             control: Platform.isWindows,
           ),

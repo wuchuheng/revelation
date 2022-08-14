@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
-import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
+import 'package:snotes/service/directory_tree_service/index.dart';
 
 import '../../../../../model/tree_item_model/tree_item_model.dart';
 import '../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
@@ -46,7 +46,7 @@ class _TreeSectionState extends State<TreeSection> {
 
     return Container(
       height: MediaQuery.of(context).size.height,
-      color: Colors.green[100],
+      color: CommonConfig.backgroundColor,
       width: CommonConfig.lg1024DirectoryWidth,
       padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
       child: Column(

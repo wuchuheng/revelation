@@ -50,6 +50,7 @@ dependencies:
   desktop_context_menu: ^0.1.1
   bot_toast: ^4.0.3
   task_util: ^0.0.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

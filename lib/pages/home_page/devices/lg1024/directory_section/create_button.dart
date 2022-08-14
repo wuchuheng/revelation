@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/common_config.dart';
-import 'package:snotes/service/directory_tree_service/directory_tree_service.dart';
+import 'package:snotes/service/directory_tree_service/index.dart';
 import 'package:snotes/service/note_service.dart';
 
 class MenuItemData {
@@ -13,15 +13,17 @@ class MenuItemData {
 
 class CreateButton extends StatelessWidget {
   final double bottomBarHeight;
+  static String createFolderValue = 'Folder';
+
   List<MenuItemData> menuList = [
-    MenuItemData(name: 'Folder', value: 'Folder'),
+    MenuItemData(name: 'Folder', value: createFolderValue),
     MenuItemData(name: 'Smart Folder', value: 'Smart Folder'),
   ];
 
   CreateButton({Key? key, required this.bottomBarHeight}) : super(key: key);
 
   void handleSelect(String value, BuildContext context) async {
-    if (value == menuList[0].value) {
+    if (value == createFolderValue) {
       await DirectoryTreeService.create();
       return;
     }

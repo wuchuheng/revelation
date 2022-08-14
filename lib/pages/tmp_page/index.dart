@@ -62,17 +62,6 @@ class _TmpState extends State<Tmp> {
             control: Platform.isWindows,
           ),
         ),
-        ContextMenuItem(
-          title: '粘贴',
-          onTap: () {
-            BotToast.showText(text: '你按了粘贴');
-          },
-          shortcut: SingleActivator(
-            LogicalKeyboardKey.keyV,
-            meta: Platform.isMacOS,
-            control: Platform.isWindows,
-          ),
-        ),
       ],
     );
     _menu?.onTap?.call();

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../service/directory_tree_service/directory_tree_service.dart';
+import '../../../../../../service/directory_tree_service/index.dart';
 
 class InputSection extends StatelessWidget {
   final void Function(String? value) onFieldSubmitted;

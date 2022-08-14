@@ -2,7 +2,7 @@ import 'package:imap_cache/imap_cache.dart';
 import 'package:snotes/errors/not_login_error.dart';
 import 'package:snotes/pages/common_config.dart';
 
-import 'directory_tree_service/directory_tree_service.dart';
+import 'directory_tree_service/index.dart';
 
 class CacheService {
   static ImapCache? _cacheServiceInstance;
@@ -36,8 +36,14 @@ class CacheService {
 
     ///  initialized data
     final imapCacheInstance = getImapCache();
+    final hasLocalCache = imapCacheInstance.hasLocalCache;
+    final hasOnlineCache = imapCacheInstance.hasOnlineCache;
+    if (hasOnlineCache && !hasLocalCache) {
+      await DirectoryTreeService.initForSync();
+    } else {
+      await DirectoryTreeService.init();
+    }
 
-    DirectoryTreeService.init();
     return imapCacheInstance;
   }
 

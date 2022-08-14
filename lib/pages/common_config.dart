@@ -11,5 +11,5 @@ class CommonConfig {
   static final Color activeColor = HexColor('#E4C65E');
   static final Color activeBorderColor = HexColor('#DC9607');
   static final Color backgroundColor = HexColor('#E3DEE2');
-  static const bool isDebug = false;
+  static const bool isDebug = true;
 }
