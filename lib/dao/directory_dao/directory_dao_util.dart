@@ -12,7 +12,7 @@ class DirectoryDaoUtil {
       children: [],
       deletedAt: row['deleted_at'] != null ? DateTimeUtil.convertTimeStr(row['deleted_at']) : null,
       count: 0,
-      sortId: row['sort_id'],
+      sortNum: row['sort_num'],
     );
   }
 }

@@ -27,14 +27,14 @@ class DirectoryDao implements DirectoryDaoAbstract {
       db.execute('''
       UPDATE $tableName 
       SET pid = ?, 
-      sort_id = ?,
+      sort_num = ?,
       title = ?,
       deleted_at = ?,
       updated_at = ?
       WHERE id = ${directory.id}
       ''', [
         directory.pid,
-        directory.sortId,
+        directory.sortNum,
         directory.title,
         directory.deletedAt?.toString(),
         directory.updatedAt.toString(),
@@ -44,7 +44,7 @@ class DirectoryDao implements DirectoryDaoAbstract {
       INSERT INTO $tableName (
          id,
         pid,
-        sort_id,
+        sort_num,
         title,
         deleted_at,
         updated_at
@@ -52,7 +52,7 @@ class DirectoryDao implements DirectoryDaoAbstract {
       ''', [
         directory.id,
         directory.pid,
-        directory.sortId,
+        directory.sortNum,
         directory.title,
         directory.deletedAt?.toString(),
         directory.updatedAt.toString(),

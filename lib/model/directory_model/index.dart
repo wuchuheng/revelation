@@ -8,7 +8,7 @@ class DirectoryModel {
   static const rootNodeId = 0;
   int id;
   int pid;
-  int sortId;
+  int sortNum;
   String title;
   DateTime? deletedAt;
   DateTime updatedAt;
@@ -19,7 +19,7 @@ class DirectoryModel {
     this.deletedAt,
     required this.id,
     required this.pid,
-    required this.sortId,
+    required this.sortNum,
     required this.title,
     required this.updatedAt,
     required this.count,
@@ -31,7 +31,7 @@ class DirectoryModel {
     required this.children,
     required this.id,
     required this.pid,
-    required this.sortId,
+    required this.sortNum,
     required this.title,
   }) : updatedAt = DateTime.now();
 
@@ -41,7 +41,7 @@ class DirectoryModel {
         children = [],
         id = rootNodeId,
         pid = 0,
-        sortId = 0,
+        sortNum = 0,
         title = 'All';
 
   factory DirectoryModel.fromJson(Map<String, dynamic> json) {

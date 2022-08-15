@@ -63,7 +63,7 @@ class DirectoryTreeService {
     DirectoryModel newItem = DirectoryModel.create(
       id: id,
       pid: pid,
-      sortId: 0,
+      sortNum: 0,
       title: 'New Folder',
       count: 0,
       children: [],

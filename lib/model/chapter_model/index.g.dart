@@ -9,7 +9,9 @@ part of 'index.dart';
 ChapterModel _$ChapterModelFromJson(Map<String, dynamic> json) => ChapterModel(
       title: json['title'] as String,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
-      deletedAt: DateTime.parse(json['deletedAt'] as String),
+      deletedAt: json['deletedAt'] == null
+          ? null
+          : DateTime.parse(json['deletedAt'] as String),
       sortNum: json['sortNum'] as int,
       id: json['id'] as int,
       content: json['content'] as String,
@@ -22,7 +24,7 @@ Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
       'title': instance.title,
       'content': instance.content,
       'updatedAt': instance.updatedAt.toIso8601String(),
-      'deletedAt': instance.deletedAt.toIso8601String(),
+      'deletedAt': instance.deletedAt?.toIso8601String(),
       'sortNum': instance.sortNum,
       'pid': instance.pid,
     };

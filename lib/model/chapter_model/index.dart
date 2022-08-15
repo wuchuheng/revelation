@@ -10,7 +10,7 @@ class ChapterModel {
   final String title;
   final String content;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final int sortNum;
   final int pid;
 
