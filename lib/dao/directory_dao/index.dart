@@ -9,7 +9,7 @@ class DirectoryDao implements DirectoryDaoAbstract {
   List<DirectoryModel> fetchAll() {
     final tableName = DirectoryModel.tableName;
     final db = SQLiteDao.getDb();
-    final ResultSet fetchResult = db.select(''' select * from $tableName where is_delete = 0 ''');
+    final ResultSet fetchResult = db.select(''' select * from $tableName where deleted_at is null ''');
     List<DirectoryModel> result = [];
     for (Row row in fetchResult) {
       result.add(DirectoryDaoUtil.rowConvertDirectoryModel(row));
@@ -29,10 +29,10 @@ class DirectoryDao implements DirectoryDaoAbstract {
       SET pid = ?, 
       sort_id = ?,
       title = ?,
-      is_delete = ?,
+      deleted_at = ?,
       updated_at = ?
       WHERE id = ${directory.id}
-      ''', [directory.pid, directory.sortId, directory.title, directory.isDelete, directory.updatedAt]);
+      ''', [directory.pid, directory.sortId, directory.title, directory.deletedAt, directory.updatedAt]);
     } else {
       db.execute('''
       INSERT INTO $tableName (
@@ -40,10 +40,10 @@ class DirectoryDao implements DirectoryDaoAbstract {
         pid,
         sort_id,
         title,
-        is_delete,
+        deleted_at,
         updated_at
       ) VALUES (?, ?, ?, ?, ?, ?);
-      ''', [directory.id, directory.pid, directory.sortId, directory.title, directory.isDelete, directory.updatedAt]);
+      ''', [directory.id, directory.pid, directory.sortId, directory.title, directory.deletedAt, directory.updatedAt]);
     }
 
     return directory;
@@ -65,6 +65,6 @@ class DirectoryDao implements DirectoryDaoAbstract {
   void delete({required id}) {
     final db = SQLiteDao.getDb();
     final tableName = DirectoryModel.tableName;
-    db.execute('''UPDATE $tableName SET is_delete=1 where id = $id ''');
+    db.execute('''UPDATE $tableName SET deleted_at is null where id = $id ''');
   }
 }

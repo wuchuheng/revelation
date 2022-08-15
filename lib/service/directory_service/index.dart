@@ -42,7 +42,7 @@ class DirectoryTreeService {
     Map<int, DirectoryModel> idMapTreeItem = {};
     List<DirectoryModel> result = [];
     for (final value in directories) {
-      if (!value.isDelete) {
+      if (value.deletedAt == null) {
         idMapTreeItem[value.id] = value;
         if (value.pid == 0) {
           result.add(idMapTreeItem[value.id]!);
@@ -64,7 +64,6 @@ class DirectoryTreeService {
       id: id,
       pid: pid,
       sortId: 0,
-      isDelete: false,
       title: 'New Folder',
       count: 0,
       children: [],
@@ -77,7 +76,7 @@ class DirectoryTreeService {
   /// delete the node from the directory.
   static delete(String id) async {
     final directory = DirectoryDao().has(id: int.parse(id))!;
-    directory.isDelete = true;
+    directory.deletedAt = DateTime.now();
     await DirectoryServiceUtil.setLocalCache(directory);
   }
 

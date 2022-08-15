@@ -8,16 +8,18 @@ part of 'index.dart';
 
 DirectoryModel _$DirectoryModelFromJson(Map<String, dynamic> json) =>
     DirectoryModel(
-      count: json['count'] as int,
-      children: (json['children'] as List<dynamic>)
-          .map((e) => DirectoryModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      deletedAt: json['deletedAt'] == null
+          ? null
+          : DateTime.parse(json['deletedAt'] as String),
       id: json['id'] as int,
       pid: json['pid'] as int,
       sortId: json['sortId'] as int,
       title: json['title'] as String,
-      isDelete: json['isDelete'] as bool,
       updatedAt: json['updatedAt'] as String,
+      count: json['count'] as int,
+      children: (json['children'] as List<dynamic>)
+          .map((e) => DirectoryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$DirectoryModelToJson(DirectoryModel instance) =>
@@ -26,7 +28,7 @@ Map<String, dynamic> _$DirectoryModelToJson(DirectoryModel instance) =>
       'pid': instance.pid,
       'sortId': instance.sortId,
       'title': instance.title,
-      'isDelete': instance.isDelete,
+      'deletedAt': instance.deletedAt?.toIso8601String(),
       'updatedAt': instance.updatedAt,
       'children': instance.children,
       'count': instance.count,

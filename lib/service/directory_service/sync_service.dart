@@ -44,7 +44,7 @@ class SyncService {
     final isOk = !localIdMapJson.containsKey(key) && onlineIdMapJson.containsKey(key);
     if (!isOk) return null;
     final DirectoryModel onlineNode = jsonDecode(onlineIdMapJson[key]);
-    if (onlineNode.isDelete == false) {
+    if (onlineNode.deletedAt == null) {
       return onlineNode;
     }
     return null;

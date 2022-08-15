@@ -14,7 +14,7 @@ class CommonConfig {
   static final Color activeBorderColor = HexColor('#DC9607');
   static final Color primaryColor = HexColor('#DC9607');
   static final Color backgroundColor = HexColor('#E3DEE2');
-  static const bool isDebug = false;
+  static const bool isDebug = true;
   static const double titleBarHeight = 30.0;
   static const centerSectionToolBarHeight = 45.0;
   static Color borderColor = Colors.grey[350]!;

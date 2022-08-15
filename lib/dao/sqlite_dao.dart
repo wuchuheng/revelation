@@ -77,7 +77,7 @@ class SQLiteDao {
         "pid" INTEGER,
         "title" TEXT,
         "sort_id" INTEGER,
-        "is_delete" INTEGER,
+        "deleted_at" DATE,
         "updated_at" DATE,
         PRIMARY KEY ("id")
       );

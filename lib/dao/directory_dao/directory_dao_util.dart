@@ -9,7 +9,7 @@ class DirectoryDaoUtil {
       updatedAt: row['updated_at'],
       pid: row['pid'],
       children: [],
-      isDelete: row['is_delete'] > 0,
+      deletedAt: row['deleted_at'],
       count: 0,
       sortId: row['sort_id'],
     );

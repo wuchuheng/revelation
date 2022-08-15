@@ -10,29 +10,29 @@ class DirectoryModel {
   int pid;
   int sortId;
   String title;
-  bool isDelete;
+  DateTime? deletedAt;
   String updatedAt;
   List<DirectoryModel> children;
   int count;
 
   DirectoryModel({
+    this.deletedAt,
     required this.id,
     required this.pid,
     required this.sortId,
     required this.title,
-    required this.isDelete,
     required this.updatedAt,
     required this.count,
     required this.children,
   });
   DirectoryModel.create({
+    this.deletedAt,
     required this.count,
     required this.children,
     required this.id,
     required this.pid,
     required this.sortId,
     required this.title,
-    required this.isDelete,
   }) : updatedAt = DateTime.now().toString();
 
   DirectoryModel.getRootNodeInitData()
@@ -42,8 +42,7 @@ class DirectoryModel {
         id = rootNodeId,
         pid = 0,
         sortId = 0,
-        title = 'All',
-        isDelete = false;
+        title = 'All';
 
   factory DirectoryModel.fromJson(Map<String, dynamic> json) {
     return _$DirectoryModelFromJson(json);
