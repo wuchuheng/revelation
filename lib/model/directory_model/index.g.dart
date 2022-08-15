@@ -1,16 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tree_item_model.dart';
+part of 'index.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TreeItemModel _$TreeItemModelFromJson(Map<String, dynamic> json) =>
-    TreeItemModel(
+DirectoryModel _$DirectoryModelFromJson(Map<String, dynamic> json) =>
+    DirectoryModel(
       count: json['count'] as int,
       children: (json['children'] as List<dynamic>)
-          .map((e) => TreeItemModel.fromJson(e as Map<String, dynamic>))
+          .map((e) => DirectoryModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       id: json['id'] as int,
       pid: json['pid'] as int,
@@ -20,7 +20,7 @@ TreeItemModel _$TreeItemModelFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] as String,
     );
 
-Map<String, dynamic> _$TreeItemModelToJson(TreeItemModel instance) =>
+Map<String, dynamic> _$DirectoryModelToJson(DirectoryModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'pid': instance.pid,

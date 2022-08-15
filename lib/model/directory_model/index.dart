@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'tree_item_model.g.dart';
+part 'index.g.dart';
 
 @JsonSerializable()
-class TreeItemModel {
+class DirectoryModel {
+  static String tableName = 'directory';
   static const rootNodeId = 0;
   int id;
   int pid;
@@ -11,20 +12,20 @@ class TreeItemModel {
   String title;
   bool isDelete;
   String updatedAt;
-  List<TreeItemModel> children;
+  List<DirectoryModel> children;
   int count;
 
-  TreeItemModel({
-    required this.count,
-    required this.children,
+  DirectoryModel({
     required this.id,
     required this.pid,
     required this.sortId,
     required this.title,
     required this.isDelete,
     required this.updatedAt,
+    required this.count,
+    required this.children,
   });
-  TreeItemModel.create({
+  DirectoryModel.create({
     required this.count,
     required this.children,
     required this.id,
@@ -34,7 +35,7 @@ class TreeItemModel {
     required this.isDelete,
   }) : updatedAt = DateTime.now().toString();
 
-  TreeItemModel.createRootNode()
+  DirectoryModel.getRootNodeInitData()
       : updatedAt = DateTime.now().toString(),
         count = 0,
         children = [],
@@ -44,9 +45,9 @@ class TreeItemModel {
         title = 'All',
         isDelete = false;
 
-  factory TreeItemModel.fromJson(Map<String, dynamic> json) {
-    return _$TreeItemModelFromJson(json);
+  factory DirectoryModel.fromJson(Map<String, dynamic> json) {
+    return _$DirectoryModelFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$TreeItemModelToJson(this);
+  Map<String, dynamic> toJson() => _$DirectoryModelToJson(this);
 }

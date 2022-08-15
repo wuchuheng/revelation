@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
-import 'package:snotes/service/directory_tree_service/index.dart';
+import 'package:snotes/service/directory_service/index.dart';
 
-import '../../../../../model/tree_item_model/tree_item_model.dart';
+import '../../../../../model/directory_model/index.dart';
 import '../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
 
 class TreeSection extends StatefulWidget {
@@ -15,12 +15,12 @@ class TreeSection extends StatefulWidget {
 }
 
 class _TreeSectionState extends State<TreeSection> {
-  List<TreeItemModel> treeItems = DirectoryTreeService.treeHook.value;
+  List<DirectoryModel> treeItems = DirectoryTreeService.directoryHook.value;
   late Unsubscribe treeSubscriptHandler;
   @override
   void initState() {
     super.initState();
-    treeSubscriptHandler = DirectoryTreeService.treeHook.subscribe((data) => setState(() => treeItems = data));
+    treeSubscriptHandler = DirectoryTreeService.directoryHook.subscribe((data) => setState(() => treeItems = data));
   }
 
   @override

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/common_config.dart';
-import 'package:snotes/service/directory_tree_service/index.dart';
-import 'package:snotes/service/note_service.dart';
+import 'package:snotes/service/directory_service/index.dart';
 
 class MenuItemData {
   final String name;
@@ -45,9 +44,7 @@ class CreateButton extends StatelessWidget {
         .toList();
   }
 
-  void testImap() async {
-    await NoteService().createFold('hello');
-  }
+  void testImap() async {}
 
   Widget getLabel() {
     return Row(

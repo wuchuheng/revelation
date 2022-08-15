@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:snotes/model/user_account_model/user_account_model.dart';
+import 'package:snotes/dao/user_dao/index.dart';
+import 'package:snotes/model/user_model/user_model.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
 import 'package:snotes/pages/login_page/form_section/index.dart';
 
@@ -47,15 +48,14 @@ class _LoginPageState extends State<_LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     setState(() => isLoading = false);
-    UserAccountModel userAccountModel = UserAccountModel(
+    UserModel user = UserModel(
       userName: accountInfo.userName,
       password: accountInfo.password,
       imapServerHost: accountInfo.host,
       imapServerPort: accountInfo.port,
       isImapServerSecure: accountInfo.tls,
     );
-    await UserAccountModel.save(userAccountModel);
-
+    UserDao().save(user);
     RoutePath.pushHomePage();
   }
 

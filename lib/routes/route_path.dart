@@ -1,6 +1,8 @@
 import 'package:hi_router/hi_router.dart';
 import 'package:hi_router/route/route_abstract.dart';
-import 'package:snotes/model/user_account_model/user_account_model.dart';
+import 'package:snotes/dao/sqlite_dao.dart';
+import 'package:snotes/dao/user_dao/index.dart';
+import 'package:snotes/model/user_model/user_model.dart';
 import 'package:snotes/pages/login_page/index.dart';
 
 import '../pages/home_page/index.dart';
@@ -21,7 +23,8 @@ class RoutePath {
     );
     // 路由守卫
     _appRoutePathInstance!.before = (RoutePageInfo pageInfo) async {
-      final UserAccountModel? user = await UserAccountModel.getCacheAccount();
+      await SQLiteDao.init();
+      final UserModel? user = UserDao().has();
       final loginPage = RoutePageInfo('/login', () => LoginPage());
       if (user == null) {
         return loginPage;

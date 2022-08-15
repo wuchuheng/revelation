@@ -374,7 +374,7 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "0.0.6"
+    version: "0.0.9"
   intl:
     dependency: "direct main"
     description:
@@ -474,7 +474,7 @@ packages:
     source: hosted
     version: "1.8.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -618,6 +618,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
+  sqlite3:
+    dependency: "direct main"
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.2"
   stack_trace:
     dependency: transitive
     description:

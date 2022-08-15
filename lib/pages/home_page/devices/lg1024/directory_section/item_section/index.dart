@@ -4,16 +4,16 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/model/tree_item_model/tree_item_model.dart';
+import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/direct_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/folder_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/input_section.dart';
-import 'package:snotes/service/directory_tree_service/index.dart';
+import 'package:snotes/service/directory_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 class ItemSection extends StatefulWidget {
-  final TreeItemModel data;
+  final DirectoryModel data;
   final int level;
 
   const ItemSection({
@@ -49,17 +49,17 @@ class _ItemSectionState extends State<ItemSection> {
     ]);
   }
 
-  void changeNodeSubscription(TreeItemModel? data) {
+  void changeNodeSubscription(DirectoryModel? data) {
     final result = data?.id == widget.data.id;
     if (result != isChangeNode) setState(() => isChangeNode = result);
   }
 
-  void activeNodeSubscription(TreeItemModel? data) {
+  void activeNodeSubscription(DirectoryModel? data) {
     final newResult = data?.id == widget.data.id;
     if (newResult != isActive) setState(() => isActive = newResult);
   }
 
-  void pointerNodeSubscription(TreeItemModel? data) {
+  void pointerNodeSubscription(DirectoryModel? data) {
     final activeNode = DirectoryTreeService.activeNodeHook.value;
     final pointerTreeItem = DirectoryTreeService.pointerNodeHook.value;
     final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
@@ -79,7 +79,7 @@ class _ItemSectionState extends State<ItemSection> {
   /// Click on the title event.
   void handleTap() {
     final value = DirectoryTreeService.activeNodeHook.value;
-    TreeItemModel? result;
+    DirectoryModel? result;
     if (value?.id != widget.data.id) result = widget.data;
     DirectoryTreeService.activeNodeHook.set(result);
     DirectoryTreeService.changedNodeHook.set(null);
@@ -247,7 +247,7 @@ class _ItemSectionState extends State<ItemSection> {
       children: [
         nodeSection(),
         if (isOpenFold)
-          for (TreeItemModel item in widget.data.children)
+          for (DirectoryModel item in widget.data.children)
             ItemSection(
               key: ValueKey(item.id),
               data: item,

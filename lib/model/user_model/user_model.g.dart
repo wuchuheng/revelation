@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_account_model.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserAccountModel _$UserAccountModelFromJson(Map<String, dynamic> json) =>
-    UserAccountModel(
+UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       userName: json['userName'] as String,
       password: json['password'] as String,
       imapServerHost: json['imapServerHost'] as String,
@@ -15,8 +14,7 @@ UserAccountModel _$UserAccountModelFromJson(Map<String, dynamic> json) =>
       isImapServerSecure: json['isImapServerSecure'] as bool,
     );
 
-Map<String, dynamic> _$UserAccountModelToJson(UserAccountModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'userName': instance.userName,
       'password': instance.password,
       'imapServerHost': instance.imapServerHost,
