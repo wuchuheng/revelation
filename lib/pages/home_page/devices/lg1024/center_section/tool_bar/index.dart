@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
-import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/center_section/tool_bar/first_row_section/icon_container.dart';
 
 class ToolBar extends StatefulWidget {
@@ -17,10 +17,10 @@ class _ToolBarState extends State<ToolBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: CommonConfig.centerSectionToolBarHeight,
+      height: Config.centerSectionToolBarHeight,
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 1, color: CommonConfig.borderColor),
+          bottom: BorderSide(width: 1, color: Config.borderColor),
         ),
       ),
       padding: const EdgeInsets.all(8),

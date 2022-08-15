@@ -4,8 +4,8 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:snotes/config/config.dart';
 import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/pages/common_config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/direct_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/folder_icon_section.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/input_section.dart';
@@ -37,15 +37,15 @@ class _ItemSectionState extends State<ItemSection> {
   @override
   void initState() {
     super.initState();
-    final activeNode = DirectoryTreeService.activeNodeHook.value;
-    final pointerTreeItem = DirectoryTreeService.pointerNodeHook.value;
+    final activeNode = DirectoryService.activeNodeHook.value;
+    final pointerTreeItem = DirectoryService.pointerNodeHook.value;
     isBorder = activeNode?.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
-    final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
+    final activeTreeItem = DirectoryService.activeNodeHook.value;
     isActive = activeTreeItem?.id == widget.data.id;
     unsubscribeCollect.addAll([
-      DirectoryTreeService.activeNodeHook.subscribe(activeNodeSubscription),
-      DirectoryTreeService.changedNodeHook.subscribe(changeNodeSubscription),
-      DirectoryTreeService.pointerNodeHook.subscribe(pointerNodeSubscription),
+      DirectoryService.activeNodeHook.subscribe(activeNodeSubscription),
+      DirectoryService.changedNodeHook.subscribe(changeNodeSubscription),
+      DirectoryService.pointerNodeHook.subscribe(pointerNodeSubscription),
     ]);
   }
 
@@ -60,8 +60,8 @@ class _ItemSectionState extends State<ItemSection> {
   }
 
   void pointerNodeSubscription(DirectoryModel? data) {
-    final activeNode = DirectoryTreeService.activeNodeHook.value;
-    final pointerTreeItem = DirectoryTreeService.pointerNodeHook.value;
+    final activeNode = DirectoryService.activeNodeHook.value;
+    final pointerTreeItem = DirectoryService.pointerNodeHook.value;
     final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
     if (newIsBorder != isBorder) {
       setState(() => isBorder = newIsBorder);
@@ -78,11 +78,11 @@ class _ItemSectionState extends State<ItemSection> {
 
   /// Click on the title event.
   void handleTap() {
-    final value = DirectoryTreeService.activeNodeHook.value;
+    final value = DirectoryService.activeNodeHook.value;
     DirectoryModel? result;
     if (value?.id != widget.data.id) result = widget.data;
-    DirectoryTreeService.activeNodeHook.set(result);
-    DirectoryTreeService.changedNodeHook.set(null);
+    DirectoryService.activeNodeHook.set(result);
+    DirectoryService.changedNodeHook.set(null);
   }
 
   /// the  dialog for delete the node
@@ -106,7 +106,7 @@ class _ItemSectionState extends State<ItemSection> {
           ),
           TextButton(
             onPressed: () {
-              DirectoryTreeService.delete(widget.data.id.toString());
+              DirectoryService.delete(widget.data.id.toString());
               Navigator.pop(context, 'OK');
             },
             child: const Text('Delete'),
@@ -116,7 +116,7 @@ class _ItemSectionState extends State<ItemSection> {
     );
   }
 
-  void handleRenameFolder() => DirectoryTreeService.changedNodeHook.set(widget.data);
+  void handleRenameFolder() => DirectoryService.changedNodeHook.set(widget.data);
 
   /// show the  context  menu.
   _showContext() async {
@@ -152,7 +152,7 @@ class _ItemSectionState extends State<ItemSection> {
     if (_openContext) {
       _showContext();
       _openContext = false;
-      DirectoryTreeService.pointerNodeHook.set(null);
+      DirectoryService.pointerNodeHook.set(null);
     }
   }
 
@@ -160,19 +160,19 @@ class _ItemSectionState extends State<ItemSection> {
   void handlePointerDown(PointerDownEvent e) {
     _openContext = e.kind == PointerDeviceKind.mouse && e.buttons == kSecondaryMouseButton;
     if (_openContext) {
-      DirectoryTreeService.pointerNodeHook.set(widget.data);
+      DirectoryService.pointerNodeHook.set(widget.data);
     } else {
       setState(() {});
     }
   }
 
   void handleSaveNodeName(String? value) {
-    DirectoryTreeService.changedNodeHook.set(null);
+    DirectoryService.changedNodeHook.set(null);
   }
 
   void handleDoubleTapNode() {
-    DirectoryTreeService.changedNodeHook.set(widget.data);
-    DirectoryTreeService.activeNodeHook.set(widget.data);
+    DirectoryService.changedNodeHook.set(widget.data);
+    DirectoryService.activeNodeHook.set(widget.data);
   }
 
   Widget titleSection() {
@@ -188,14 +188,14 @@ class _ItemSectionState extends State<ItemSection> {
     return Text(
       '${widget.data.count}',
       style: TextStyle(
-        color: isActive ? Colors.white : CommonConfig.textGrey,
+        color: isActive ? Colors.white : Config.textGrey,
       ),
     );
   }
 
   Widget nodeSection() {
     double padding = (10 * widget.level).toDouble();
-    final activeTreeItem = DirectoryTreeService.activeNodeHook.value;
+    final activeTreeItem = DirectoryService.activeNodeHook.value;
 
     return Listener(
         onPointerDown: handlePointerDown,
@@ -206,10 +206,9 @@ class _ItemSectionState extends State<ItemSection> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(7),
-              color: isActive ? CommonConfig.activeColor : null,
-              border: isBorder
-                  ? Border.all(color: CommonConfig.activeBorderColor)
-                  : Border.all(color: CommonConfig.backgroundColor),
+              color: isActive ? Config.activeColor : null,
+              border:
+                  isBorder ? Border.all(color: Config.activeBorderColor) : Border.all(color: Config.backgroundColor),
             ),
             margin: const EdgeInsets.only(top: 5),
             padding: EdgeInsets.only(left: padding, top: 5, bottom: 5, right: 5),

@@ -59,7 +59,7 @@ class SQLiteDao {
         "id" INTEGER NOT NULL,
         "title" TEXT,
         "content" TEXT,
-        "pid" INTEGER,
+        "directory_id" INTEGER,
         "sort_num" INTEGER,
         "updated_at" DATE,
         "deleted_at" DATE,

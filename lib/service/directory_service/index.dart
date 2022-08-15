@@ -7,14 +7,14 @@ import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/directory_service/directory_service_util.dart';
 import 'package:snotes/utils/hook_event/hook_event.dart';
 
-class DirectoryTreeService {
+class DirectoryService {
   static int rootNodeId = 0;
-  static HookImp<DirectoryModel?> activeNodeHook = Hook.builder(null);
+  static Hook<DirectoryModel?> activeNodeHook = Hook(null);
 
   /// The node  being modified.
-  static HookImp<DirectoryModel?> changedNodeHook = Hook.builder(null);
-  static HookImp<DirectoryModel?> pointerNodeHook = Hook.builder(null); // 右键点击的项
-  static HookImp<List<DirectoryModel>> directoryHook = Hook.builder([]);
+  static Hook<DirectoryModel?> changedNodeHook = Hook(null);
+  static Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
+  static Hook<List<DirectoryModel>> directoryHook = Hook([]);
 
   static Future<void> init() async {
     _updateDirectoryHook();

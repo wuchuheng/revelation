@@ -15,7 +15,7 @@ ChapterModel _$ChapterModelFromJson(Map<String, dynamic> json) => ChapterModel(
       sortNum: json['sortNum'] as int,
       id: json['id'] as int,
       content: json['content'] as String,
-      pid: json['pid'] as int,
+      directoryId: json['directoryId'] as int,
     );
 
 Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
@@ -26,5 +26,5 @@ Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
       'updatedAt': instance.updatedAt.toIso8601String(),
       'deletedAt': instance.deletedAt?.toIso8601String(),
       'sortNum': instance.sortNum,
-      'pid': instance.pid,
+      'directoryId': instance.directoryId,
     };

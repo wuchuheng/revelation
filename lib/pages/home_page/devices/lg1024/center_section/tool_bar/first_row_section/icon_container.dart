@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snotes/service/chapter_service/index.dart';
 
-import '../../../../../../common_config.dart';
+import '../../../../../../../config/config.dart';
 
 class IconContainer extends StatefulWidget {
   final IconData iconData;
@@ -17,6 +18,10 @@ class IconContainer extends StatefulWidget {
 class _IconContainerState extends State<IconContainer> {
   bool isHover = false;
 
+  onTap() async {
+    await ChapterService.create();
+  }
+
   @override
   Widget build(BuildContext context) {
     const size = 30.0;
@@ -29,21 +34,19 @@ class _IconContainerState extends State<IconContainer> {
           Radius.circular(4),
         ),
       ),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (e) {
-          if (isHover != true) setState(() => isHover = true);
+      child: InkWell(
+        onTap: onTap,
+        onHover: (e) {
+          if (e != isHover) {
+            setState(() => isHover = e);
+          }
         },
-        onExit: (e) {
-          if (isHover != false) setState(() => isHover = false);
-        },
-        onHover: (v) {},
         child: Center(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(widget.iconData, color: isHover ? Colors.black : CommonConfig.iconColor, size: 20),
+              Icon(widget.iconData, color: isHover ? Colors.black : Config.iconColor, size: 20),
             ],
           ),
         ),

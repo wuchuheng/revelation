@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:snotes/dao/directory_dao/index.dart';
+import 'package:snotes/model/directory_model/index.dart';
 
 part 'index.g.dart';
 
@@ -6,23 +8,27 @@ part 'index.g.dart';
 class ChapterModel {
   static String tableName = 'chapter';
 
-  final int id;
-  final String title;
-  final String content;
-  final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final int sortNum;
-  final int pid;
+  int id;
+  String title;
+  String content;
+  DateTime updatedAt;
+  DateTime? deletedAt;
+  int sortNum;
+  int directoryId;
 
   ChapterModel({
     required this.title,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.sortNum,
     required this.id,
     required this.content,
-    required this.pid,
+    required this.directoryId,
   });
+
+  DirectoryModel get directory {
+    return DirectoryDao().has(id: directoryId)!;
+  }
 
   factory ChapterModel.fromJson(Map<String, dynamic> json) {
     return _$ChapterModelFromJson(json);

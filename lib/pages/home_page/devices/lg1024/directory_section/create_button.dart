@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
-import 'package:snotes/pages/common_config.dart';
+import 'package:snotes/config/config.dart';
 import 'package:snotes/service/directory_service/index.dart';
 
 class MenuItemData {
@@ -23,7 +23,7 @@ class CreateButton extends StatelessWidget {
 
   void handleSelect(String value, BuildContext context) async {
     if (value == createFolderValue) {
-      await DirectoryTreeService.create();
+      await DirectoryService.create();
       return;
     }
   }
@@ -49,10 +49,10 @@ class CreateButton extends StatelessWidget {
   Widget getLabel() {
     return Row(
       children: [
-        Icon(IconFont.icon_plus, size: 13, color: CommonConfig.textGrey),
+        Icon(IconFont.icon_plus, size: 13, color: Config.textGrey),
         Text(
           ' New Folder',
-          style: TextStyle(color: CommonConfig.textGrey),
+          style: TextStyle(color: Config.textGrey),
         ),
       ],
     );

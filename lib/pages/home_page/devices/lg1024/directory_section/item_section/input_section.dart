@@ -19,7 +19,7 @@ class InputSection extends StatelessWidget {
       width: 200,
       margin: const EdgeInsets.only(left: 4),
       child: TextFormField(
-        onChanged: DirectoryTreeService.update,
+        onChanged: DirectoryService.update,
         onFieldSubmitted: onFieldSubmitted,
         initialValue: initialValue,
         autofocus: true,
