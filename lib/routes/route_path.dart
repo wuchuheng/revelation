@@ -1,11 +1,11 @@
 import 'package:hi_router/hi_router.dart';
 import 'package:hi_router/route/route_abstract.dart';
-import 'package:snotes/pages/login_page/index.dart';
 
 import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
 import '../model/user_model/user_model.dart';
 import '../pages/home_page/index.dart';
+import '../pages/login_page/index.dart';
 import '../service/cache_service.dart';
 
 /// 路由

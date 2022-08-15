@@ -32,7 +32,13 @@ class DirectoryDao implements DirectoryDaoAbstract {
       deleted_at = ?,
       updated_at = ?
       WHERE id = ${directory.id}
-      ''', [directory.pid, directory.sortId, directory.title, directory.deletedAt, directory.updatedAt]);
+      ''', [
+        directory.pid,
+        directory.sortId,
+        directory.title,
+        directory.deletedAt?.toString(),
+        directory.updatedAt.toString(),
+      ]);
     } else {
       db.execute('''
       INSERT INTO $tableName (
@@ -43,7 +49,14 @@ class DirectoryDao implements DirectoryDaoAbstract {
         deleted_at,
         updated_at
       ) VALUES (?, ?, ?, ?, ?, ?);
-      ''', [directory.id, directory.pid, directory.sortId, directory.title, directory.deletedAt, directory.updatedAt]);
+      ''', [
+        directory.id,
+        directory.pid,
+        directory.sortId,
+        directory.title,
+        directory.deletedAt?.toString(),
+        directory.updatedAt.toString(),
+      ]);
     }
 
     return directory;

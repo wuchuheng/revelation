@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter/material.dart';
 
-class TmpPage extends Page {
+class Tmp2Page extends Page {
   @override
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -24,7 +24,7 @@ class _TmpState extends State<Tmp> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('index'),
+        child: Text('loginPage'),
       ),
     );
   }

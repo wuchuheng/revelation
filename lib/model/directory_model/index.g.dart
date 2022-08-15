@@ -15,7 +15,7 @@ DirectoryModel _$DirectoryModelFromJson(Map<String, dynamic> json) =>
       pid: json['pid'] as int,
       sortId: json['sortId'] as int,
       title: json['title'] as String,
-      updatedAt: json['updatedAt'] as String,
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
       count: json['count'] as int,
       children: (json['children'] as List<dynamic>)
           .map((e) => DirectoryModel.fromJson(e as Map<String, dynamic>))
@@ -29,7 +29,7 @@ Map<String, dynamic> _$DirectoryModelToJson(DirectoryModel instance) =>
       'sortId': instance.sortId,
       'title': instance.title,
       'deletedAt': instance.deletedAt?.toIso8601String(),
-      'updatedAt': instance.updatedAt,
+      'updatedAt': instance.updatedAt.toIso8601String(),
       'children': instance.children,
       'count': instance.count,
     };

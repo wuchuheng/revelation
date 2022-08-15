@@ -11,7 +11,7 @@ class DirectoryModel {
   int sortId;
   String title;
   DateTime? deletedAt;
-  String updatedAt;
+  DateTime updatedAt;
   List<DirectoryModel> children;
   int count;
 
@@ -33,10 +33,10 @@ class DirectoryModel {
     required this.pid,
     required this.sortId,
     required this.title,
-  }) : updatedAt = DateTime.now().toString();
+  }) : updatedAt = DateTime.now();
 
   DirectoryModel.getRootNodeInitData()
-      : updatedAt = DateTime.now().toString(),
+      : updatedAt = DateTime.now(),
         count = 0,
         children = [],
         id = rootNodeId,
