@@ -50,14 +50,17 @@ class _EditSectionState extends State<EditSection> {
     final edtor = SizedBox(
       height: MediaQuery.of(context).size.height,
       width: width,
-      child: TextFormField(
-        autofocus: true,
-        controller: textEditingController,
-        onChanged: onChanged,
-        maxLines: 200,
-        decoration: const InputDecoration.collapsed(
-          border: InputBorder.none,
-          hintText: "",
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: TextFormField(
+          autofocus: true,
+          controller: textEditingController,
+          onChanged: onChanged,
+          maxLines: 200,
+          decoration: const InputDecoration.collapsed(
+            border: InputBorder.none,
+            hintText: "",
+          ),
         ),
       ),
     );
