@@ -4,11 +4,8 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/config/config.dart';
 import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/direct_icon_section.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/folder_icon_section.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/input_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section.dart';
 import 'package:snotes/service/directory_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
@@ -165,86 +162,33 @@ class _ItemSectionState extends State<ItemSection> {
     }
   }
 
-  void handleSaveNodeName(String? value) {
-    DirectoryService.changedNodeHook.set(null);
-  }
+  void handleSaveNodeName(String? value) => DirectoryService.changedNodeHook.set(null);
 
   void handleDoubleTapNode() {
     DirectoryService.changedNodeHook.set(widget.data);
     DirectoryService.activeNodeHook.set(widget.data);
   }
 
-  Widget titleSection() {
-    return Text(
-      ' ${widget.data.title}',
-      style: TextStyle(
-        color: isActive ? Colors.white : Colors.black,
-      ),
-    );
-  }
-
-  Widget countSection() {
-    return Text(
-      '${widget.data.count}',
-      style: TextStyle(
-        color: isActive ? Colors.white : Config.textGrey,
-      ),
-    );
-  }
-
-  Widget nodeSection() {
-    double padding = (10 * widget.level).toDouble();
-    final activeTreeItem = DirectoryService.activeNodeHook.value;
-
-    return Listener(
-        onPointerDown: handlePointerDown,
-        onPointerUp: handlePointerUp,
-        child: GestureDetector(
-          onTap: handleTap,
-          onDoubleTap: handleDoubleTapNode,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              color: isActive ? Config.activeColor : null,
-              border:
-                  isBorder ? Border.all(color: Config.activeBorderColor) : Border.all(color: Config.backgroundColor),
-            ),
-            margin: const EdgeInsets.only(top: 5),
-            padding: EdgeInsets.only(left: padding, top: 5, bottom: 5, right: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DirectIconSection(
-                      isOpenFolder: isOpenFold,
-                      onTap: () => setState(() => isOpenFold = !isOpenFold),
-                      isNotEmpty: widget.data.children.isNotEmpty,
-                    ),
-                    FolderIconSection(isActive: isActive),
-                    isChangeNode
-                        ? InputSection(
-                            onFieldSubmitted: handleSaveNodeName,
-                            initialValue: activeTreeItem?.title,
-                          )
-                        : titleSection(),
-                  ],
-                ),
-                countSection(),
-              ],
-            ),
-          ),
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        nodeSection(),
+        NodeSectionState(
+          level: widget.level,
+          handlePointerDown: handlePointerDown,
+          handlePointerUp: handlePointerUp,
+          handleTap: handleTap,
+          handleDoubleTapNode: handleDoubleTapNode,
+          isActive: isActive,
+          isBorder: isBorder,
+          isOpenFold: isOpenFold,
+          onChangeIsFolder: (_) => setState(() => isOpenFold = !isOpenFold),
+          childrenIsNotEmpty: widget.data.children.isNotEmpty,
+          isChangeNode: isChangeNode,
+          handleSaveNodeName: handleSaveNodeName,
+          title: widget.data.title,
+          count: widget.data.count,
+        ),
         if (isOpenFold)
           for (DirectoryModel item in widget.data.children)
             ItemSection(

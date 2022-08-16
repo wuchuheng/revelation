@@ -20,8 +20,7 @@ class _TreeSectionState extends State<TreeSection> {
   @override
   void initState() {
     super.initState();
-    treeSubscriptHandler = DirectoryService.directoryHook
-        .subscribe((data) => setState(() => treeItems = data));
+    treeSubscriptHandler = DirectoryService.directoryHook.subscribe((data) => setState(() => treeItems = data));
   }
 
   @override
@@ -35,14 +34,11 @@ class _TreeSectionState extends State<TreeSection> {
     double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(
-      height: MediaQuery.of(context).size.height -
-          bottomBarHeight -
-          Config.titleBarHeight,
+      height: MediaQuery.of(context).size.height - bottomBarHeight - Config.titleBarHeight,
       child: SingleChildScrollView(
         child: Column(
           children: [
-            for (var treeItem in treeItems)
-              ItemSection(key: ValueKey(treeItem.id), data: treeItem),
+            for (var treeItem in treeItems) ItemSection(key: ValueKey(treeItem.id), data: treeItem),
           ],
         ),
       ),
@@ -58,10 +54,9 @@ class _TreeSectionState extends State<TreeSection> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                  padding: EdgeInsets.only(top: Config.titleBarHeight)),
+              const Padding(padding: EdgeInsets.only(top: Config.titleBarHeight)),
               list,
-              CreateButton(bottomBarHeight: bottomBarHeight),
+              const CreateButton(bottomBarHeight: bottomBarHeight),
             ],
           ),
         ),
