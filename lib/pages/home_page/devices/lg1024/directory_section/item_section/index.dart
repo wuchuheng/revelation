@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section/index.dart';
 import 'package:snotes/service/directory_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
@@ -73,13 +73,22 @@ class _ItemSectionState extends State<ItemSection> {
     unsubscribeCollect.unsubscribe();
   }
 
+  DateTime _lastClickedAt = DateTime.now();
+
   /// Click on the title event.
   void handleTap() {
-    final value = DirectoryService.activeNodeHook.value;
-    DirectoryModel? result;
-    if (value?.id != widget.data.id) result = widget.data;
-    DirectoryService.changedNodeHook.set(null);
-    DirectoryService.setActiveNode(result);
+    /// doubleTap
+    if (DateTime.now().microsecondsSinceEpoch - _lastClickedAt.microsecondsSinceEpoch < 500000) {
+      DirectoryService.changedNodeHook.set(widget.data);
+      DirectoryService.activeNodeHook.set(widget.data);
+    } else {
+      final value = DirectoryService.activeNodeHook.value;
+      DirectoryModel? result;
+      if (value?.id != widget.data.id) result = widget.data;
+      DirectoryService.changedNodeHook.set(null);
+      DirectoryService.setActiveNode(result);
+    }
+    _lastClickedAt = DateTime.now();
   }
 
   /// the  dialog for delete the node
@@ -164,11 +173,6 @@ class _ItemSectionState extends State<ItemSection> {
 
   void handleSaveNodeName(String? value) => DirectoryService.changedNodeHook.set(null);
 
-  void handleDoubleTapNode() {
-    DirectoryService.changedNodeHook.set(widget.data);
-    DirectoryService.activeNodeHook.set(widget.data);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -178,7 +182,6 @@ class _ItemSectionState extends State<ItemSection> {
           handlePointerDown: handlePointerDown,
           handlePointerUp: handlePointerUp,
           handleTap: handleTap,
-          handleDoubleTapNode: handleDoubleTapNode,
           isActive: isActive,
           isBorder: isBorder,
           isOpenFold: isOpenFold,
