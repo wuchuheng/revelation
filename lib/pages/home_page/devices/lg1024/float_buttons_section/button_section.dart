@@ -4,7 +4,10 @@ class ButtonSection extends StatefulWidget {
   final String message;
   final void Function() onTap;
   final IconData iconData;
-  const ButtonSection({Key? key, required this.message, required this.onTap, required this.iconData}) : super(key: key);
+  final bool isActive;
+  const ButtonSection(
+      {Key? key, required this.message, required this.onTap, required this.iconData, required this.isActive})
+      : super(key: key);
 
   @override
   State<ButtonSection> createState() => _ButtonSectionState();
@@ -14,6 +17,7 @@ class _ButtonSectionState extends State<ButtonSection> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
+    if (widget.isActive) isHover = true;
     return Tooltip(
       message: widget.message,
       child: MouseRegion(

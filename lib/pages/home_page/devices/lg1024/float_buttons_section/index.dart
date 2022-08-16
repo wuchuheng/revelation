@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/float_buttons_section/button_section.dart';
+import 'package:snotes/service/float_tool_bar_service/index.dart';
+import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 class FloatButtonSection extends StatefulWidget {
   const FloatButtonSection({Key? key}) : super(key: key);
@@ -12,6 +14,28 @@ class FloatButtonSection extends StatefulWidget {
 
 class _FloatButtonsSectionState extends State<FloatButtonSection> {
   double buttonCount = 3;
+  final unsubscribeCollect = UnsubscribeCollect([]);
+  bool isPreview = FloatingToolBarService.isPreviewHook.value;
+  bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
+
+  @override
+  void initState() {
+    super.initState();
+    unsubscribeCollect.addAll([
+      FloatingToolBarService.isPreviewHook.subscribe((data) {
+        if (data != isPreview) setState(() => isPreview = data);
+      }),
+      FloatingToolBarService.isSplittingPreviewHook.subscribe((data) {
+        if (data != isSplittingPreview) setState(() => isSplittingPreview = data);
+      })
+    ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    unsubscribeCollect.unsubscribe();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +43,16 @@ class _FloatButtonsSectionState extends State<FloatButtonSection> {
     const size = 35.0;
     final childrenSection = <Widget>[
       ButtonSection(
+        isActive: isPreview,
         iconData: IconFont.icon_preview,
         message: 'preview',
-        onTap: () {
-          print('preview');
-        },
+        onTap: FloatingToolBarService.onTapPreview,
       ),
       ButtonSection(
+        isActive: isSplittingPreview,
         iconData: IconFont.icon_split,
         message: 'split',
-        onTap: () {
-          print('split');
-        },
+        onTap: FloatingToolBarService.onTapSplittingPreview,
       ),
     ];
 
