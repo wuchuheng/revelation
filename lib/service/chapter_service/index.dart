@@ -47,6 +47,8 @@ class ChapterService {
       key: ChapterServiceUtil.getCacheKeyById(chapter.id),
       value: jsonEncode(chapter),
     );
+    editChapterHook.set(chapter);
+    DirectoryService.triggerUpdateDirectoryHook();
   }
 
   static Future<void> update(ChapterModel chapter) async {
@@ -54,5 +56,27 @@ class ChapterService {
       key: ChapterServiceUtil.getCacheKeyById(chapter.id),
       value: jsonEncode(chapter),
     );
+    chapterListHook.setCallback((data) {
+      return data.map((e) {
+        if (e.id == chapter.id) {
+          e.content = chapter.content;
+        }
+        return e;
+      }).toList();
+    });
+  }
+
+  static void setEditChapter({required int id}) {
+    final chapter = ChapterDao().has(id: id)!;
+    editChapterHook.set(chapter);
+  }
+
+  static Future<void> delete(ChapterModel chapter) async {
+    chapter.deletedAt = DateTime.now();
+    await CacheService.getImapCache().set(
+      key: ChapterServiceUtil.getCacheKeyById(chapter.id),
+      value: jsonEncode(chapter),
+    );
+    DirectoryService.triggerUpdateDirectoryHook();
   }
 }

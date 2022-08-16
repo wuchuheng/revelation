@@ -19,11 +19,11 @@ class DirectoryService {
   static Hook<List<DirectoryModel>> directoryHook = Hook([]);
 
   static Future<void> init() async {
-    _updateDirectoryHook();
+    triggerUpdateDirectoryHook();
     CacheService.getImapCache().afterSetSubscribe(callback: _afterSetSubscription);
   }
 
-  static void _updateDirectoryHook() {
+  static void triggerUpdateDirectoryHook() {
     final directoryData = DirectoryDao().fetchAll();
     final directories = idMapTreeItemConvertToTree(directoryData);
     directoryHook.set(directories);
@@ -35,7 +35,7 @@ class DirectoryService {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       DirectoryModel directory = DirectoryModel.fromJson(jsonMapData);
       DirectoryDao().save(directory);
-      _updateDirectoryHook();
+      triggerUpdateDirectoryHook();
     }
   }
 

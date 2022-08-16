@@ -132,16 +132,15 @@ class _ItemSectionState extends State<ItemSection> {
           ),
         ),
         const ContextMenuSeparator(),
-        if (DirectoryModel.rootNodeId != widget.data.id)
-          ContextMenuItem(
-            title: 'Delete Folder',
-            onTap: handleDeleteDialog,
-            shortcut: SingleActivator(
-              LogicalKeyboardKey.keyC,
-              meta: Platform.isMacOS,
-              control: Platform.isWindows,
-            ),
+        ContextMenuItem(
+          title: 'Delete Folder',
+          onTap: DirectoryModel.rootNodeId != widget.data.id ? handleDeleteDialog : null,
+          shortcut: SingleActivator(
+            LogicalKeyboardKey.keyC,
+            meta: Platform.isMacOS,
+            control: Platform.isWindows,
           ),
+        ),
       ],
     );
     menu?.onTap?.call();
