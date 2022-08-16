@@ -22,13 +22,11 @@ class _EditSectionState extends State<EditSection> {
     if (chapter != null) textEditingController.text = chapter!.content;
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
-        if (data?.id != chapter?.id) {
-          if (data != null) {
-            textEditingController.text = data.content;
-            chapter = data;
-            setState(() {});
-          }
+        if (data?.id != chapter?.id && data != null) {
+          textEditingController.text = data.content;
         }
+        chapter = data;
+        setState(() {});
       }),
     ]);
     super.initState();

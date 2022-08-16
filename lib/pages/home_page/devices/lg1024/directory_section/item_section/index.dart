@@ -36,9 +36,9 @@ class _ItemSectionState extends State<ItemSection> {
     super.initState();
     final activeNode = DirectoryService.activeNodeHook.value;
     final pointerTreeItem = DirectoryService.pointerNodeHook.value;
-    isBorder = activeNode?.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
+    isBorder = activeNode.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
     final activeTreeItem = DirectoryService.activeNodeHook.value;
-    isActive = activeTreeItem?.id == widget.data.id;
+    isActive = activeTreeItem.id == widget.data.id;
     unsubscribeCollect.addAll([
       DirectoryService.activeNodeHook.subscribe(activeNodeSubscription),
       DirectoryService.changedNodeHook.subscribe(changeNodeSubscription),
@@ -59,7 +59,7 @@ class _ItemSectionState extends State<ItemSection> {
   void pointerNodeSubscription(DirectoryModel? data) {
     final activeNode = DirectoryService.activeNodeHook.value;
     final pointerTreeItem = DirectoryService.pointerNodeHook.value;
-    final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode?.id;
+    final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode.id;
     if (newIsBorder != isBorder) {
       setState(() => isBorder = newIsBorder);
     } else if (isBorder) {
@@ -82,11 +82,8 @@ class _ItemSectionState extends State<ItemSection> {
       DirectoryService.changedNodeHook.set(widget.data);
       DirectoryService.activeNodeHook.set(widget.data);
     } else {
-      final value = DirectoryService.activeNodeHook.value;
-      DirectoryModel? result;
-      if (value?.id != widget.data.id) result = widget.data;
       DirectoryService.changedNodeHook.set(null);
-      DirectoryService.setActiveNode(result);
+      DirectoryService.setActiveNode(widget.data);
     }
     _lastClickedAt = DateTime.now();
   }

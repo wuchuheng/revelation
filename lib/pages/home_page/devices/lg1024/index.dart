@@ -3,6 +3,8 @@ import 'package:snotes/pages/home_page/devices/lg1024/center_section/index.dart'
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/index.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/edit_section/index.dart';
 
+import 'float_buttons_section/index.dart';
+
 class LG1024HomePage extends StatefulWidget {
   const LG1024HomePage({Key? key}) : super(key: key);
 
@@ -22,6 +24,7 @@ class _LG1024HomePageState extends State<LG1024HomePage> {
           EditSection(),
         ],
       ),
+      floatingActionButton: const FloatButtonSection(),
     );
   }
 }

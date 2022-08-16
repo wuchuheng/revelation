@@ -11,7 +11,7 @@ import 'package:snotes/utils/hook_event/hook_event.dart';
 
 class DirectoryService {
   static int rootNodeId = 0;
-  static Hook<DirectoryModel?> activeNodeHook = Hook(null);
+  static late Hook<DirectoryModel> activeNodeHook;
 
   /// The node  being modified.
   static Hook<DirectoryModel?> changedNodeHook = Hook(null);
@@ -19,6 +19,7 @@ class DirectoryService {
   static Hook<List<DirectoryModel>> directoryHook = Hook([]);
 
   static Future<void> init() async {
+    activeNodeHook = Hook(DirectoryDao().has(id: 0)!);
     triggerUpdateDirectoryHook();
     CacheService.getImapCache().afterSetSubscribe(callback: _afterSetSubscription);
   }
@@ -61,7 +62,7 @@ class DirectoryService {
   static create() async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
-    int pid = activeNodeHook.value?.id ?? 0;
+    int pid = activeNodeHook.value.id;
     DirectoryModel newItem = DirectoryModel.create(
       id: id,
       pid: pid,
@@ -86,26 +87,18 @@ class DirectoryService {
     final directory = DirectoryDao().has(id: id)!;
     directory.title = nodeName;
     await DirectoryServiceUtil.setLocalCache(directory);
-    if (activeNodeHook.value?.id == id) {
+    if (activeNodeHook.value.id == id) {
       activeNodeHook.setCallback((data) {
-        data?.title = nodeName;
+        data.title = nodeName;
         return data;
       });
     }
   }
 
-  static void setActiveNode(DirectoryModel? result) {
+  static void setActiveNode(DirectoryModel result) {
     DirectoryService.activeNodeHook.set(result);
-    if (result != null) {
-      final chapter = ChapterDao();
-      final chapters = chapter.fetchByDirectoryId(result.id);
-      ChapterService.chapterListHook.set(chapters);
-      final editChapter = ChapterService.editChapterHook.value;
-      if (editChapter?.directoryId != result.id && chapters.isNotEmpty) {
-        ChapterService.editChapterHook.set(chapters[0]);
-      } else if (editChapter?.directoryId != result.id) {
-        ChapterService.editChapterHook.set(null);
-      }
-    }
+    final chapter = ChapterDao();
+    final chapters = chapter.fetchByDirectoryId(result.id);
+    ChapterService.setChapterList(chapters);
   }
 }

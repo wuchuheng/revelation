@@ -15,7 +15,7 @@ class ToolBar extends StatefulWidget {
 
 class _ToolBarState extends State<ToolBar> {
   Color? color;
-  String title = DirectoryService.activeNodeHook.value?.title ?? '';
+  String title = DirectoryService.activeNodeHook.value.title;
   final unsubscribeCollect = UnsubscribeCollect([]);
 
   @override

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:snotes/dao/chapter_dao/index.dart';
-import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/chapter_service_util.dart';
 import 'package:snotes/service/directory_service/index.dart';
@@ -28,11 +27,11 @@ class ChapterService {
 
   static void _updateChapterHook() {
     final List<ChapterModel> data = ChapterDao().fetchAll();
-    chapterListHook.set(data);
+    setChapterList(data);
   }
 
   static Future<void> create() async {
-    final directoryId = DirectoryService.activeNodeHook.value?.id ?? DirectoryModel.rootNodeId;
+    final directoryId = DirectoryService.activeNodeHook.value.id;
     final id = DateTime.now().microsecondsSinceEpoch;
     ChapterModel chapter = ChapterModel(
       title: 'New Note',
@@ -62,14 +61,13 @@ createdAt: ${DateTime.now().toString()}
       key: ChapterServiceUtil.getCacheKeyById(chapter.id),
       value: jsonEncode(chapter),
     );
-    chapterListHook.setCallback((data) {
-      return data.map((e) {
-        if (e.id == chapter.id) {
-          e.content = chapter.content;
-        }
-        return e;
-      }).toList();
-    });
+    final newChapterList = chapterListHook.value.map((e) {
+      if (e.id == chapter.id) {
+        e.content = chapter.content;
+      }
+      return e;
+    }).toList();
+    setChapterList(newChapterList);
   }
 
   static void setEditChapter({required int id}) {
@@ -84,5 +82,17 @@ createdAt: ${DateTime.now().toString()}
       value: jsonEncode(chapter),
     );
     DirectoryService.triggerUpdateDirectoryHook();
+  }
+
+  static void setChapterList(List<ChapterModel> chapters) {
+    chapterListHook.set(chapters);
+    final editChapter = ChapterService.editChapterHook.value;
+    final activeNode = DirectoryService.activeNodeHook.value;
+
+    if (editChapter?.directoryId != activeNode.id && chapters.isNotEmpty) {
+      ChapterService.editChapterHook.set(chapters[0]);
+    } else if (editChapter?.directoryId != activeNode.id) {
+      ChapterService.editChapterHook.set(null);
+    }
   }
 }

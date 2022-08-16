@@ -63,7 +63,7 @@ class NodeSectionState extends StatelessWidget {
             isChangeNode
                 ? InputSection(
                     onFieldSubmitted: handleSaveNodeName,
-                    initialValue: activeTreeItem?.title,
+                    initialValue: activeTreeItem.title,
                   )
                 : TitleSection(title: title, isActive: isActive)
           ],
