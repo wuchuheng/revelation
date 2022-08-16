@@ -40,7 +40,13 @@ class ChapterService {
       id: id,
       sortNum: 0,
       deletedAt: null,
-      content: '',
+      content: '''
+--- 
+title: New Note
+createdAt: ${DateTime.now().toString()}
+--- 
+
+''',
       updatedAt: DateTime.now(),
     );
     await CacheService.getImapCache().set(
