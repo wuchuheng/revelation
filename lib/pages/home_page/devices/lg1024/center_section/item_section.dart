@@ -139,23 +139,33 @@ class _ItemSectionState extends State<ItemSection> {
             children: [
               Text(
                 widget.chapter.title,
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: isActive ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 17,
                 ),
               ),
               Row(
                 children: [
-                  Text('${widget.chapter.updatedAt.hour}:${widget.chapter.updatedAt.minute}',
-                      style: const TextStyle(fontSize: fontSize)),
-                  Text(' 温和给人的意图定性', style: TextStyle(color: color, fontSize: fontSize))
+                  Text(
+                    '${widget.chapter.updatedAt.hour}:${widget.chapter.updatedAt.minute}',
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      color: isActive ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  Text(' 温和给人的意图定性',
+                      style: TextStyle(
+                        color: isActive ? Colors.white : color,
+                        fontSize: fontSize,
+                      ))
                 ],
               ),
               Row(
                 children: [
-                  Icon(IconFont.icon_file_directory, size: fontSize, color: color),
-                  Text('  ${widget.chapter.directory.title}', style: TextStyle(fontSize: fontSize, color: color)),
+                  Icon(IconFont.icon_file_directory, size: fontSize, color: isActive ? Colors.white : color),
+                  Text('  ${widget.chapter.directory.title}',
+                      style: TextStyle(fontSize: fontSize, color: isActive ? Colors.white : color)),
                 ],
               )
             ],
