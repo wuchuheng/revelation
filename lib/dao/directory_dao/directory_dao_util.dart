@@ -11,7 +11,6 @@ class DirectoryDaoUtil {
       pid: row['pid'],
       children: [],
       deletedAt: row['deleted_at'] != null ? DateTimeUtil.convertTimeStr(row['deleted_at']) : null,
-      count: 0,
       sortNum: row['sort_num'],
     );
   }

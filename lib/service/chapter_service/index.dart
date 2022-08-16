@@ -21,7 +21,6 @@ class ChapterService {
     if (ChapterServiceUtil.isChapterByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
-      print(chapter.content);
       ChapterDao().save(chapter);
       _updateChapterHook();
     }

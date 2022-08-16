@@ -38,24 +38,24 @@ class SubscriptionBuilder {
 }
 
 class UnsubscribeCollect implements UnsubscribeCollectAbstract {
-  final List<UnsubscribeAbstract> unsubscribeList;
+  final List<UnsubscribeAbstract> _unsubscribeList;
 
-  UnsubscribeCollect(this.unsubscribeList);
+  UnsubscribeCollect(List<UnsubscribeAbstract> unsubscribeList) : _unsubscribeList = unsubscribeList;
 
   @override
   void unsubscribe() {
-    for (var element in unsubscribeList) {
+    for (var element in _unsubscribeList) {
       element.unsubscribe();
     }
   }
 
   @override
   void add(UnsubscribeAbstract unsubscribeAbstract) {
-    unsubscribeList.add(unsubscribeAbstract);
+    _unsubscribeList.add(unsubscribeAbstract);
   }
 
   @override
   void addAll(Iterable<UnsubscribeAbstract> unsubscribeAbstract) {
-    unsubscribeList.addAll(unsubscribeAbstract);
+    _unsubscribeList.addAll(unsubscribeAbstract);
   }
 }

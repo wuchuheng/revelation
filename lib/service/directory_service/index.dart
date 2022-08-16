@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:snotes/dao/chapter_dao/index.dart';
 import 'package:snotes/dao/directory_dao/index.dart';
 import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
+import 'package:snotes/service/chapter_service/index.dart';
 import 'package:snotes/service/directory_service/directory_service_util.dart';
 import 'package:snotes/utils/hook_event/hook_event.dart';
 
@@ -65,7 +67,6 @@ class DirectoryService {
       pid: pid,
       sortNum: 0,
       title: 'New Folder',
-      count: 0,
       children: [],
     );
     await DirectoryServiceUtil.setLocalCache(newItem);
@@ -81,9 +82,30 @@ class DirectoryService {
   }
 
   static Future<void> update(String nodeName) async {
-    String id = changedNodeHook.value!.id.toString();
-    final directory = DirectoryDao().has(id: int.parse(id))!;
+    final id = changedNodeHook.value!.id;
+    final directory = DirectoryDao().has(id: id)!;
     directory.title = nodeName;
     await DirectoryServiceUtil.setLocalCache(directory);
+    if (activeNodeHook.value?.id == id) {
+      activeNodeHook.setCallback((data) {
+        data?.title = nodeName;
+        return data;
+      });
+    }
+  }
+
+  static void setActiveNode(DirectoryModel? result) {
+    DirectoryService.activeNodeHook.set(result);
+    if (result != null) {
+      final chapter = ChapterDao();
+      final chapters = chapter.fetchByDirectoryId(result.id);
+      ChapterService.chapterListHook.set(chapters);
+      final editChapter = ChapterService.editChapterHook.value;
+      if (editChapter?.directoryId != result.id && chapters.isNotEmpty) {
+        ChapterService.editChapterHook.set(chapters[0]);
+      } else if (editChapter?.directoryId != result.id) {
+        ChapterService.editChapterHook.set(null);
+      }
+    }
   }
 }

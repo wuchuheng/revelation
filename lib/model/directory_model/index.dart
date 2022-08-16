@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:snotes/dao/chapter_dao/index.dart';
 
 part 'index.g.dart';
 
@@ -13,7 +14,10 @@ class DirectoryModel {
   DateTime? deletedAt;
   DateTime updatedAt;
   List<DirectoryModel> children;
-  int count;
+
+  int get count {
+    return ChapterDao().fetchByDirectoryId(id).length;
+  }
 
   DirectoryModel({
     this.deletedAt,
@@ -22,12 +26,10 @@ class DirectoryModel {
     required this.sortNum,
     required this.title,
     required this.updatedAt,
-    required this.count,
     required this.children,
   });
   DirectoryModel.create({
     this.deletedAt,
-    required this.count,
     required this.children,
     required this.id,
     required this.pid,
@@ -37,7 +39,6 @@ class DirectoryModel {
 
   DirectoryModel.getRootNodeInitData()
       : updatedAt = DateTime.now(),
-        count = 0,
         children = [],
         id = rootNodeId,
         pid = 0,

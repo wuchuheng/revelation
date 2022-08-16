@@ -82,4 +82,18 @@ class ChapterDao implements ChapterDaoAbstract {
 
     return result;
   }
+
+  @override
+  List<ChapterModel> fetchByDirectoryId(int directoryId) {
+    final tableName = ChapterModel.tableName;
+    final db = SQLiteDao.getDb();
+    final ResultSet fetchResult =
+        db.select(''' select * from $tableName where deleted_at is null and directory_id = $directoryId ''');
+    List<ChapterModel> result = [];
+    for (Row row in fetchResult) {
+      result.add(ChapterDaoUtil.rowConvertChapterModel(row));
+    }
+
+    return result;
+  }
 }

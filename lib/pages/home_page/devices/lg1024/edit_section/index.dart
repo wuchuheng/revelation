@@ -24,7 +24,7 @@ class _EditSectionState extends State<EditSection> {
       ChapterService.editChapterHook.subscribe((data) {
         if (data?.id != chapter?.id) {
           setState(() => chapter = data);
-          textEditingController.text = data!.content;
+          if (data != null) textEditingController.text = data.content;
         }
       }),
     ]);

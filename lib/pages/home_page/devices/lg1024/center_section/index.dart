@@ -5,6 +5,7 @@ import 'package:snotes/pages/home_page/devices/lg1024/center_section/tool_bar/in
 import 'package:snotes/service/chapter_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
+import 'empty_section.dart';
 import 'item_section.dart';
 
 class CenterSection extends StatefulWidget {
@@ -38,18 +39,20 @@ class _CenterSectionState extends State<CenterSection> {
 
   Widget getContainer({required List<Widget> children}) {
     final height = MediaQuery.of(context).size.height - Config.centerSectionToolBarHeight;
+    final listSection = GridView.count(
+      controller: _scrollController,
+      // mainAxisSpacing: 10,
+      childAspectRatio: 3.5,
+      crossAxisCount: 1,
+      children: children,
+    );
+
     return Container(
       width: Config.lg1024CenterSectionWidth,
       height: height,
       color: Colors.white,
       padding: const EdgeInsets.only(bottom: Config.centerSectionItemGap),
-      child: GridView.count(
-        controller: _scrollController,
-        // mainAxisSpacing: 10,
-        childAspectRatio: 3.5,
-        crossAxisCount: 1,
-        children: children,
-      ),
+      child: children.isEmpty ? const EmptySection() : listSection,
     );
   }
 

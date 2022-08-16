@@ -81,8 +81,8 @@ class _ItemSectionState extends State<ItemSection> {
     final value = DirectoryService.activeNodeHook.value;
     DirectoryModel? result;
     if (value?.id != widget.data.id) result = widget.data;
-    DirectoryService.activeNodeHook.set(result);
     DirectoryService.changedNodeHook.set(null);
+    DirectoryService.setActiveNode(result);
   }
 
   /// the  dialog for delete the node
