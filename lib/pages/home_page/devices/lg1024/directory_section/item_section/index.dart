@@ -77,13 +77,12 @@ class _ItemSectionState extends State<ItemSection> {
 
   /// Click on the title event.
   void handleTap() {
-    /// doubleTap
+    DirectoryService.setActiveNode(widget.data);
+    // doubleTap
     if (DateTime.now().microsecondsSinceEpoch - _lastClickedAt.microsecondsSinceEpoch < 500000) {
       DirectoryService.changedNodeHook.set(widget.data);
-      DirectoryService.activeNodeHook.set(widget.data);
     } else {
       DirectoryService.changedNodeHook.set(null);
-      DirectoryService.setActiveNode(widget.data);
     }
     _lastClickedAt = DateTime.now();
   }
