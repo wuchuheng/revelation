@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/markdown_section/index.dart';
 import 'package:snotes/service/float_tool_bar_service/index.dart';
 
-import '../../../../../model/chapter_model/index.dart';
-import '../../../../../service/chapter_service/index.dart';
-import '../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
+import '../../../../../../model/chapter_model/index.dart';
+import '../../../../../../service/chapter_service/index.dart';
+import '../../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
 
 class EditorSection extends StatefulWidget {
   final double width;
@@ -46,25 +47,25 @@ class _EditorSectionState extends State<EditorSection> {
 
   onChanged(String value) async {
     chapter!.content = value;
-    await ChapterService.update(chapter!);
+    ChapterService.setEditChapter(chapter!);
   }
 
-  Widget getTextFormField() {
-    return TextFormField(
-      autofocus: true,
-      controller: textEditingController,
-      onChanged: onChanged,
-      maxLines: 200,
-      decoration: const InputDecoration.collapsed(
-        border: InputBorder.none,
-        hintText: "",
-      ),
-    );
-  }
-
-  Widget getMarkdown() {
+  Widget getTextFormField(double width) {
     return Container(
-      child: Text('markdown'),
+      width: width,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: TextFormField(
+          autofocus: true,
+          controller: textEditingController,
+          onChanged: onChanged,
+          maxLines: 200,
+          decoration: const InputDecoration.collapsed(
+            border: InputBorder.none,
+            hintText: "",
+          ),
+        ),
+      ),
     );
   }
 
@@ -73,19 +74,19 @@ class _EditorSectionState extends State<EditorSection> {
     final result = isSplittingPreview && chapter != null
         ? Row(
             children: [
-              getTextFormField(),
-              getMarkdown(),
+              getTextFormField(widget.width / 2),
+              MarkdownSection(
+                width: widget.width / 2,
+                chapter: chapter!,
+              )
             ],
           )
-        : getTextFormField();
+        : getTextFormField(widget.width);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: widget.width,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: result,
-      ),
+      child: result,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/model/chapter_model/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/index.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/edit_section/empty_section.dart';
 import 'package:snotes/service/chapter_service/index.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
@@ -19,16 +19,17 @@ class _EditSectionState extends State<EditSection> {
 
   @override
   void initState() {
-    super.initState();
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
         setState(() => chapter = data);
       }),
     ]);
+    super.initState();
   }
 
   @override
   void dispose() {
+    unsubscribeCollect.unsubscribe();
     super.dispose();
   }
 

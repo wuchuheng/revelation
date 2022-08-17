@@ -56,23 +56,12 @@ createdAt: ${DateTime.now().toString()}
     DirectoryService.triggerUpdateDirectoryHook();
   }
 
-  static Future<void> update(ChapterModel chapter) async {
+  static Future<void> setEditChapter(ChapterModel chapter) async {
+    editChapterHook.set(chapter);
     await CacheService.getImapCache().set(
       key: ChapterServiceUtil.getCacheKeyById(chapter.id),
       value: jsonEncode(chapter),
     );
-    final newChapterList = chapterListHook.value.map((e) {
-      if (e.id == chapter.id) {
-        e.content = chapter.content;
-      }
-      return e;
-    }).toList();
-    setChapterList(newChapterList);
-  }
-
-  static void setEditChapter({required int id}) {
-    final chapter = ChapterDao().has(id: id)!;
-    editChapterHook.set(chapter);
   }
 
   static Future<void> delete(ChapterModel chapter) async {

@@ -121,7 +121,7 @@ class _ItemSectionState extends State<ItemSection> {
       onPointerDown: handlePointerDown,
       onPointerUp: handlePointerUp,
       child: GestureDetector(
-        onTap: () => ChapterService.setEditChapter(id: widget.chapter.id),
+        onTap: () => ChapterService.setEditChapter(widget.chapter),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
