@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:snotes/config/config.dart';
 
 class MarkdownSection extends StatefulWidget {
   final double width;
@@ -30,11 +31,11 @@ class _MarkdownSectionState extends State<MarkdownSection> {
       width: widget.width,
       height: double.infinity,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
           left: BorderSide(
             width: 1,
-            color: Colors.grey,
+            color: Config.borderColor,
           ),
         ),
       ),
