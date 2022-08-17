@@ -19,7 +19,9 @@ class DirectoryService {
   static Hook<List<DirectoryModel>> directoryHook = Hook([]);
 
   static Future<void> init() async {
-    activeNodeHook = Hook(DirectoryDao().has(id: 0)!);
+    final rootNode = DirectoryDao().has(id: 0)!;
+    activeNodeHook = Hook(rootNode);
+    setActiveNode(rootNode);
     triggerUpdateDirectoryHook();
     CacheService.getImapCache().afterSetSubscribe(callback: _afterSetSubscription);
   }
