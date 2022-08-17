@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:markdown/markdown.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:snotes/model/chapter_model/index.dart';
+
+import 'code_element_builder.dart';
 
 class MarkdownSection extends StatefulWidget {
   final ChapterModel chapter;
@@ -15,8 +16,26 @@ class MarkdownSection extends StatefulWidget {
 class _MarkdownSectionState extends State<MarkdownSection> {
   @override
   Widget build(BuildContext context) {
-    final String htmlString = markdownToHtml(widget.chapter.content);
-    Widget html = Html(data: htmlString);
+    // final html = Markdown(
+    //   selectable: true,
+    //   data: widget.chapter.content,
+    //   extensionSet: md.ExtensionSet(
+    //     md.ExtensionSet.commonMark.blockSyntaxes,
+    //     [
+    //       md.EmojiSyntax(),
+    //       ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+    //     ],
+    //   ),
+    // );
+
+    final html = Markdown(
+        key: const Key("defaultmarkdownformatter"),
+        data: widget.chapter.content,
+        selectable: true,
+        padding: const EdgeInsets.all(10),
+        builders: {
+          'code': CodeElementBuilder(),
+        });
 
     return Container(
       width: widget.width,

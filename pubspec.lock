@@ -293,8 +293,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_highlighter:
+    dependency: "direct main"
+    description:
+      name: flutter_highlighter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   flutter_html:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_html
       url: "https://pub.dartlang.org"
@@ -307,6 +314,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  flutter_markdown:
+    dependency: "direct main"
+    description:
+      name: flutter_markdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.10+3"
   flutter_spinkit:
     dependency: "direct main"
     description:
@@ -345,6 +359,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   graphs:
     dependency: transitive
     description:
@@ -366,6 +387,13 @@ packages:
       relative: true
     source: path
     version: "0.0.14"
+  highlighter:
+    dependency: transitive
+    description:
+      name: highlighter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   html:
     dependency: transitive
     description:
@@ -467,12 +495,12 @@ packages:
     source: hosted
     version: "1.0.2"
   markdown:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.0"
+    version: "5.0.0"
   matcher:
     dependency: transitive
     description:
