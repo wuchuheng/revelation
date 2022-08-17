@@ -1,45 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:snotes/model/chapter_model/index.dart';
-
-import 'code_element_builder.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 class MarkdownSection extends StatefulWidget {
-  final ChapterModel chapter;
   final double width;
-  const MarkdownSection({Key? key, required this.chapter, required this.width}) : super(key: key);
+  final TextEditingController textEditingController;
+  const MarkdownSection({Key? key, required this.width, required this.textEditingController}) : super(key: key);
 
   @override
   State<MarkdownSection> createState() => _MarkdownSectionState();
 }
 
 class _MarkdownSectionState extends State<MarkdownSection> {
+  String text = '';
+
+  @override
+  void initState() {
+    super.initState();
+    text = widget.textEditingController.text;
+    widget.textEditingController.addListener(() {
+      if (text != widget.textEditingController.text && mounted) {
+        setState(() => text = widget.textEditingController.text);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final html = Markdown(
-    //   selectable: true,
-    //   data: widget.chapter.content,
-    //   extensionSet: md.ExtensionSet(
-    //     md.ExtensionSet.commonMark.blockSyntaxes,
-    //     [
-    //       md.EmojiSyntax(),
-    //       ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-    //     ],
-    //   ),
-    // );
-
-    final html = Markdown(
-        key: const Key("defaultmarkdownformatter"),
-        data: widget.chapter.content,
-        selectable: true,
-        padding: const EdgeInsets.all(10),
-        builders: {
-          'code': CodeElementBuilder(),
-        });
-
     return Container(
       width: widget.width,
       height: double.infinity,
+      padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
         border: Border(
           left: BorderSide(
@@ -48,7 +38,9 @@ class _MarkdownSectionState extends State<MarkdownSection> {
           ),
         ),
       ),
-      child: html,
+      child: MarkdownWidget(
+        data: text,
+      ),
     );
   }
 }

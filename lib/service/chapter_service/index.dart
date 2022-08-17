@@ -41,8 +41,9 @@ class ChapterService {
       deletedAt: null,
       content: '''
 --- 
-title: New Note
-createdAt: ${DateTime.now().toString()}
+title: New Note 
+createdAt: ${DateTime.now().toString()} 
+
 --- 
 
 ''',

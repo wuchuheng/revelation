@@ -5,6 +5,7 @@ import 'package:snotes/service/float_tool_bar_service/index.dart';
 
 import '../../../../../../model/chapter_model/index.dart';
 import '../../../../../../service/chapter_service/index.dart';
+import '../../../../../../utils/helper.dart';
 import '../../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
 
 class EditorSection extends StatefulWidget {
@@ -17,25 +18,40 @@ class EditorSection extends StatefulWidget {
 
 class _EditorSectionState extends State<EditorSection> {
   final UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
-  ChapterModel? chapter = ChapterService.editChapterHook.value;
   final textEditingController = TextEditingController();
   bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
 
+  final onSave = Helper.debounce((ChapterModel newChapter) {
+    final chapter = ChapterService.editChapterHook.value;
+    if (chapter?.id == newChapter.id) {
+      chapter!.content = newChapter.content;
+      ChapterService.setEditChapter(chapter);
+    }
+  }, 1000);
+
   @override
   void initState() {
-    if (chapter != null) textEditingController.text = chapter!.content;
+    final chapter = ChapterService.editChapterHook.value;
+    if (chapter != null) {
+      textEditingController.text = chapter.content;
+    }
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
-        if (data?.id != chapter?.id && data != null) {
+        if (chapter != null && data?.id != chapter.id && data != null && textEditingController.text != data.content) {
           textEditingController.text = data.content;
         }
-        chapter = data;
-        setState(() {});
       }),
       FloatingToolBarService.isSplittingPreviewHook.subscribe((value) {
         if (value != isSplittingPreview) setState(() => isSplittingPreview = value);
       }),
     ]);
+    textEditingController.addListener(() {
+      final chapter = ChapterService.editChapterHook.value;
+      if (chapter != null) {
+        chapter.content = textEditingController.text;
+        // onSave(chapter);
+      }
+    });
     super.initState();
   }
 
@@ -45,22 +61,17 @@ class _EditorSectionState extends State<EditorSection> {
     super.dispose();
   }
 
-  onChanged(String value) async {
-    chapter!.content = value;
-    ChapterService.setEditChapter(chapter!);
-  }
-
   Widget getTextFormField(double width) {
     return Container(
       width: width,
       child: Padding(
         padding: const EdgeInsets.all(10),
-        child: TextFormField(
+        child: TextField(
+          cursorColor: Colors.black,
           autofocus: true,
           controller: textEditingController,
-          onChanged: onChanged,
           maxLines: 200,
-          decoration: const InputDecoration.collapsed(
+          decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "",
           ),
@@ -71,13 +82,14 @@ class _EditorSectionState extends State<EditorSection> {
 
   @override
   Widget build(BuildContext context) {
-    final result = isSplittingPreview && chapter != null
+    print(DateTime.now().toString());
+    final result = isSplittingPreview
         ? Row(
             children: [
               getTextFormField(widget.width / 2),
               MarkdownSection(
                 width: widget.width / 2,
-                chapter: chapter!,
+                textEditingController: textEditingController,
               )
             ],
           )
