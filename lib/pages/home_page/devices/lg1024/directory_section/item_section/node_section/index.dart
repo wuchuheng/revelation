@@ -43,7 +43,7 @@ class NodeSectionState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double padding = (10 * level).toDouble();
+    double padding = (8 * level).toDouble();
     final activeTreeItem = DirectoryService.activeNodeHook.value;
 
     final child = Row(
@@ -71,7 +71,6 @@ class NodeSectionState extends StatelessWidget {
         CountSection(count: count, isActive: isActive),
       ],
     );
-
     return Listener(
       onPointerDown: handlePointerDown,
       onPointerUp: handlePointerUp,
