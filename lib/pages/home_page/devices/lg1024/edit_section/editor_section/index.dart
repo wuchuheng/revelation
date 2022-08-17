@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/markdown_section/index.dart';
 import 'package:snotes/service/float_tool_bar_service/index.dart';
@@ -20,6 +19,7 @@ class _EditorSectionState extends State<EditorSection> {
   final UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   final textEditingController = TextEditingController();
   bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
+  ChapterModel? chapter = ChapterService.editChapterHook.value;
 
   final onSave = Helper.debounce((ChapterModel newChapter) {
     final chapter = ChapterService.editChapterHook.value;
@@ -31,14 +31,17 @@ class _EditorSectionState extends State<EditorSection> {
 
   @override
   void initState() {
-    final chapter = ChapterService.editChapterHook.value;
     if (chapter != null) {
-      textEditingController.text = chapter.content;
+      textEditingController.text = chapter!.content;
     }
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
-        if (chapter != null && data?.id != chapter.id && data != null && textEditingController.text != data.content) {
+        if (chapter != null && data?.id != chapter?.id && data != null && textEditingController.text != data.content) {
           textEditingController.text = data.content;
+        }
+        if (chapter?.id != data?.id) {
+          chapter = data;
+          setState(() {});
         }
       }),
       FloatingToolBarService.isSplittingPreviewHook.subscribe((value) {
@@ -82,7 +85,6 @@ class _EditorSectionState extends State<EditorSection> {
 
   @override
   Widget build(BuildContext context) {
-    print(DateTime.now().toString());
     final result = isSplittingPreview
         ? Row(
             children: [
