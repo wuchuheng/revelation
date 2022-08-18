@@ -20,9 +20,12 @@ class ChapterService {
     if (ChapterServiceUtil.isChapterByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
+      final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
-      final List<ChapterModel> data = ChapterDao().fetchAll();
-      setChapterList(data);
+      if (oldData == null) {
+        final List<ChapterModel> data = ChapterDao().fetchAll();
+        setChapterList(data);
+      }
     }
   }
 

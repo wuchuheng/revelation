@@ -27,15 +27,26 @@ class _ItemSectionState extends State<ItemSection> {
   final UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   bool isActive = false;
   bool _openContext = false;
+  late ChapterModel chapter;
 
   @override
   void initState() {
+    chapter = widget.chapter;
     super.initState();
     isActive = ChapterService.editChapterHook.value?.id == widget.chapter.id;
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
         final result = ChapterService.editChapterHook.value?.id == widget.chapter.id;
-        if (result != isActive) setState(() => isActive = result);
+        bool isChange = false;
+        if (result != isActive) {
+          isChange = true;
+          isActive = result;
+        }
+        if (widget.chapter.id == ChapterService.editChapterHook.value?.id) {
+          isChange = true;
+          chapter = ChapterService.editChapterHook.value!;
+        }
+        if (isChange) setState(() {});
       }),
     ]);
   }
@@ -119,7 +130,7 @@ class _ItemSectionState extends State<ItemSection> {
     const fontSize = 13.0;
     Color color = Colors.grey[600]!;
     final regexp = RegExp(r'---(.*?)---', multiLine: true, dotAll: true);
-    String content = widget.chapter.content;
+    String content = chapter.content;
     content = content.replaceAll(regexp, '');
     content = content.replaceAll(RegExp(r'^\s+\n', multiLine: true, dotAll: true), '');
     if (content.isNotEmpty) {
@@ -134,7 +145,7 @@ class _ItemSectionState extends State<ItemSection> {
       onPointerDown: handlePointerDown,
       onPointerUp: handlePointerUp,
       child: GestureDetector(
-        onTap: () => ChapterService.setEditChapter(widget.chapter),
+        onTap: () => ChapterService.setEditChapter(chapter),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -151,7 +162,7 @@ class _ItemSectionState extends State<ItemSection> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.chapter.title,
+                chapter.title,
                 style: TextStyle(
                   color: isActive ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w600,
@@ -161,7 +172,7 @@ class _ItemSectionState extends State<ItemSection> {
               Row(
                 children: [
                   Text(
-                    '${widget.chapter.updatedAt.hour}:${widget.chapter.updatedAt.minute}',
+                    '${chapter.updatedAt.hour}:${chapter.updatedAt.minute}',
                     style: TextStyle(
                       fontSize: fontSize,
                       color: isActive ? Colors.white : Colors.black,
@@ -177,7 +188,7 @@ class _ItemSectionState extends State<ItemSection> {
               Row(
                 children: [
                   Icon(IconFont.icon_file_directory, size: fontSize, color: isActive ? Colors.white : color),
-                  Text('  ${widget.chapter.directory.title}',
+                  Text('  ${chapter.directory.title}',
                       style: TextStyle(fontSize: fontSize, color: isActive ? Colors.white : color)),
                 ],
               )
