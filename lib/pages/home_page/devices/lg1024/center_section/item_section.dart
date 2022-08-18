@@ -118,6 +118,17 @@ class _ItemSectionState extends State<ItemSection> {
     Logger.info(message: 'Build widget ItemSection', symbol: 'build');
     const fontSize = 13.0;
     Color color = Colors.grey[600]!;
+    final regexp = RegExp(r'---(.*?)---', multiLine: true, dotAll: true);
+    String content = widget.chapter.content;
+    content = content.replaceAll(regexp, '');
+    content = content.replaceAll(RegExp(r'^\s+\n', multiLine: true, dotAll: true), '');
+    if (content.isNotEmpty) {
+      content = content.split('\n')[0];
+      const length = 10;
+      content = content.length > length ? content.substring(0, length) : content;
+    } else {
+      content = '';
+    }
 
     return Listener(
       onPointerDown: handlePointerDown,
@@ -156,7 +167,7 @@ class _ItemSectionState extends State<ItemSection> {
                       color: isActive ? Colors.white : Colors.black,
                     ),
                   ),
-                  Text(' 温和给人的意图定性',
+                  Text(' ${content.isNotEmpty ? content : "(No Date)"}',
                       style: TextStyle(
                         color: isActive ? Colors.white : color,
                         fontSize: fontSize,
