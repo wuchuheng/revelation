@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:snotes/utils/logger.dart';
 
 import '../../../../../../../common/iconfont.dart';
 
@@ -15,6 +16,7 @@ class DirectIconSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget DirectIconSection', symbol: 'build');
     return GestureDetector(
       // onTap: () => setState(() => isOpenFold = !isOpenFold),
       onTap: onTap,

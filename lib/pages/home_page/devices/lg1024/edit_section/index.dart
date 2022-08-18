@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/model/chapter_model/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/edit_section/empty_section.dart';
 import 'package:snotes/service/chapter_service/index.dart';
+import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+
+import 'editor_section/index.dart';
+import 'empty_section.dart';
 
 class EditSection extends StatefulWidget {
   const EditSection({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class _EditSectionState extends State<EditSection> {
   void initState() {
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
-        setState(() => chapter = data);
+        if (data?.id != chapter?.id) setState(() => chapter = data);
       }),
     ]);
     super.initState();
@@ -35,6 +37,7 @@ class _EditSectionState extends State<EditSection> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget EditSection', symbol: 'build');
     final fullWidth = MediaQuery.of(context).size.width;
     final width = fullWidth - Config.lg1024DirectoryWidth - Config.lg1024CenterSectionWidth;
     return chapter == null ? EmptySection(width: width) : EditorSection(width: width);

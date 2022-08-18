@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section/title_section.dart';
+import 'package:snotes/utils/logger.dart';
 
 import '../../../../../../../config/config.dart';
 import '../../../../../../../service/directory_service/index.dart';
@@ -43,6 +44,7 @@ class NodeSectionState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget NodeSectionState', symbol: 'build');
     double padding = (8 * level).toDouble();
     final activeTreeItem = DirectoryService.activeNodeHook.value;
 

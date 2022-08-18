@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snotes/utils/logger.dart';
 
 class TitleSection extends StatelessWidget {
   final String title;
@@ -7,6 +8,7 @@ class TitleSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget TitleSection', symbol: 'build');
     return Text(
       ' $title',
       style: TextStyle(

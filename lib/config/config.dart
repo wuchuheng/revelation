@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-final _primaryColor = HexColor('#DC9607');
-
 class Config {
   static final Color textGrey = Colors.grey[700]!;
   static final Color activeColor = HexColor('#E4C65E');

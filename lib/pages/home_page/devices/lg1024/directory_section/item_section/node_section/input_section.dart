@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snotes/utils/logger.dart';
 
 import '../../../../../../../service/directory_service/index.dart';
 
@@ -14,6 +15,7 @@ class InputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget InputSection', symbol: 'build');
     return Container(
       height: 17.5,
       width: 200,

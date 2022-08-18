@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/float_buttons_section/button_section.dart';
 import 'package:snotes/service/float_tool_bar_service/index.dart';
+import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 class FloatButtonSection extends StatefulWidget {
@@ -39,6 +40,7 @@ class _FloatButtonsSectionState extends State<FloatButtonSection> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget FloatButtonSection', symbol: 'build');
     const spacing = 5.0;
     const size = 35.0;
     final childrenSection = <Widget>[

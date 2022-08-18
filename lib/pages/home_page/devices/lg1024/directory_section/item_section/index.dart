@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section/index.dart';
 import 'package:snotes/service/directory_service/index.dart';
+import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 class ItemSection extends StatefulWidget {
@@ -171,6 +172,7 @@ class _ItemSectionState extends State<ItemSection> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget ItemSection', symbol: 'build');
     return Column(
       children: [
         NodeSectionState(

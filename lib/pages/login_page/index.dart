@@ -5,6 +5,7 @@ import 'package:snotes/dao/user_dao/index.dart';
 import 'package:snotes/model/user_model/user_model.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
 import 'package:snotes/pages/login_page/form_section/index.dart';
+import 'package:snotes/utils/logger.dart';
 
 import '../../routes/route_path.dart';
 import '../../service/cache_service.dart';
@@ -81,6 +82,7 @@ class _LoginPageState extends State<_LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget LoginPage', symbol: 'build');
     return Scaffold(
       body: Container(
         color: HexColor('#EBE7E9'),

@@ -9,6 +9,7 @@ import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/model/chapter_model/index.dart';
 import 'package:snotes/service/chapter_service/index.dart';
+import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
 
 import '../../../../../service/directory_service/index.dart';
@@ -16,7 +17,7 @@ import '../../../../../service/directory_service/index.dart';
 class ItemSection extends StatefulWidget {
   final bool isFirst;
   final ChapterModel chapter;
-  const ItemSection({Key? key, required this.isFirst, required this.chapter}) : super(key: key);
+  const ItemSection({super.key, required this.isFirst, required this.chapter});
 
   @override
   State<ItemSection> createState() => _ItemSectionState();
@@ -114,6 +115,7 @@ class _ItemSectionState extends State<ItemSection> {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget ItemSection', symbol: 'build');
     const fontSize = 13.0;
     Color color = Colors.grey[600]!;
 

@@ -21,13 +21,9 @@ class ChapterService {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       ChapterDao().save(chapter);
-      _updateChapterHook();
+      final List<ChapterModel> data = ChapterDao().fetchAll();
+      setChapterList(data);
     }
-  }
-
-  static void _updateChapterHook() {
-    final List<ChapterModel> data = ChapterDao().fetchAll();
-    setChapterList(data);
   }
 
   static Future<void> create() async {

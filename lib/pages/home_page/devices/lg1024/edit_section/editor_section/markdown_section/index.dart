@@ -1,34 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:snotes/config/config.dart';
+import 'package:snotes/utils/logger.dart';
 
-class MarkdownSection extends StatefulWidget {
+class MarkdownSection extends StatelessWidget {
   final double width;
-  final TextEditingController textEditingController;
-  const MarkdownSection({Key? key, required this.width, required this.textEditingController}) : super(key: key);
-
-  @override
-  State<MarkdownSection> createState() => _MarkdownSectionState();
-}
-
-class _MarkdownSectionState extends State<MarkdownSection> {
-  String text = '';
-
-  @override
-  void initState() {
-    super.initState();
-    text = widget.textEditingController.text;
-    widget.textEditingController.addListener(() {
-      if (text != widget.textEditingController.text && mounted) {
-        setState(() => text = widget.textEditingController.text);
-      }
-    });
-  }
-
+  final String content;
+  const MarkdownSection({Key? key, required this.width, required this.content}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget MarkdownSection', symbol: 'build');
     return Container(
-      width: widget.width,
+      width: width,
       height: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -40,7 +23,7 @@ class _MarkdownSectionState extends State<MarkdownSection> {
         ),
       ),
       child: MarkdownWidget(
-        data: text,
+        data: content,
       ),
     );
   }

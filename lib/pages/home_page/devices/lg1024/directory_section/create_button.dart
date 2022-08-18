@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/service/directory_service/index.dart';
+import 'package:snotes/utils/logger.dart';
 
 class CreateButton extends StatelessWidget {
   final double bottomBarHeight;
@@ -10,6 +11,7 @@ class CreateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Logger.info(message: 'Build widget CreateButton', symbol: 'build');
     return InkWell(
       onTap: DirectoryService.create,
       child: SizedBox(
