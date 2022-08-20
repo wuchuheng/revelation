@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/model/chapter_model/index.dart';
 import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'editor_section/index.dart';
 import 'empty_section.dart';
@@ -37,7 +37,7 @@ class _EditSectionState extends State<EditSection> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget EditSection', symbol: 'build');
+    Logger.info('Build widget EditSection', symbol: 'build');
     final fullWidth = MediaQuery.of(context).size.width;
     final width = fullWidth - Config.lg1024DirectoryWidth - Config.lg1024CenterSectionWidth;
     return chapter == null ? EmptySection(width: width) : EditorSection(width: width);

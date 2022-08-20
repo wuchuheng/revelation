@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/markdown_section/index.dart';
 import 'package:snotes/service/float_tool_bar_service/index.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../../../../../model/chapter_model/index.dart';
@@ -68,7 +68,7 @@ class _EditorSectionState extends State<EditorSection> {
   }
 
   Widget getTextFormField(double width) {
-    Logger.info(message: 'Build TextFormField', symbol: 'build');
+    Logger.info('Build TextFormField', symbol: 'build');
     return SizedBox(
       width: width,
       child: Padding(
@@ -95,7 +95,7 @@ class _EditorSectionState extends State<EditorSection> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget EditorSection', symbol: 'build');
+    Logger.info('Build widget EditorSection', symbol: 'build');
 
     conatainer(Widget child) {
       return SizedBox(

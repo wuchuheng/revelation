@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FieldContainer extends StatelessWidget {
   final String label;
@@ -8,7 +8,7 @@ class FieldContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget FieldContainer', symbol: 'build');
+    Logger.info('Build widget FieldContainer', symbol: 'build');
     return Wrap(
       direction: Axis.horizontal,
       children: [

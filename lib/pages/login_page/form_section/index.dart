@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'field_container.dart';
 
@@ -138,7 +138,7 @@ class _FormSectionState extends State<FormSection> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget FormSection', symbol: 'build');
+    Logger.info('Build widget FormSection', symbol: 'build');
     return Form(
       key: _formKey,
       child: Container(

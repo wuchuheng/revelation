@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../config/config.dart';
 
@@ -10,7 +10,7 @@ class CountSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget CountSection', symbol: 'build');
+    Logger.info('Build widget CountSection', symbol: 'build');
     return Text(
       '$count',
       style: TextStyle(

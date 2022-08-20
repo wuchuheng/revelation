@@ -3,8 +3,8 @@ import 'package:snotes/config/config.dart';
 import 'package:snotes/model/chapter_model/index.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/center_section/tool_bar/index.dart';
 import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'empty_section.dart';
 import 'item_section.dart';
@@ -59,7 +59,7 @@ class _CenterSectionState extends State<CenterSection> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget CenterSection', symbol: 'build');
+    Logger.info('Build widget CenterSection', symbol: 'build');
     return Container(
       width: Config.lg1024CenterSectionWidth,
       height: MediaQuery.of(context).size.height,

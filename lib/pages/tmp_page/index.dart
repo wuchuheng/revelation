@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:intl/intl.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class TmpPage extends Page {
   @override
@@ -24,7 +24,7 @@ class Tmp extends StatefulWidget {
 class _TmpState extends State<Tmp> {
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget  _TmpState.', symbol: 'build');
+    Logger.info('Build widget  _TmpState.', symbol: 'build');
 
     final onlineTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse('2022-08-18 11:55:28', true).millisecondsSinceEpoch;
     final localTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse('2022-08-18 12:54:05', true).millisecondsSinceEpoch;

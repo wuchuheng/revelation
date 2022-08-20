@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../config/config.dart';
 
@@ -25,7 +25,7 @@ class _IconContainerState extends State<IconContainer> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget IconContainer', symbol: 'build');
+    Logger.info('Build widget IconContainer', symbol: 'build');
     const size = 30.0;
     return Container(
       width: size,

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FirstRowSection extends StatefulWidget {
   const FirstRowSection({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class FirstRowSection extends StatefulWidget {
 class _FirstRowSectionState extends State<FirstRowSection> {
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget FirstRowSection', symbol: 'build');
+    Logger.info('Build widget FirstRowSection', symbol: 'build');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: const [

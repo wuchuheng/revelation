@@ -3,7 +3,7 @@ import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
 import 'package:snotes/service/directory_service/index.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../model/directory_model/index.dart';
 import '../../../../../utils/subscription_builder/subscription_builder_abstract.dart';
@@ -32,7 +32,7 @@ class _TreeSectionState extends State<TreeSection> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget TreeSection', symbol: 'build');
+    Logger.info('Build widget TreeSection', symbol: 'build');
     double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(

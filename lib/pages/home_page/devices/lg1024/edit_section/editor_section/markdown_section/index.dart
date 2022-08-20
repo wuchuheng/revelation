@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:snotes/config/config.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class MarkdownSection extends StatelessWidget {
   final double width;
@@ -9,7 +9,7 @@ class MarkdownSection extends StatelessWidget {
   const MarkdownSection({Key? key, required this.width, required this.content}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget MarkdownSection', symbol: 'build');
+    Logger.info('Build widget MarkdownSection', symbol: 'build');
     return Container(
       width: width,
       height: double.infinity,

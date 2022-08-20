@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class ButtonSection extends StatefulWidget {
   final String message;
@@ -18,7 +18,7 @@ class _ButtonSectionState extends State<ButtonSection> {
   bool isHover = false;
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget ButtonSection', symbol: 'build');
+    Logger.info('Build widget ButtonSection', symbol: 'build');
     if (widget.isActive) isHover = true;
     return Tooltip(
       message: widget.message,

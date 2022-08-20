@@ -4,8 +4,8 @@ import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/center_section/tool_bar/first_row_section/icon_container.dart';
 import 'package:snotes/service/directory_service/index.dart';
-import 'package:snotes/utils/logger.dart';
 import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class ToolBar extends StatefulWidget {
   const ToolBar({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _ToolBarState extends State<ToolBar> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget ToolBar', symbol: 'build');
+    Logger.info('Build widget ToolBar', symbol: 'build');
     return Container(
       height: Config.centerSectionToolBarHeight,
       decoration: BoxDecoration(

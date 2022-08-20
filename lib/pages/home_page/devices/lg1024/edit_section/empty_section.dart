@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class EmptySection extends StatelessWidget {
   final double width;
@@ -8,7 +8,7 @@ class EmptySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget EmptySection', symbol: 'build');
+    Logger.info('Build widget EmptySection', symbol: 'build');
     const String assetName = 'assets/images/svg/undraw_no_data_re_kwbl.svg';
     final Widget svg = SvgPicture.asset(
       assetName,

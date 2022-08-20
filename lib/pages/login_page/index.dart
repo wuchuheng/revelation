@@ -5,7 +5,7 @@ import 'package:snotes/dao/user_dao/index.dart';
 import 'package:snotes/model/user_model/user_model.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
 import 'package:snotes/pages/login_page/form_section/index.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../routes/route_path.dart';
 import '../../service/cache_service.dart';
@@ -42,7 +42,7 @@ class _LoginPageState extends State<_LoginPage> {
         isImapServerSecure: accountInfo.tls,
       );
     } catch (e) {
-      Logger.error(message: e.toString(), symbol: 'imap');
+      Logger.error(e.toString(), symbol: 'imap');
       final snackBar = SnackBar(
         content: const Text('Failed to connect to IMAP server.'),
         backgroundColor: Colors.red[300],
@@ -83,7 +83,7 @@ class _LoginPageState extends State<_LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget LoginPage', symbol: 'build');
+    Logger.info('Build widget LoginPage', symbol: 'build');
     return Scaffold(
       body: Container(
         color: HexColor('#EBE7E9'),

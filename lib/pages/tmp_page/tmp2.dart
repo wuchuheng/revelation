@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/utils/logger.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class Tmp2Page extends Page {
   @override
@@ -23,7 +23,7 @@ class Tmp extends StatefulWidget {
 class _TmpState extends State<Tmp> {
   @override
   Widget build(BuildContext context) {
-    Logger.info(message: 'Build widget Tmp2Page', symbol: 'build');
+    Logger.info('Build widget Tmp2Page', symbol: 'build');
     return const Scaffold(
       body: Center(
         child: Text('loginPage'),
