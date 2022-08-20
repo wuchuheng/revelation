@@ -13,10 +13,10 @@ class ChapterService {
   static Hook<ChapterModel?> editChapterHook = Hook(null);
 
   static Future<void> init() async {
-    CacheService.getImapCache().afterSetSubscribe(callback: _afterSetSubscribe);
+    CacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
   }
 
-  static void _afterSetSubscribe({required String key, required String value}) {
+  static Future<void> _afterSetSubscribe({required String key, required String value, required String hash}) async {
     if (ChapterServiceUtil.isChapterByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);

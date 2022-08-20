@@ -26,9 +26,10 @@ class RoutePath {
       await SQLiteDao.init();
       final UserModel? user = UserDao().has();
       final loginPage = RoutePageInfo('/login', () => LoginPage());
+      final isConnectImap = CacheService.isConnectHook.value;
       if (user == null) {
         return loginPage;
-      } else {
+      } else if (!isConnectImap) {
         try {
           await CacheService.login(
             userName: user.userName,

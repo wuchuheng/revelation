@@ -41,7 +41,8 @@ class _LoginPageState extends State<_LoginPage> {
         imapServerPort: accountInfo.port,
         isImapServerSecure: accountInfo.tls,
       );
-    } catch (e, stack) {
+    } catch (e) {
+      Logger.error(message: e.toString(), symbol: 'imap');
       final snackBar = SnackBar(
         content: const Text('Failed to connect to IMAP server.'),
         backgroundColor: Colors.red[300],

@@ -22,5 +22,5 @@ class Config {
   static const double toolBarHeight = 50;
 
   /// developer options
-  static const bool isDebug = false;
+  static const bool isDebug = true;
 }

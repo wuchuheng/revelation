@@ -648,13 +648,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.27.5"
   scrollable_positioned_list:
     dependency: transitive
     description:
@@ -710,7 +703,7 @@ packages:
     source: hosted
     version: "1.7.2"
   stack_trace:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: stack_trace
       url: "https://pub.dartlang.org"
@@ -740,9 +733,9 @@ packages:
   task_util:
     dependency: "direct main"
     description:
-      name: task_util
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../tmp/task_util"
+      relative: true
+    source: path
     version: "0.0.2"
   term_glyph:
     dependency: transitive

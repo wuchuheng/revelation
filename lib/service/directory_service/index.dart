@@ -23,7 +23,7 @@ class DirectoryService {
     activeNodeHook = Hook(rootNode);
     setActiveNode(rootNode);
     triggerUpdateDirectoryHook();
-    CacheService.getImapCache().afterSetSubscribe(callback: _afterSetSubscription);
+    CacheService.getImapCache().afterSet(callback: _afterSetSubscription);
   }
 
   static void triggerUpdateDirectoryHook() {
@@ -33,7 +33,7 @@ class DirectoryService {
   }
 
   /// modify the directory tree when the local cache is modified.
-  static void _afterSetSubscription({required String value, required String key}) async {
+  static Future<void> _afterSetSubscription({required String value, required String key, required String hash}) async {
     if (DirectoryServiceUtil.isDirectoryByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       DirectoryModel directory = DirectoryModel.fromJson(jsonMapData);
