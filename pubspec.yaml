@@ -57,6 +57,8 @@ dependencies:
   markdown_widget: ^1.2.9
   yaml: ^3.1.1
   stack_trace: ^1.10.0
+  wuchuheng_logger:
+    path: ../tmp/wuchuheng_logger
 
 dev_dependencies:
   flutter_test:
