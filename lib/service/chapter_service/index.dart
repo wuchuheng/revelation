@@ -4,7 +4,7 @@ import 'package:snotes/dao/chapter_dao/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/chapter_service_util.dart';
 import 'package:snotes/service/directory_service/index.dart';
-import 'package:snotes/utils/hook_event/hook_event.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../model/chapter_model/index.dart';
 

@@ -59,6 +59,8 @@ dependencies:
   stack_trace: ^1.10.0
   wuchuheng_logger:
     path: ../tmp/wuchuheng_logger
+  wuchuheng_hooks:
+    path: ../tmp/wuchuheng_hooks
 
 dev_dependencies:
   flutter_test:

@@ -4,7 +4,7 @@ import 'package:imap_cache/imap_cache.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/errors/not_login_error.dart';
 import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/utils/hook_event/hook_event.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import 'directory_service/index.dart';
 

@@ -4,7 +4,7 @@ import 'package:snotes/common/iconfont.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/center_section/tool_bar/first_row_section/icon_container.dart';
 import 'package:snotes/service/directory_service/index.dart';
-import 'package:snotes/utils/subscription_builder/subscription_builder_abstract.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class ToolBar extends StatefulWidget {

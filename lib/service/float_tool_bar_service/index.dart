@@ -1,4 +1,4 @@
-import 'package:snotes/utils/hook_event/hook_event.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class FloatingToolBarService {
   static Hook<bool> isPreviewHook = Hook(false);

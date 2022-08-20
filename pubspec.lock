@@ -828,6 +828,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.0"
+  wuchuheng_hooks:
+    dependency: "direct main"
+    description:
+      path: "../tmp/wuchuheng_hooks"
+      relative: true
+    source: path
+    version: "0.0.1"
   wuchuheng_logger:
     dependency: "direct main"
     description:

@@ -7,7 +7,7 @@ import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/index.dart';
 import 'package:snotes/service/directory_service/directory_service_util.dart';
-import 'package:snotes/utils/hook_event/hook_event.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class DirectoryService {
   static int rootNodeId = 0;
