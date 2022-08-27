@@ -72,7 +72,7 @@ class ChapterDao implements ChapterDaoAbstract {
   List<ChapterModel> fetchAll() {
     final db = SQLiteDao.getDb();
     String tableName = ChapterModel.tableName;
-    final ResultSet fetchResult = db.select("select * from $tableName where deleted_at is null");
+    final ResultSet fetchResult = db.select("select * from $tableName where deleted_at is null ORDER BY id desc");
     List<ChapterModel> result = [];
     if (fetchResult.isNotEmpty) {
       for (Row row in fetchResult) {
@@ -87,13 +87,23 @@ class ChapterDao implements ChapterDaoAbstract {
   List<ChapterModel> fetchByDirectoryId(int directoryId) {
     final tableName = ChapterModel.tableName;
     final db = SQLiteDao.getDb();
-    final ResultSet fetchResult =
-        db.select(''' select * from $tableName where deleted_at is null and directory_id = $directoryId ''');
+    final ResultSet fetchResult = db.select(
+      ''' select * from $tableName where deleted_at is null and directory_id = $directoryId ORDER BY id desc''',
+    );
     List<ChapterModel> result = [];
     for (Row row in fetchResult) {
       result.add(ChapterDaoUtil.rowConvertChapterModel(row));
     }
 
     return result;
+  }
+
+  @override
+  int total() {
+    final tableName = ChapterModel.tableName;
+    final db = SQLiteDao.getDb();
+    final ResultSet fetchResult = db.select('''SELECT count(*) as total FROM $tableName WHERE deleted_at is null;''');
+
+    return fetchResult[0]['total'];
   }
 }

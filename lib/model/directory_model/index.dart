@@ -16,6 +16,7 @@ class DirectoryModel {
   List<DirectoryModel> children;
 
   int get count {
+    if (id == DirectoryModel.rootNodeId) return ChapterDao().total();
     return ChapterDao().fetchByDirectoryId(id).length;
   }
 

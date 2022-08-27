@@ -178,7 +178,7 @@ class _ItemSectionState extends State<ItemSection> {
                       color: isActive ? Colors.white : Colors.black,
                     ),
                   ),
-                  Text(' ${content.isNotEmpty ? content : "(No Date)"}',
+                  Text(' ${content.isNotEmpty ? content : "(No Data)"}',
                       style: TextStyle(
                         color: isActive ? Colors.white : color,
                         fontSize: fontSize,

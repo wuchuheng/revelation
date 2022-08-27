@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:snotes/dao/chapter_dao/index.dart';
+import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/chapter_service_util.dart';
 import 'package:snotes/service/directory_service/index.dart';
@@ -23,7 +24,9 @@ class ChapterService {
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
       if (oldData == null) {
-        final List<ChapterModel> data = ChapterDao().fetchAll();
+        final nodeId = DirectoryService.activeNodeHook.value.id;
+        final isRootNode = nodeId == DirectoryModel.rootNodeId;
+        final List<ChapterModel> data = isRootNode ? ChapterDao().fetchAll() : ChapterDao().fetchByDirectoryId(nodeId);
         setChapterList(data);
       }
     }

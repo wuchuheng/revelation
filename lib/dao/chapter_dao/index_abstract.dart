@@ -5,4 +5,5 @@ abstract class ChapterDaoAbstract {
   ChapterModel? has({required int id});
   List<ChapterModel> fetchAll();
   List<ChapterModel> fetchByDirectoryId(int directoryId);
+  int total();
 }

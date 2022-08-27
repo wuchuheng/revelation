@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:snotes/dao/chapter_dao/index.dart';
 import 'package:snotes/dao/directory_dao/index.dart';
+import 'package:snotes/model/chapter_model/index.dart';
 import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/index.dart';
@@ -97,10 +98,11 @@ class DirectoryService {
     }
   }
 
-  static void setActiveNode(DirectoryModel result) {
-    DirectoryService.activeNodeHook.set(result);
+  static void setActiveNode(DirectoryModel node) {
+    DirectoryService.activeNodeHook.set(node);
     final chapter = ChapterDao();
-    final chapters = chapter.fetchByDirectoryId(result.id);
+    List<ChapterModel> chapters =
+        node.id == DirectoryModel.rootNodeId ? chapter.fetchAll() : chapter.fetchByDirectoryId(node.id);
     ChapterService.setChapterList(chapters);
   }
 }
