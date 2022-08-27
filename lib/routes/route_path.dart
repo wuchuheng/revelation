@@ -1,3 +1,4 @@
+import 'package:snotes/pages/loading_page/index.dart';
 import 'package:wuchuheng_router/route/route_abstract.dart';
 import 'package:wuchuheng_router/wuchuheng_router.dart';
 
@@ -21,6 +22,7 @@ class RoutePath {
         '/login': () => LoginPage(),
       },
     );
+    _appRoutePathInstance!.setLoadingPage(const LoadingPage());
     // 路由守卫
     _appRoutePathInstance!.before = (RoutePageInfo pageInfo) async {
       await SQLiteDao.init();
