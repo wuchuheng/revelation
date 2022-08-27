@@ -47,18 +47,16 @@ class _FloatButtonsSectionState extends State<FloatButtonSection> {
       ButtonSection(
         isActive: isPreview,
         iconData: IconFont.icon_preview,
-        message: 'preview',
         onTap: FloatingToolBarService.onTapPreview,
       ),
       ButtonSection(
         isActive: isSplittingPreview,
         iconData: IconFont.icon_split,
-        message: 'split',
         onTap: FloatingToolBarService.onTapSplittingPreview,
       ),
     ];
 
-    return Container(
+    return SizedBox(
       height: size * childrenSection.length + (childrenSection.length - 1) * spacing,
       width: size,
       child: GridView.count(

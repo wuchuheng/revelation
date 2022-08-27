@@ -4,8 +4,17 @@ class FloatingToolBarService {
   static Hook<bool> isPreviewHook = Hook(false);
   static Hook<bool> isSplittingPreviewHook = Hook(false);
 
-  static void onTapPreview() => setIsPreviewHook(!isPreviewHook.value);
-  static void onTapSplittingPreview() => setIsSplittingPreview(!isSplittingPreviewHook.value);
+  static void onTapPreview() {
+    final newValue = !isPreviewHook.value;
+    setIsPreviewHook(newValue);
+    if (newValue && isSplittingPreviewHook.value) setIsSplittingPreview(false);
+  }
+
+  static void onTapSplittingPreview() {
+    final newValue = !isSplittingPreviewHook.value;
+    setIsSplittingPreview(newValue);
+    if (newValue && isPreviewHook.value) setIsPreviewHook(false);
+  }
 
   static void setIsSplittingPreview(bool isSplitPreview) => isSplittingPreviewHook.set(isSplitPreview);
 

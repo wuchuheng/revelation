@@ -23,6 +23,7 @@ class _EditorSectionState extends State<EditorSection> {
   bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
   ChapterModel? chapter = ChapterService.editChapterHook.value;
   String content = ChapterService.editChapterHook.value?.content ?? '';
+  bool isPreview = FloatingToolBarService.isPreviewHook.value;
 
   final onSave = Helper.debounce((ChapterModel newChapter) {
     final chapter = ChapterService.editChapterHook.value;
@@ -48,6 +49,7 @@ class _EditorSectionState extends State<EditorSection> {
       ChapterService.editChapterHook.subscribe((data) {
         if (chapter != null && data?.id != chapter?.id && data != null && textEditingController.text != data.content) {
           textEditingController.text = data.content;
+          content = data.content;
         }
         if (chapter?.id != data?.id) {
           chapter = data;
@@ -57,6 +59,7 @@ class _EditorSectionState extends State<EditorSection> {
       FloatingToolBarService.isSplittingPreviewHook.subscribe((value) {
         if (value != isSplittingPreview) setState(() => isSplittingPreview = value);
       }),
+      FloatingToolBarService.isPreviewHook.subscribe((value) => setState(() => isPreview = value))
     ]);
     super.initState();
   }
@@ -105,12 +108,12 @@ class _EditorSectionState extends State<EditorSection> {
       );
     }
 
-    if (isSplittingPreview) {
+    if (isSplittingPreview || isPreview) {
       return conatainer(Row(
         children: [
-          getTextFormField(widget.width / 2),
+          if (!isPreview) getTextFormField(widget.width / 2),
           MarkdownSection(
-            width: widget.width / 2,
+            width: isPreview ? widget.width : widget.width / 2,
             content: content,
           )
         ],

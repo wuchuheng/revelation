@@ -817,9 +817,9 @@ packages:
   wuchuheng_imap_cache:
     dependency: "direct main"
     description:
-      name: wuchuheng_imap_cache
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../tmp/imap_cache"
+      relative: true
+    source: path
     version: "0.0.19"
   wuchuheng_isolate_channel:
     dependency: transitive
