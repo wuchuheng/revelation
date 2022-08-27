@@ -43,7 +43,7 @@ class _CenterSectionState extends State<CenterSection> {
     final listSection = GridView.count(
       controller: _scrollController,
       // mainAxisSpacing: 10,
-      childAspectRatio: 3.5,
+      childAspectRatio: 3.8,
       crossAxisCount: 1,
       children: children,
     );

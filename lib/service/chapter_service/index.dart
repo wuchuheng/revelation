@@ -23,12 +23,7 @@ class ChapterService {
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
-      if (oldData == null) {
-        final nodeId = DirectoryService.activeNodeHook.value.id;
-        final isRootNode = nodeId == DirectoryModel.rootNodeId;
-        final List<ChapterModel> data = isRootNode ? ChapterDao().fetchAll() : ChapterDao().fetchByDirectoryId(nodeId);
-        setChapterList(data);
-      }
+      if (oldData == null) triggerUpdateChapterListHook();
     }
   }
 
@@ -73,7 +68,15 @@ createdAt: ${DateTime.now().toString()}
       key: ChapterServiceUtil.getCacheKeyById(chapter.id),
       value: jsonEncode(chapter),
     );
+    triggerUpdateChapterListHook();
     DirectoryService.triggerUpdateDirectoryHook();
+  }
+
+  static void triggerUpdateChapterListHook() {
+    final nodeId = DirectoryService.activeNodeHook.value.id;
+    final isRootNode = DirectoryModel.rootNodeId == nodeId;
+    final chapters = isRootNode ? ChapterDao().fetchAll() : ChapterDao().fetchByDirectoryId(nodeId);
+    setChapterList(chapters);
   }
 
   static void setChapterList(List<ChapterModel> chapters) {

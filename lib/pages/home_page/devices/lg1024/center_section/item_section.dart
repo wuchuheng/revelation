@@ -166,7 +166,7 @@ class _ItemSectionState extends State<ItemSection> {
                 style: TextStyle(
                   color: isActive ? Colors.white : Colors.black,
                   fontWeight: FontWeight.w600,
-                  fontSize: 17,
+                  fontSize: 15,
                 ),
               ),
               Row(

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:snotes/dao/chapter_dao/index.dart';
 import 'package:snotes/dao/directory_dao/index.dart';
-import 'package:snotes/model/chapter_model/index.dart';
 import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/index.dart';
@@ -100,9 +98,6 @@ class DirectoryService {
 
   static void setActiveNode(DirectoryModel node) {
     DirectoryService.activeNodeHook.set(node);
-    final chapter = ChapterDao();
-    List<ChapterModel> chapters =
-        node.id == DirectoryModel.rootNodeId ? chapter.fetchAll() : chapter.fetchByDirectoryId(node.id);
-    ChapterService.setChapterList(chapters);
+    ChapterService.triggerUpdateChapterListHook();
   }
 }
