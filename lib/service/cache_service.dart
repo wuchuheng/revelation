@@ -1,23 +1,24 @@
 import 'dart:async';
 
-import 'package:imap_cache/imap_cache.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/errors/not_login_error.dart';
 import 'package:snotes/service/chapter_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
+import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
 import 'directory_service/index.dart';
 
 class CacheService {
   static Hook<bool> isConnectHook = Hook(false);
 
-  static ImapCache? _cacheServiceInstance;
-  static ImapCache getImapCache() {
+  static ImapCacheServiceAbstract? _cacheServiceInstance;
+  static ImapCacheServiceAbstract getImapCache() {
     if (_cacheServiceInstance == null) throw NotLoginError();
     return _cacheServiceInstance!;
   }
 
-  static Future<ImapCache> login({
+  static Future<ImapCacheServiceAbstract> login({
     required String userName,
     required String password,
     required String imapServerHost,
@@ -26,17 +27,19 @@ class CacheService {
     int syncIntervalSeconds = 5,
     bool isDebug = Config.isDebug,
   }) async {
-    const String boxName = 'snotes';
-    ImapCache cacheServiceInstance = await ImapCache().connectToServer(
+    final directory = await getApplicationDocumentsDirectory();
+    final config = ConnectConfig(
       userName: userName,
       password: password,
       imapServerHost: imapServerHost,
       imapServerPort: imapServerPort,
       isImapServerSecure: isImapServerSecure,
-      boxName: boxName,
+      boxName: 'snotes',
       syncIntervalSeconds: syncIntervalSeconds,
       isDebug: isDebug,
+      localCacheDirectory: directory.path,
     );
+    ImapCacheServiceAbstract cacheServiceInstance = await ImapCache().connectToServer(config);
     CacheService._cacheServiceInstance = cacheServiceInstance;
 
     ///  initialized data

@@ -1,5 +1,5 @@
-import 'package:hi_router/hi_router.dart';
-import 'package:hi_router/route/route_abstract.dart';
+import 'package:wuchuheng_router/route/route_abstract.dart';
+import 'package:wuchuheng_router/wuchuheng_router.dart';
 
 import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
