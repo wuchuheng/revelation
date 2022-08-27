@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snotes/config/config.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class TitleSection extends StatelessWidget {
@@ -12,7 +13,7 @@ class TitleSection extends StatelessWidget {
     return Text(
       ' $title',
       style: TextStyle(
-        color: isActive ? Colors.white : Colors.black,
+        color: Config.fontColor,
       ),
     );
   }

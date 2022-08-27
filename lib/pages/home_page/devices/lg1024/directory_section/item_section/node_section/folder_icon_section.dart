@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../common/iconfont.dart';
+import '../../../../../../../config/config.dart';
 
 class FolderIconSection extends StatelessWidget {
   final bool isActive;
@@ -14,7 +15,7 @@ class FolderIconSection extends StatelessWidget {
     return Icon(
       IconFont.icon_file_directory,
       size: 17.5,
-      color: isActive ? Colors.white : Colors.black,
+      color: Config.fontColor,
     );
   }
 }

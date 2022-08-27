@@ -49,8 +49,16 @@ class _TreeSectionState extends State<TreeSection> {
     return Column(
       children: [
         Container(
+          decoration: BoxDecoration(
+            color: Config.backgroundColor,
+            border: Border(
+              right: BorderSide(
+                width: 1,
+                color: Config.borderColor,
+              ),
+            ),
+          ),
           height: MediaQuery.of(context).size.height,
-          color: Config.backgroundColor,
           width: Config.lg1024DirectoryWidth,
           padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
           child: Column(

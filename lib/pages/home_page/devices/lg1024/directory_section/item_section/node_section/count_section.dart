@@ -14,7 +14,7 @@ class CountSection extends StatelessWidget {
     return Text(
       '$count',
       style: TextStyle(
-        color: isActive ? Colors.white : Config.textGrey,
+        color: Config.textGrey,
       ),
     );
   }

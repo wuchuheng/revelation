@@ -3,10 +3,12 @@ import 'package:hexcolor/hexcolor.dart';
 
 class Config {
   static final Color textGrey = Colors.grey[700]!;
-  static final Color activeColor = HexColor('#E4C65E');
+  static final Color fontColor = HexColor('#1E2431');
+  static final Color activeColor = HexColor('#AAF6C2');
+  static final Color centerChapterActiveColor = HexColor('#AFF3CB');
   static final Color activeBorderColor = HexColor('#DC9607');
   static final Color primaryColor = HexColor('#DC9607');
-  static final Color backgroundColor = HexColor('#E3DEE2');
+  static const Color backgroundColor = Colors.white;
   static Color borderColor = Colors.grey[350]!;
   static Color iconColor = Colors.grey[600]!;
 

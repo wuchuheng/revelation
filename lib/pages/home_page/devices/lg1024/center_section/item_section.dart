@@ -149,7 +149,7 @@ class _ItemSectionState extends State<ItemSection> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: isActive ? Config.activeColor : Colors.grey[200],
+            color: isActive ? Config.centerChapterActiveColor : Colors.grey[200],
           ),
           margin: EdgeInsets.only(
             left: Config.centerSectionItemGap,
@@ -164,7 +164,7 @@ class _ItemSectionState extends State<ItemSection> {
               Text(
                 chapter.title,
                 style: TextStyle(
-                  color: isActive ? Colors.white : Colors.black,
+                  color: Config.fontColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
@@ -172,24 +172,23 @@ class _ItemSectionState extends State<ItemSection> {
               Row(
                 children: [
                   Text(
-                    '${chapter.updatedAt.hour}:${chapter.updatedAt.minute}',
+                    '${chapter.updatedAt.hour > 9 ? '' : '0'}${chapter.updatedAt.hour}:${chapter.updatedAt.minute}',
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: isActive ? Colors.white : Colors.black,
+                      color: Config.fontColor,
                     ),
                   ),
                   Text(' ${content.isNotEmpty ? content : "(No Data)"}',
                       style: TextStyle(
-                        color: isActive ? Colors.white : color,
+                        color: color,
                         fontSize: fontSize,
                       ))
                 ],
               ),
               Row(
                 children: [
-                  Icon(IconFont.icon_file_directory, size: fontSize, color: isActive ? Colors.white : color),
-                  Text('  ${chapter.directory.title}',
-                      style: TextStyle(fontSize: fontSize, color: isActive ? Colors.white : color)),
+                  Icon(IconFont.icon_file_directory, size: fontSize, color: color),
+                  Text('  ${chapter.directory.title}', style: TextStyle(fontSize: fontSize, color: color)),
                 ],
               )
             ],
