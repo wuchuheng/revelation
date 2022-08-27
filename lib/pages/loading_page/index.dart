@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -20,6 +21,13 @@ class _LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<_LoadingPage> {
+  String path = '';
+
+  @override
+  void initState() {
+    getApplicationDocumentsDirectory().then((value) => setState(() => path = value.path));
+  }
+
   @override
   Widget build(BuildContext context) {
     const String assetName = 'assets/images/svg/undraw_no_data_re_kwbl.svg';
@@ -35,7 +43,7 @@ class _LoadingPageState extends State<_LoadingPage> {
         children: [
           svg,
           const Padding(padding: EdgeInsets.only(top: 20)),
-          const Text('Loading...', textAlign: TextAlign.center),
+          Text(path, textAlign: TextAlign.center),
         ],
       ),
     );
