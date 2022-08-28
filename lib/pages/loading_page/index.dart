@@ -22,11 +22,11 @@ class _LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<_LoadingPage> {
   @override
   Widget build(BuildContext context) {
-    const String assetName = 'assets/images/svg/undraw_no_data_re_kwbl.svg';
+    const String assetName = 'assets/images/svg/undraw_floating_re_xtcj.svg';
     final Widget svg = SvgPicture.asset(
       assetName,
       semanticsLabel: 'Acme Logo',
-      width: 100,
+      width: 300,
     );
     return Center(
       child: Column(
@@ -34,8 +34,12 @@ class _LoadingPageState extends State<_LoadingPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           svg,
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          const Text('Loading...', textAlign: TextAlign.center),
+          const Padding(padding: EdgeInsets.only(top: 40)),
+          const Text(
+            'Loading...',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 30),
+          ),
         ],
       ),
     );

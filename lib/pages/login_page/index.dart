@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:snotes/dao/user_dao/index.dart';
 import 'package:snotes/model/user_model/user_model.dart';
+import 'package:snotes/pages/login_page/banner_section/index.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
 import 'package:snotes/pages/login_page/form_section/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -86,19 +87,25 @@ class _LoginPageState extends State<_LoginPage> {
     Logger.info('Build widget LoginPage', symbol: 'build');
     return Scaffold(
       body: Container(
+        width: double.infinity,
         color: HexColor('#EBE7E9'),
         child: Stack(
           children: [
-            Center(
-              child: SizedBox(
-                width: 320,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FormSection(onSubmit: (account) => handleSubmit(account, context)),
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const BannerSection(),
+                SizedBox(
+                  width: 320,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FormSection(onSubmit: (account) => handleSubmit(account, context)),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
             if (isLoading) getLoadingSpinner(),
           ],
