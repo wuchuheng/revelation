@@ -23,7 +23,15 @@ class ChapterService {
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
-      if (oldData == null) triggerUpdateChapterListHook();
+      triggerUpdateChapterListHook();
+      if (oldData == null || chapter.deletedAt != null) DirectoryService.triggerUpdateDirectoryHook();
+      if (chapter.id == editChapterHook.value?.id) {
+        if (chapter.deletedAt != null) {
+          editChapterHook.set(null);
+        } else if (chapter.content != oldData?.content) {
+          editChapterHook.set(chapter);
+        }
+      }
     }
   }
 
@@ -83,11 +91,18 @@ createdAt: ${DateTime.now().toString()}
     chapterListHook.set(chapters);
     final editChapter = ChapterService.editChapterHook.value;
     final activeNode = DirectoryService.activeNodeHook.value;
-
-    if (editChapter?.directoryId != activeNode.id && chapters.isNotEmpty) {
-      ChapterService.editChapterHook.set(chapters[0]);
-    } else if (editChapter?.directoryId != activeNode.id) {
-      ChapterService.editChapterHook.set(null);
+    if (editChapter != null) {
+      if (activeNode.id == DirectoryModel.rootNodeId) return;
+      if (activeNode.id == editChapter.id) return;
+      if (chapters.isNotEmpty) {
+        ChapterService.editChapterHook.set(chapters[0]);
+      } else {
+        ChapterService.editChapterHook.set(null);
+      }
+    } else {
+      if (chapters.isNotEmpty) {
+        ChapterService.editChapterHook.set(chapters[0]);
+      }
     }
   }
 }

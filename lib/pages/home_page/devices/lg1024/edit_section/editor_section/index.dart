@@ -47,7 +47,10 @@ class _EditorSectionState extends State<EditorSection> {
     }
     unsubscribeCollect.addAll([
       ChapterService.editChapterHook.subscribe((data) {
-        if (chapter != null && data?.id != chapter?.id && data != null && textEditingController.text != data.content) {
+        if (chapter != null &&
+            data?.content != chapter?.content &&
+            data != null &&
+            textEditingController.text != data.content) {
           textEditingController.text = data.content;
           content = data.content;
         }
