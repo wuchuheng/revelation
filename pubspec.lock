@@ -807,6 +807,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.0"
+  wuchuheng_env:
+    dependency: "direct main"
+    description:
+      name: wuchuheng_env
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   wuchuheng_hooks:
     dependency: "direct main"
     description:
@@ -820,7 +827,7 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "0.0.20"
+    version: "0.0.21"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:

@@ -25,7 +25,6 @@ class CacheService {
     required int imapServerPort,
     required bool isImapServerSecure,
     int syncIntervalSeconds = 5,
-    bool isDebug = Config.isDebug,
   }) async {
     final directory = await getApplicationDocumentsDirectory();
     final config = ConnectConfig(
@@ -36,7 +35,7 @@ class CacheService {
       isImapServerSecure: isImapServerSecure,
       boxName: 'snotes',
       syncIntervalSeconds: syncIntervalSeconds,
-      isDebug: isDebug,
+      isDebug: Config.isDebug,
       localCacheDirectory: directory.path,
     );
     ImapCacheServiceAbstract cacheServiceInstance = await ImapCache().connectToServer(config);

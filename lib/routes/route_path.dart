@@ -1,4 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:snotes/pages/loading_page/index.dart';
+import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_router/route/route_abstract.dart';
 import 'package:wuchuheng_router/wuchuheng_router.dart';
 
@@ -8,6 +10,8 @@ import '../model/user_model/user_model.dart';
 import '../pages/home_page/index.dart';
 import '../pages/login_page/index.dart';
 import '../service/cache_service.dart';
+
+bool isLoadEnv = false;
 
 /// 路由
 class RoutePath {
@@ -25,6 +29,13 @@ class RoutePath {
     _appRoutePathInstance!.setLoadingPage(const LoadingPage());
     // 路由守卫
     _appRoutePathInstance!.before = (RoutePageInfo pageInfo) async {
+      if (!isLoadEnv) {
+        try {
+          final content = await rootBundle.loadString('.env');
+          DotEnv(content: content);
+        } catch (e) {}
+        isLoadEnv = true;
+      }
       await SQLiteDao.init();
       final UserModel? user = UserDao().has();
       final loginPage = RoutePageInfo('/login', () => LoginPage());

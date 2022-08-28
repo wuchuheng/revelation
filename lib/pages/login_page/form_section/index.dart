@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snotes/pages/login_page/form_section/account_info.dart';
+import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'field_container.dart';
@@ -19,14 +20,12 @@ class _FormSectionState extends State<FormSection> {
   TextAlignVertical textAlignVertical = TextAlignVertical.center;
 
   AccountInfo accountInfo = AccountInfo(
-    userName: '2831473954@qq.com',
-    password: 'owtdtjnltfnndegh',
-    host: 'local.wuchuheng.com',
+    userName: DotEnv.get('USER_NAME', ''),
+    password: DotEnv.get('PASSWORD', ''),
+    host: DotEnv.get('HOST', ''),
     port: 993,
     tls: true,
   );
-
-  final TextEditingController _usernameController = TextEditingController();
 
   InputDecoration _decoration(String label) {
     return InputDecoration(
