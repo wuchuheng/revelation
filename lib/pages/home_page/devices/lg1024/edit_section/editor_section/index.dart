@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/edit_section/editor_section/markdown_section/index.dart';
 import 'package:snotes/service/float_tool_bar_service/index.dart';
+import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../../../../../model/chapter_model/index.dart';
 import '../../../../../../service/chapter_service/index.dart';
-import '../../../../../../utils/helper.dart';
 
 class EditorSection extends StatefulWidget {
   final double width;
