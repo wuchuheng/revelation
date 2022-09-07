@@ -10,10 +10,12 @@ import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import '../../model/chapter_model/index.dart';
 
 class ChapterService {
-  static Hook<List<ChapterModel>> chapterListHook = Hook(ChapterDao().fetchAll());
+  static Hook<List<ChapterModel>> chapterListHook = Hook([]);
   static Hook<ChapterModel?> editChapterHook = Hook(null);
+  static SubjectHook<void> onAnimationToTopSubject = SubjectHook();
 
   static Future<void> init() async {
+    chapterListHook.set(ChapterDao().fetchAll());
     CacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
   }
 
@@ -60,6 +62,7 @@ createdAt: ${DateTime.now().toString()}
     );
     editChapterHook.set(chapter);
     DirectoryService.triggerUpdateDirectoryHook();
+    onAnimationToTopSubject.next(null);
   }
 
   static Future<void> setEditChapter(ChapterModel chapter) async {

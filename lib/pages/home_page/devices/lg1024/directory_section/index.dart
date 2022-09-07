@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
+import 'package:snotes/pages/home_page/devices/lg1024/directory_section/tool_bar_section.dart';
 import 'package:snotes/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -48,6 +49,7 @@ class _TreeSectionState extends State<TreeSection> {
 
     return Column(
       children: [
+        const ToolBarSection(),
         Container(
           decoration: BoxDecoration(
             color: Config.backgroundColor,
@@ -58,13 +60,13 @@ class _TreeSectionState extends State<TreeSection> {
               ),
             ),
           ),
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height - Config.titleBarHeight,
           width: Config.lg1024DirectoryWidth,
           padding: EdgeInsets.only(left: LRMargin, right: LRMargin),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(padding: EdgeInsets.only(top: Config.titleBarHeight)),
+              // const Padding(padding: EdgeInsets.only(top: Config.titleBarHeight)),
               list,
               const CreateButton(bottomBarHeight: bottomBarHeight),
             ],

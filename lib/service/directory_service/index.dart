@@ -10,7 +10,7 @@ import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class DirectoryService {
   static int rootNodeId = 0;
-  static late Hook<DirectoryModel> activeNodeHook;
+  static Hook<DirectoryModel> activeNodeHook = Hook(DirectoryModel.getRootNodeInitData());
 
   /// The node  being modified.
   static Hook<DirectoryModel?> changedNodeHook = Hook(null);
@@ -19,7 +19,7 @@ class DirectoryService {
 
   static Future<void> init() async {
     final rootNode = DirectoryDao().has(id: 0)!;
-    activeNodeHook = Hook(rootNode);
+    activeNodeHook.set(rootNode);
     setActiveNode(rootNode);
     triggerUpdateDirectoryHook();
     CacheService.getImapCache().afterSet(callback: _afterSetSubscription);

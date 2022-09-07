@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/service/chapter_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../config/config.dart';
 
 class IconContainer extends StatefulWidget {
   final IconData iconData;
+  final Function() onTap;
   const IconContainer({
     Key? key,
     required this.iconData,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -18,10 +19,6 @@ class IconContainer extends StatefulWidget {
 
 class _IconContainerState extends State<IconContainer> {
   bool isHover = false;
-
-  onTap() async {
-    await ChapterService.create();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +34,7 @@ class _IconContainerState extends State<IconContainer> {
         ),
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         onHover: (e) {
           if (e != isHover) {
             setState(() => isHover = e);

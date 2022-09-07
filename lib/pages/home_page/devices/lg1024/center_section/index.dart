@@ -29,6 +29,11 @@ class _CenterSectionState extends State<CenterSection> {
       ChapterService.chapterListHook.subscribe((data) {
         setState(() => chapters = data.toList());
       }),
+      ChapterService.onAnimationToTopSubject.subscribe((value) {
+        final pixels = _scrollController.position.pixels ~/ 3;
+        final duration = Duration(milliseconds: pixels);
+        _scrollController.animateTo(0, duration: duration, curve: Curves.linear);
+      })
     ]);
   }
 

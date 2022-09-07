@@ -827,7 +827,7 @@ packages:
       name: wuchuheng_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   wuchuheng_imap_cache:
     dependency: "direct main"
     description:

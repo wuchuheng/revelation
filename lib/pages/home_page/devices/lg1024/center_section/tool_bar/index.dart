@@ -7,6 +7,8 @@ import 'package:snotes/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import '../../../../../../service/chapter_service/index.dart';
+
 class ToolBar extends StatefulWidget {
   const ToolBar({Key? key}) : super(key: key);
 
@@ -50,9 +52,17 @@ class _ToolBarState extends State<ToolBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const IconContainer(iconData: IconFont.icon_sort),
+          IconContainer(
+            iconData: IconFont.icon_sort,
+            onTap: () {},
+          ),
           Text(title),
-          const IconContainer(iconData: IconFont.icon_notes),
+          IconContainer(
+            iconData: IconFont.icon_notes,
+            onTap: () async {
+              await ChapterService.create();
+            },
+          ),
         ],
       ),
     );

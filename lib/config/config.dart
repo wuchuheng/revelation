@@ -16,7 +16,7 @@ class Config {
   ///中间栏的项之间的间隔
   static const centerSectionItemGap = 8.0;
   static const windowSize = Size(960, 528);
-  static const double titleBarHeight = 30.0;
+  static const double titleBarHeight = 45.0;
   static const centerSectionToolBarHeight = 45.0;
   // 1024设备的目录宽度
   static const double lg1024DirectoryWidth = 300;
