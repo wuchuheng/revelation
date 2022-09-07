@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../../../../../../../config/config.dart';
+import '../../../../../../config/config.dart';
 
 class IconContainer extends StatefulWidget {
   final IconData iconData;

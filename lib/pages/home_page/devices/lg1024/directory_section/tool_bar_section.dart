@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:snotes/config/config.dart';
+import 'package:snotes/routes/route_path.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../center_section/tool_bar/first_row_section/icon_container.dart';
+import '../center_section/tool_bar/icon_container.dart';
 
 class ToolBarSection extends StatelessWidget {
   const ToolBarSection({Key? key}) : super(key: key);
@@ -23,12 +24,9 @@ class ToolBarSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: () {},
-            child: IconContainer(
-              iconData: Icons.settings,
-              onTap: () {},
-            ),
+          IconContainer(
+            iconData: Icons.settings,
+            onTap: () => RoutePath.pushSettingPage(),
           )
         ],
       ),

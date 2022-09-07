@@ -7,23 +7,30 @@ import 'package:wuchuheng_router/wuchuheng_router.dart';
 import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
 import '../model/user_model/user_model.dart';
-import '../pages/home_page/index.dart';
 import '../pages/login_page/index.dart';
+import '../pages/setting_page/index.dart';
 import '../service/cache_service.dart';
 
 bool isLoadEnv = false;
 
+const homeRoute = '/';
+const loginRoute = '/login';
+const settingRoute = '/setting';
+
 /// 路由
 class RoutePath {
   static HiRouter? _appRoutePathInstance;
-  static pushHomePage() => RoutePath.getAppPathInstance().push('/');
-  static pushLoginPage() => RoutePath.getAppPathInstance().push('/login');
+  static pushHomePage() => RoutePath.getAppPathInstance().push(homeRoute);
+  static pushLoginPage() => RoutePath.getAppPathInstance().push(loginRoute);
+  static pushSettingPage() => RoutePath.getAppPathInstance().push(settingRoute);
 
   static HiRouter getAppPathInstance() {
     _appRoutePathInstance ??= HiRouter(
       {
-        '/': () => HomePage(),
-        '/login': () => LoginPage(),
+        homeRoute: () => SettingPage(),
+        // homeRoute: () => HomePage(),
+        // settingRoute: () => SettingPage(),
+        loginRoute: () => LoginPage(),
       },
     );
     _appRoutePathInstance!.setLoadingPage(const LoadingPage());
@@ -38,7 +45,7 @@ class RoutePath {
       }
       await SQLiteDao.init();
       final UserModel? user = UserDao().has();
-      final loginPage = RoutePageInfo('/login', () => LoginPage());
+      final loginPage = RoutePageInfo(loginRoute, () => LoginPage());
       final isConnectImap = CacheService.isConnectHook.value;
       if (user == null) {
         return loginPage;
