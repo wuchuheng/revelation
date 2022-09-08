@@ -6,8 +6,9 @@ import '../../../../../routes/route_path.dart';
 class TabItem {
   final IconData icon;
   final String text;
+  final Widget body;
 
-  TabItem({required this.icon, required this.text});
+  TabItem({required this.body, required this.icon, required this.text});
 }
 
 class HeaderSection extends StatelessWidget {

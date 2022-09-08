@@ -23,7 +23,9 @@ class TabSection extends StatelessWidget {
           constraints: BoxConstraints(
             maxHeight: windowsHeight - toolBarHeight,
           ),
-          child: Container(),
+          child: Center(
+            child: tabs[activeIndex].body,
+          ),
         ),
       ],
     );

@@ -834,7 +834,7 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "0.0.21"
+    version: "1.0.1"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
@@ -855,7 +855,7 @@ packages:
       name: wuchuheng_logger
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "1.0.3"
   wuchuheng_router:
     dependency: "direct main"
     description:

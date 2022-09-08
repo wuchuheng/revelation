@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/errors/not_login_error.dart';
 import 'package:snotes/service/chapter_service/index.dart';
+import 'package:snotes/service/log_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
@@ -11,12 +12,13 @@ import 'directory_service/index.dart';
 
 class CacheService {
   static Hook<bool> isConnectHook = Hook(false);
-
   static ImapCacheServiceAbstract? _cacheServiceInstance;
   static ImapCacheServiceAbstract getImapCache() {
     if (_cacheServiceInstance == null) throw NotLoginError();
     return _cacheServiceInstance!;
   }
+
+  static late Unsubscribe unsubscribeLog;
 
   static Future<ImapCacheServiceAbstract> login({
     required String userName,
@@ -48,6 +50,11 @@ class CacheService {
       ChapterService.init(),
     ]);
     isConnectHook.set(true);
+    final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => LogService.push(loggerItem));
+    unsubscribeLog = Unsubscribe(() {
+      unsubscribe.unsubscribe();
+      return true;
+    });
     return imapCacheInstance;
   }
 }
