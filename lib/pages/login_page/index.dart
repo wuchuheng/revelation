@@ -35,7 +35,7 @@ class _LoginPageState extends State<_LoginPage> {
   handleSubmit(AccountInfo accountInfo, BuildContext context) async {
     setState(() => isLoading = true);
     try {
-      await CacheService.login(
+      await CacheService.connect(
         userName: accountInfo.userName,
         password: accountInfo.password,
         imapServerHost: accountInfo.host,

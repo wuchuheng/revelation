@@ -20,7 +20,7 @@ class CacheService {
 
   static late Unsubscribe unsubscribeLog;
 
-  static Future<ImapCacheServiceAbstract> login({
+  static Future<ImapCacheServiceAbstract> connect({
     required String userName,
     required String password,
     required String imapServerHost,
@@ -56,5 +56,10 @@ class CacheService {
       return true;
     });
     return imapCacheInstance;
+  }
+
+  static Future<void> disconnect() async {
+    unsubscribeLog.unsubscribe();
+    await getImapCache().disconnect();
   }
 }
