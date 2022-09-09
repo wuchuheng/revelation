@@ -16,7 +16,7 @@ class _LG1024SettingPageState extends State<LG1024SettingPage> {
   List<TabItem> tabs = [
     TabItem(icon: Icons.settings, text: 'General', body: const Text('General')),
     TabItem(icon: Icons.people, text: 'User', body: const UserSection()),
-    TabItem(icon: Icons.notes, text: 'Log', body: const LogSection()),
+    TabItem(icon: Icons.notes, text: 'Logs', body: const LogSection()),
     TabItem(icon: Icons.info_outline, text: 'About', body: const Text('About')),
   ];
   int activeIndex = 2;

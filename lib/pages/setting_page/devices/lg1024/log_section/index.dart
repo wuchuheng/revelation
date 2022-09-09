@@ -14,8 +14,6 @@ class LogSection extends StatefulWidget {
 class _LogSectionState extends State<LogSection> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   ScrollController scrollController = ScrollController();
-  int maxLogLength = 0;
-  int calculationLogIndex = 0;
 
   @override
   void initState() {
@@ -33,15 +31,6 @@ class _LogSectionState extends State<LogSection> {
               ),
               curve: Curves.linear,
             );
-          }
-          while (calculationLogIndex != value.length) {
-            final log = value[calculationLogIndex];
-            int logLength = log.type.name.length;
-            logLength += log.message.length;
-            logLength += log.symbol?.length ?? 0;
-            logLength += log.file.length;
-            if (maxLogLength < logLength) maxLogLength = logLength;
-            calculationLogIndex++;
           }
         });
       }),
@@ -61,7 +50,7 @@ class _LogSectionState extends State<LogSection> {
     final item = Container(
       padding: const EdgeInsets.all(10),
       height: double.infinity,
-      width: maxLogLength.toDouble() * 8,
+      width: LogService.maxLogLength.toDouble() * 8,
       child: ListView.builder(
           controller: scrollController,
           itemCount: logs.length,
