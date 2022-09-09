@@ -19,7 +19,7 @@ class _LG1024SettingPageState extends State<LG1024SettingPage> {
     TabItem(icon: Icons.notes, text: 'Logs', body: const LogSection()),
     TabItem(icon: Icons.info_outline, text: 'About', body: const Text('About')),
   ];
-  int activeIndex = 2;
+  int activeIndex = 3;
 
   @override
   Widget build(BuildContext context) {
