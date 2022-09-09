@@ -35,12 +35,13 @@ class _UserSectionState extends State<UserSection> {
         height: 350,
         child: Column(
           children: [
-            ItemSection(label: 'Username', value: userInfo!.userName),
-            ItemSection(label: 'Password', value: userInfo!.password, isPassword: true),
-            ItemSection(label: 'Host', value: userInfo!.imapServerHost),
-            ItemSection(label: 'Port', value: userInfo!.imapServerPort.toString()),
-            ItemSection(label: 'TLS', value: userInfo!.isImapServerSecure ? 'True' : 'False'),
-            ItemSection(label: 'Status', value: 'Online'),
+            ItemSection(label: 'Username', child: Text(userInfo!.userName)),
+            ItemSection(
+                label: 'Password', child: Text(List.generate(userInfo!.password.length, (index) => '*').join(''))),
+            ItemSection(label: 'Host', child: Text(userInfo!.imapServerHost)),
+            ItemSection(label: 'Port', child: Text(userInfo!.imapServerPort.toString())),
+            ItemSection(label: 'TLS', child: Text(userInfo!.isImapServerSecure ? 'True' : 'False')),
+            ItemSection(label: 'Status', child: const Text('Online')),
             Container(
               margin: const EdgeInsets.only(top: 30),
               width: 200,

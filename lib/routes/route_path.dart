@@ -7,7 +7,6 @@ import 'package:wuchuheng_router/wuchuheng_router.dart';
 import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
 import '../model/user_model/user_model.dart';
-import '../pages/home_page/index.dart';
 import '../pages/login_page/index.dart';
 import '../pages/setting_page/index.dart';
 import '../service/cache_service.dart';
@@ -28,8 +27,8 @@ class RoutePath {
   static HiRouter getAppPathInstance() {
     _appRoutePathInstance ??= HiRouter(
       {
-        // homeRoute: () => SettingPage(),
-        homeRoute: () => HomePage(),
+        homeRoute: () => SettingPage(),
+        // homeRoute: () => HomePage(),
         settingRoute: () => SettingPage(),
         loginRoute: () => LoginPage(),
       },

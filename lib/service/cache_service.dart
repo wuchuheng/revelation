@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/errors/not_login_error.dart';
 import 'package:snotes/service/chapter_service/index.dart';
+import 'package:snotes/service/general_service/index.dart';
 import 'package:snotes/service/log_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
@@ -51,8 +52,14 @@ class CacheService {
     ]);
     isConnectHook.set(true);
     final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => LogService.push(loggerItem));
+    final afterSyncUnsubscribe = imapCacheInstance.afterSync(
+      (duration) => GeneralService.lastSyncTime.set(
+        DateTime.now(),
+      ),
+    );
     unsubscribeLog = Unsubscribe(() {
       unsubscribe.unsubscribe();
+      afterSyncUnsubscribe.unsubscribe();
       return true;
     });
     return imapCacheInstance;
