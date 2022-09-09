@@ -28,6 +28,7 @@ class RoutePath {
   static HiRouter getAppPathInstance() {
     _appRoutePathInstance ??= HiRouter(
       {
+        // homeRoute: () => SettingPage(),
         homeRoute: () => HomePage(),
         settingRoute: () => SettingPage(),
         loginRoute: () => LoginPage(),

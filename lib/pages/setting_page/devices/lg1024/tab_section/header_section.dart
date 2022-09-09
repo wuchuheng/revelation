@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../config/config.dart';
-import '../../../../../routes/route_path.dart';
 
 class TabItem {
   final IconData icon;
@@ -32,7 +31,7 @@ class HeaderSection extends StatelessWidget {
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: () => RoutePath.pushHomePage(),
+              onTap: () => Navigator.pop(context),
               child: Row(
                 children: const [
                   Icon(Icons.arrow_back_ios),
