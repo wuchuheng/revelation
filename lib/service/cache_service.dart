@@ -12,15 +12,15 @@ import 'directory_service/index.dart';
 
 class CacheService {
   static Hook<bool> isConnectHook = Hook(false);
-  static ImapCacheServiceAbstract? _cacheServiceInstance;
-  static ImapCacheServiceAbstract getImapCache() {
+  static ImapCacheService? _cacheServiceInstance;
+  static ImapCacheService getImapCache() {
     if (_cacheServiceInstance == null) throw NotLoginError();
     return _cacheServiceInstance!;
   }
 
   static late Unsubscribe unsubscribeLog;
 
-  static Future<ImapCacheServiceAbstract> connect({
+  static Future<ImapCacheService> connect({
     required String userName,
     required String password,
     required String imapServerHost,
@@ -40,7 +40,7 @@ class CacheService {
       isDebug: Config.isDebug,
       localCacheDirectory: directory.path,
     );
-    ImapCacheServiceAbstract cacheServiceInstance = await ImapCache().connectToServer(config);
+    ImapCacheService cacheServiceInstance = await ImapCache().connectToServer(config);
     CacheService._cacheServiceInstance = cacheServiceInstance;
 
     ///  initialized data
