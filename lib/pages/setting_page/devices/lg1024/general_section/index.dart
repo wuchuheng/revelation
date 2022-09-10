@@ -32,7 +32,7 @@ class _GeneralSectionState extends State<GeneralSection> {
 
   @override
   Widget build(BuildContext context) {
-    String lastSyncTime = 'Null';
+    String lastSyncTime = '';
     if (GeneralService.lastSyncTimeHook.value != null) {
       lastSyncTime = DateTimeUtil.formatDateTime(GeneralService.lastSyncTimeHook.value!);
     }
@@ -48,12 +48,12 @@ class _GeneralSectionState extends State<GeneralSection> {
         child: Column(
           children: [
             ItemSection(
-                label: 'Last sync at',
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [const SyncStateSection(), Text(lastSyncTime)],
-                )),
-            ItemSection(label: 'Local DB', child: Text(lastSyncTime)),
+              label: 'Last sync at',
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [const SyncStateSection(), Text(lastSyncTime)],
+              ),
+            ),
             ItemSection(
               label: 'Sync interval',
               child: Row(
