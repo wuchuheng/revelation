@@ -848,7 +848,7 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "1.0.1"
+    version: "1.0.3"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:

@@ -19,7 +19,7 @@ class _GeneralSectionState extends State<GeneralSection> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      GeneralService.lastSyncTime.subscribe((value) => setState(() {})),
+      GeneralService.lastSyncTimeHook.subscribe((value) => setState(() {})),
     ]);
     super.initState();
   }
@@ -33,8 +33,8 @@ class _GeneralSectionState extends State<GeneralSection> {
   @override
   Widget build(BuildContext context) {
     String lastSyncTime = 'Null';
-    if (GeneralService.lastSyncTime.value != null) {
-      lastSyncTime = DateTimeUtil.formatDateTime(GeneralService.lastSyncTime.value!);
+    if (GeneralService.lastSyncTimeHook.value != null) {
+      lastSyncTime = DateTimeUtil.formatDateTime(GeneralService.lastSyncTimeHook.value!);
     }
 
     return Container(
@@ -47,9 +47,13 @@ class _GeneralSectionState extends State<GeneralSection> {
         width: 400,
         child: Column(
           children: [
-            ItemSection(label: 'Last sync at', child: Text(lastSyncTime)),
+            ItemSection(
+                label: 'Last sync at',
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [const SyncStateSection(), Text(lastSyncTime)],
+                )),
             ItemSection(label: 'Local DB', child: Text(lastSyncTime)),
-            ItemSection(label: 'Sync state', child: const SyncStateSection()),
             ItemSection(
               label: 'Sync interval',
               child: Row(

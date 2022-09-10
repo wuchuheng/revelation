@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:snotes/config/config.dart';
 import 'package:snotes/errors/not_login_error.dart';
@@ -52,14 +51,19 @@ class CacheService {
     ]);
     isConnectHook.set(true);
     final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => LogService.push(loggerItem));
-    final afterSyncUnsubscribe = imapCacheInstance.afterSync(
-      (duration) => GeneralService.lastSyncTime.set(
-        DateTime.now(),
-      ),
-    );
+    final afterSyncUnsubscribe = imapCacheInstance.afterSync((duration) {
+      GeneralService.lastSyncTimeHook.set(DateTime.now());
+      GeneralService.syncStateHook.set(true);
+    });
+    final imapCacheInstanceUnsubscribe = imapCacheInstance.subscribeLog((loggerItem) {
+      GeneralService.syncStateHook.set(false);
+    });
+
     unsubscribeLog = Unsubscribe(() {
       unsubscribe.unsubscribe();
       afterSyncUnsubscribe.unsubscribe();
+      imapCacheInstanceUnsubscribe.unsubscribe();
+      GeneralService.syncStateHook.set(false);
       return true;
     });
     return imapCacheInstance;

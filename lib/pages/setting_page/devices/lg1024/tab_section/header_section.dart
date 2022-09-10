@@ -19,6 +19,9 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String text = tabs.contains(activeIndex) ?
+          tabs[activeIndex].text : '';
+
     return Container(
       padding: const EdgeInsets.only(left: 80, right: 0),
       decoration: BoxDecoration(
@@ -40,7 +43,7 @@ class HeaderSection extends StatelessWidget {
               ),
             ),
           ),
-          Text(tabs[activeIndex].text ?? '', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          Text(text, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
           Row(
             children: [
               for (int index = 0; index < tabs.length; index++)
