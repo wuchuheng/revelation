@@ -26,9 +26,9 @@ class CacheService {
     required String imapServerHost,
     required int imapServerPort,
     required bool isImapServerSecure,
-    int syncIntervalSeconds = 5,
   }) async {
     final directory = await getApplicationDocumentsDirectory();
+    int syncIntervalSeconds = GeneralService.syncIntervalHook.value;
     final config = ConnectConfig(
       userName: userName,
       password: password,

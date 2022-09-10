@@ -852,10 +852,10 @@ packages:
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
-      name: wuchuheng_isolate_channel
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.8"
+      path: "../tmp/isolate_channel_dart"
+      relative: true
+    source: path
+    version: "0.0.10"
   wuchuheng_local_cache:
     dependency: "direct main"
     description:

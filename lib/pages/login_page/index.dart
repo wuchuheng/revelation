@@ -49,6 +49,8 @@ class _LoginPageState extends State<_LoginPage> {
         backgroundColor: Colors.red[300],
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      setState(() => isLoading = false);
+      return;
     }
     setState(() => isLoading = false);
     UserModel user = UserModel(

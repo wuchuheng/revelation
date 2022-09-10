@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:snotes/config/config.dart';
 import 'package:snotes/pages/setting_page/devices/lg1024/general_section/sync_state_section.dart';
 import 'package:snotes/pages/setting_page/devices/lg1024/user_section/item_section.dart';
 import 'package:snotes/service/general_service/index.dart';
@@ -16,6 +17,15 @@ class GeneralSection extends StatefulWidget {
 class _GeneralSectionState extends State<GeneralSection> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   TextEditingController controller = TextEditingController();
+  int newInterval = GeneralService.syncIntervalHook.value;
+  final _formKey = GlobalKey<FormState>();
+
+  onSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      await GeneralService.setSyncInterval(newInterval);
+    }
+  }
+
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
@@ -36,8 +46,11 @@ class _GeneralSectionState extends State<GeneralSection> {
     if (GeneralService.lastSyncTimeHook.value != null) {
       lastSyncTime = DateTimeUtil.formatDateTime(GeneralService.lastSyncTimeHook.value!);
     }
+    final String syncInterval = GeneralService.syncIntervalHook.value.toString();
 
-    return Container(
+    return Form(
+      key: _formKey,
+      child: Container(
         padding: const EdgeInsets.all(15),
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -61,18 +74,39 @@ class _GeneralSectionState extends State<GeneralSection> {
                   SizedBox(
                     width: 50,
                     child: TextFormField(
+                        initialValue: syncInterval,
+                        validator: (String? value) => (value == null || value == '' || int.parse(value) == 0)
+                            ? 'Parameters must have greater than 0'
+                            : null,
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                         ],
-                        controller: controller,
-                        onChanged: (value) {}),
+                        onChanged: (value) {
+                          if (value != '') newInterval = int.parse(value);
+                        }),
                   ),
                   const Text('S'),
                 ],
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 150,
+                  height: 35,
+                  margin: const EdgeInsets.only(top: 150),
+                  child: ElevatedButton(
+                    onPressed: onSubmit,
+                    child: const Text('Save'),
+                  ),
+                )
+              ],
+            )
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
