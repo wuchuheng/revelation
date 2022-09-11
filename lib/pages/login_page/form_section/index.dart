@@ -63,6 +63,7 @@ class _FormSectionState extends State<FormSection> {
       height: itemHeight,
       label: label,
       child: TextFormField(
+        onFieldSubmitted: (value) => onSubmit(),
         initialValue: accountInfo.password,
         obscureText: true,
         cursorColor: cursorColor,
@@ -73,6 +74,10 @@ class _FormSectionState extends State<FormSection> {
         validator: (String? value) => (value == null || value.isEmpty) ? 'The password can not empty.' : null,
       ),
     );
+  }
+
+  void onSubmit() {
+    if (_formKey.currentState!.validate()) widget.onSubmit(accountInfo);
   }
 
   void onChangeUsername(String value) {
@@ -92,6 +97,7 @@ class _FormSectionState extends State<FormSection> {
       height: itemHeight,
       label: label,
       child: TextFormField(
+        onFieldSubmitted: (value) => onSubmit(),
         initialValue: accountInfo.userName,
         autofocus: true,
         cursorColor: cursorColor,
@@ -112,6 +118,7 @@ class _FormSectionState extends State<FormSection> {
       height: itemHeight,
       label: label,
       child: TextFormField(
+        onFieldSubmitted: (value) => onSubmit(),
         controller: hostController,
         maxLines: maxLines,
         textAlignVertical: textAlignVertical,
@@ -128,6 +135,7 @@ class _FormSectionState extends State<FormSection> {
       height: itemHeight,
       label: label,
       child: TextFormField(
+        onFieldSubmitted: (value) => onSubmit(),
         initialValue: accountInfo.port.toString(),
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
@@ -171,9 +179,7 @@ class _FormSectionState extends State<FormSection> {
               ),
             ),
           ),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) widget.onSubmit(accountInfo);
-          },
+          onPressed: onSubmit,
           child: const Text('Connect'),
         ),
       ),
@@ -188,7 +194,7 @@ class _FormSectionState extends State<FormSection> {
     return Form(
       key: _formKey,
       child: Container(
-        padding: EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 20),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -196,7 +202,7 @@ class _FormSectionState extends State<FormSection> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: itemHeight,
               child: Text(
                 'Welcome to ${Config.appName}',
