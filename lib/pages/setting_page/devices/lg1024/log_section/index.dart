@@ -23,7 +23,7 @@ class _LogSectionState extends State<LogSection> {
           final bottomPosition = scrollController.position.maxScrollExtent;
           final currentPosition = scrollController.position.pixels;
           final duration = bottomPosition - currentPosition;
-          if (duration < 100) {
+          if (duration < 100 && duration > 0) {
             scrollController.animateTo(
               bottomPosition,
               duration: Duration(

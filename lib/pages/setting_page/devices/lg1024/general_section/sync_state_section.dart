@@ -13,30 +13,12 @@ class SyncStateSection extends StatefulWidget {
 
 class _SyncStateSectionState extends State<SyncStateSection> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
-  int num = 0;
-  Timer? timer;
 
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      GeneralService.syncStateHook.subscribe(
-        // if (timer != null) timer!.
-        (value) {
-          timer?.cancel();
-          final duration = Duration(seconds: 1);
-          if (value) {
-            num = 0;
-            timer = Timer.periodic(duration, (timer) {
-              setState(() => ++num);
-            });
-          } else {
-            num = GeneralService.syncIntervalHook.value;
-            timer = Timer.periodic(duration, (timer) {
-              setState(() => --num);
-            });
-          }
-          setState(() {});
-        },
+      GeneralService.timerHook.subscribe(
+        (value) => setState(() {}),
       ),
     ]);
     super.initState();
@@ -45,7 +27,6 @@ class _SyncStateSectionState extends State<SyncStateSection> {
   @override
   void dispose() {
     unsubscribeCollect.unsubscribe();
-    timer?.cancel();
     super.dispose();
   }
 
@@ -63,7 +44,7 @@ class _SyncStateSectionState extends State<SyncStateSection> {
       width: size,
       height: size,
       child: Text(
-        '$num',
+        '${GeneralService.timerHook.value}',
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),

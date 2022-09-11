@@ -53,17 +53,17 @@ class CacheService {
     final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => LogService.push(loggerItem));
     final afterSyncUnsubscribe = imapCacheInstance.afterSync((duration) {
       GeneralService.lastSyncTimeHook.set(DateTime.now());
-      GeneralService.syncStateHook.set(false);
+      GeneralService.setSyncState(false);
     });
     final imapCacheInstanceUnsubscribe = imapCacheInstance.beforeSync((loggerItem) {
-      GeneralService.syncStateHook.set(true);
+      GeneralService.setSyncState(true);
     });
 
     unsubscribeLog = Unsubscribe(() {
       unsubscribe.unsubscribe();
       afterSyncUnsubscribe.unsubscribe();
       imapCacheInstanceUnsubscribe.unsubscribe();
-      GeneralService.syncStateHook.set(false);
+      GeneralService.setSyncState(false);
       return true;
     });
     return imapCacheInstance;
