@@ -19,8 +19,7 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text = tabs.contains(activeIndex) ?
-          tabs[activeIndex].text : '';
+    String text = tabs[activeIndex] != null ? tabs[activeIndex].text : '';
 
     return Container(
       padding: const EdgeInsets.only(left: 80, right: 0),
