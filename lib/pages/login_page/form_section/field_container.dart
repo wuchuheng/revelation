@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FieldContainer extends StatelessWidget {
+  final double height;
   final String label;
   final Widget child;
   final CrossAxisAlignment cross;
 
-  const FieldContainer({Key? key, required this.label, required this.child, this.cross = CrossAxisAlignment.start})
+  const FieldContainer(
+      {Key? key, required this.label, required this.child, this.cross = CrossAxisAlignment.start, required this.height})
       : super(key: key);
 
   @override
@@ -16,9 +18,9 @@ class FieldContainer extends StatelessWidget {
       crossAxisAlignment: cross,
       children: [
         SizedBox(
-          width: 100,
+          width: 90,
           child: Padding(
-            padding: EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(right: 7),
             child: Text(
               '$label:',
               textAlign: TextAlign.right,
@@ -26,7 +28,7 @@ class FieldContainer extends StatelessWidget {
           ),
         ),
         ConstrainedBox(
-          constraints: BoxConstraints.tight(const Size(200, 50)),
+          constraints: BoxConstraints.tight(Size(200, height)),
           child: child,
         ),
       ],

@@ -98,7 +98,7 @@ class _LoginPageState extends State<_LoginPage> {
               children: [
                 const BannerSection(),
                 SizedBox(
-                  width: 320,
+                  width: 350,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
