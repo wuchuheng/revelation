@@ -64,7 +64,11 @@ class _GeneralSectionState extends State<GeneralSection> {
               label: 'Last sync at',
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [const SyncStateSection(), Text(lastSyncTime)],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SyncStateSection(),
+                  Text(lastSyncTime),
+                ],
               ),
             ),
             ItemSection(
