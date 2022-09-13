@@ -31,7 +31,7 @@ class DirectoryService {
     directoryHook.set(directories);
   }
 
-  /// modify the directory tree when the local cache is modified.
+  /// modify the directory_section tree when the local cache is modified.
   static Future<void> _afterSetSubscription({required String value, required String key, required String hash}) async {
     if (DirectoryServiceUtil.isDirectoryByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
@@ -41,7 +41,7 @@ class DirectoryService {
     }
   }
 
-  /// convert data  from map to  directory data.
+  /// convert data  from map to  directory_section data.
   static List<DirectoryModel> idMapTreeItemConvertToTree(List<DirectoryModel> directories) {
     Map<int, DirectoryModel> idMapTreeItem = {};
     List<DirectoryModel> result = [];
@@ -59,7 +59,7 @@ class DirectoryService {
     return result;
   }
 
-  /// create new node for directory.
+  /// create new node for directory_section.
   static create() async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
@@ -76,7 +76,7 @@ class DirectoryService {
     changedNodeHook.set(newItem);
   }
 
-  /// delete the node from the directory.
+  /// delete the node from the directory_section.
   static delete(String id) async {
     final directory = DirectoryDao().has(id: int.parse(id))!;
     directory.deletedAt = DateTime.now();
