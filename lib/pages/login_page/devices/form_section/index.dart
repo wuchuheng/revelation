@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snotes/config/config.dart';
-import 'package:snotes/pages/login_page/form_section/account_info.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import 'account_info.dart';
 import 'advance_section.dart';
 import 'field_container.dart';
 
@@ -194,7 +194,7 @@ class _FormSectionState extends State<FormSection> {
     return Form(
       key: _formKey,
       child: Container(
-        padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 20),
+        padding: const EdgeInsets.all(20),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(15)),

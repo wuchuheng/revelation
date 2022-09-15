@@ -129,17 +129,6 @@ class _ItemSectionState extends State<ItemSection> {
     Logger.info('Build widget ItemSection', symbol: 'build');
     const fontSize = 13.0;
     Color color = Colors.grey[600]!;
-    final regexp = RegExp(r'---(.*?)---', multiLine: true, dotAll: true);
-    String content = chapter.content;
-    content = content.replaceAll(regexp, '');
-    content = content.replaceAll(RegExp(r'^\s+\n', multiLine: true, dotAll: true), '');
-    if (content.isNotEmpty) {
-      content = content.split('\n')[0];
-      const length = 10;
-      content = content.length > length ? content.substring(0, length) : content;
-    } else {
-      content = '';
-    }
 
     return Listener(
       onPointerDown: handlePointerDown,
@@ -178,7 +167,7 @@ class _ItemSectionState extends State<ItemSection> {
                       color: Config.fontColor,
                     ),
                   ),
-                  Text(' ${content.isNotEmpty ? content : "(No Data)"}',
+                  Text(' ${chapter.describe.isNotEmpty ? chapter.describe : "(No Data)"}',
                       style: TextStyle(
                         color: color,
                         fontSize: fontSize,

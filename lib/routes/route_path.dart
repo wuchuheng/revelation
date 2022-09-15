@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:snotes/pages/chapter_list_page/index.dart';
 import 'package:snotes/pages/loading_page/index.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_router/route/route_abstract.dart';
@@ -7,6 +8,7 @@ import 'package:wuchuheng_router/wuchuheng_router.dart';
 import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
 import '../model/user_model/user_model.dart';
+import '../pages/chapter_detail_page/index.dart';
 import '../pages/home_page/index.dart';
 import '../pages/login_page/index.dart';
 import '../pages/setting_page/index.dart';
@@ -17,21 +19,28 @@ bool isLoadEnv = false;
 const homeRoute = '/';
 const loginRoute = '/login';
 const settingRoute = '/setting';
+const chapterListRoute = '/chapters';
+const chapterDetailRoute = '/chapters/details';
 
 /// 路由
 class RoutePath {
-  static HiRouter? _appRoutePathInstance;
+  static WuchuhengRouter? _appRoutePathInstance;
   static pushHomePage() => RoutePath.getAppPathInstance().push(homeRoute);
   static pushLoginPage() => RoutePath.getAppPathInstance().push(loginRoute);
   static pushSettingPage() => RoutePath.getAppPathInstance().push(settingRoute);
+  static pushChapterListPage() => RoutePath.getAppPathInstance().push(chapterListRoute);
+  static pushChapterDetailPage() => RoutePath.getAppPathInstance().push(chapterDetailRoute);
 
-  static HiRouter getAppPathInstance() {
-    _appRoutePathInstance ??= HiRouter(
+  static bool isSQLLiteInit = false;
+  static WuchuhengRouter getAppPathInstance() {
+    if (_appRoutePathInstance != null) return _appRoutePathInstance!;
+    _appRoutePathInstance = WuchuhengRouter(
       {
-        // homeRoute: () => SettingPage(),
         homeRoute: () => HomePage(),
         settingRoute: () => SettingPage(),
         loginRoute: () => LoginPage(),
+        chapterListRoute: () => ChapterListPage(),
+        chapterDetailRoute: () => ChapterDetailPage(),
       },
     );
     _appRoutePathInstance!.setLoadingPage(const LoadingPage());
@@ -44,7 +53,10 @@ class RoutePath {
         } catch (e) {}
         isLoadEnv = true;
       }
-      await SQLiteDao.init();
+      if (!isSQLLiteInit) {
+        await SQLiteDao.init();
+        isSQLLiteInit = true;
+      }
       final UserModel? user = UserDao().has();
       final loginPage = RoutePageInfo(loginRoute, () => LoginPage());
       final isConnectImap = CacheService.isConnectHook.value;

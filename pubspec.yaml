@@ -52,7 +52,8 @@ dependencies:
   adaptive_scrollbar: ^2.1.2
   wuchuheng_imap_cache:
     path: ../tmp/imap_cache
-  wuchuheng_router: ^0.0.16
+  wuchuheng_router:
+    path: ../tmp/router_dart
   wuchuheng_local_cache: ^0.0.2
   wuchuheng_task_util: ^0.0.3
   wuchuheng_logger: ^1.0.3

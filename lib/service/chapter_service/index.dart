@@ -5,7 +5,9 @@ import 'package:snotes/model/directory_model/index.dart';
 import 'package:snotes/service/cache_service.dart';
 import 'package:snotes/service/chapter_service/chapter_service_util.dart';
 import 'package:snotes/service/directory_service/index.dart';
+import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
+import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/index.dart';
 
@@ -108,4 +110,19 @@ createdAt: ${DateTime.now().toString()}
       }
     }
   }
+
+  static Function(ChapterModel value) onSave = Helper.debounce((ChapterModel newChapter) {
+    final chapter = ChapterService.editChapterHook.value;
+    if (chapter?.id == newChapter.id) {
+      chapter!.content = newChapter.content;
+      final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
+      final pregResult = regexp.firstMatch(chapter.content)?.group(0);
+      if (pregResult != null) {
+        var doc = loadYaml(pregResult) as Map;
+        chapter.title = doc['title'] ?? '';
+      }
+      chapter.updatedAt = DateTime.now();
+      ChapterService.setEditChapter(chapter);
+    }
+  }, 1000);
 }

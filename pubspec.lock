@@ -848,14 +848,14 @@ packages:
       path: "../tmp/imap_cache"
       relative: true
     source: path
-    version: "1.0.3"
+    version: "1.0.4"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
-      path: "../tmp/isolate_channel_dart"
-      relative: true
-    source: path
-    version: "0.0.10"
+      name: wuchuheng_isolate_channel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.11"
   wuchuheng_local_cache:
     dependency: "direct main"
     description:
@@ -873,10 +873,10 @@ packages:
   wuchuheng_router:
     dependency: "direct main"
     description:
-      name: wuchuheng_router
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.16"
+      path: "../tmp/router_dart"
+      relative: true
+    source: path
+    version: "0.0.17"
   wuchuheng_task_util:
     dependency: "direct main"
     description:

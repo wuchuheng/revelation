@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snotes/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FieldContainer extends StatelessWidget {
@@ -14,11 +15,20 @@ class FieldContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget FieldContainer', symbol: 'build');
+    late double width;
+    switch (DeviceService.deviceHook.value) {
+      case DeviceType.phone:
+        width = 80;
+        break;
+      case DeviceType.windows:
+        width = 90;
+        break;
+    }
     return Row(
       crossAxisAlignment: cross,
       children: [
         SizedBox(
-          width: 90,
+          width: width,
           child: Padding(
             padding: const EdgeInsets.only(right: 7),
             child: Text(

@@ -9,7 +9,7 @@ class Config {
   static final Color centerChapterActiveColor = HexColor('#AFF3CB');
   static final Color activeBorderColor = HexColor('#DC9607');
   static final Color primaryColor = HexColor('#DC9607');
-  static const Color backgroundColor = Colors.white;
+  static final Color backgroundColor = Colors.grey[100]!;
   static Color borderColor = Colors.grey[350]!;
   static Color iconColor = Colors.grey[600]!;
 

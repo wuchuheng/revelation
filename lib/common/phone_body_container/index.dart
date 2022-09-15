@@ -6,10 +6,9 @@ class PhoneBodyContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topHeight = MediaQuery.of(context).viewPadding.top;
     final height = MediaQuery.of(context).size.height;
 
-    return Container(
+    return SizedBox(
       height: height,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: height),

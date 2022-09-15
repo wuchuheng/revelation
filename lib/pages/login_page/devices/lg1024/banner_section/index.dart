@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../config/config.dart';
+import '../../../../../config/config.dart';
 
 class BannerSection extends StatefulWidget {
   const BannerSection({Key? key}) : super(key: key);

@@ -13,12 +13,10 @@ class PhoneHomePage extends StatefulWidget {
 class _PhoneHomePageState extends State<PhoneHomePage> {
   @override
   Widget build(BuildContext context) {
-    final topHeight = MediaQuery.of(context).viewPadding.top;
-    final height = MediaQuery.of(context).size.height;
-
     return const Scaffold(
       body: PhoneBodyContainer(
         child: PhoneLayoutContainer(
+          title: 'Folders',
           children: [
             DirectorySection(),
           ],

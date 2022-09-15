@@ -18,7 +18,7 @@ class _AdvanceSectionState extends State<AdvanceSection> with SingleTickerProvid
 
   @override
   void initState() {
-    controller = AnimationController(duration: Duration(microseconds: 200000), vsync: this);
+    controller = AnimationController(duration: const Duration(microseconds: 200000), vsync: this);
     animation = Tween<double>(
       begin: 0,
       end: animateEnd,
