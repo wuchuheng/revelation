@@ -9,11 +9,53 @@ class ChapterItem extends StatelessWidget {
   final ChapterModel chapter;
   final bool isLastItem;
 
-  const ChapterItem({Key? key, required this.chapter, this.isLastItem = false}) : super(key: key);
+  ChapterItem({Key? key, required this.chapter, this.isLastItem = false}) : super(key: key);
 
   void onTap(BuildContext context) {
     ChapterService.setEditChapter(chapter);
     RoutePath.pushChapterDetailPage();
+  }
+
+  Offset _tapPosition = Offset.zero;
+
+  void _showContextMenu(BuildContext context) async {
+    final RenderObject? overlay = Overlay.of(context)?.context.findRenderObject();
+
+    final result = await showMenu(
+        context: context,
+
+        // Show the context menu at the tap location
+        position: RelativeRect.fromRect(Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
+            Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width, overlay.paintBounds.size.height)),
+
+        // set a list of choices for the context menu
+        items: [
+          const PopupMenuItem(
+            value: 'favorites',
+            child: Text('Add To Favorites'),
+          ),
+          const PopupMenuItem(
+            value: 'comment',
+            child: Text('Write Comment'),
+          ),
+          const PopupMenuItem(
+            value: 'hide',
+            child: Text('Hide'),
+          ),
+        ]);
+
+    // Implement the logic for each choice here
+    switch (result) {
+      case 'favorites':
+        debugPrint('Add To Favorites');
+        break;
+      case 'comment':
+        debugPrint('Write Comment');
+        break;
+      case 'hide':
+        debugPrint('Hide');
+        break;
+    }
   }
 
   @override
@@ -25,6 +67,7 @@ class ChapterItem extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constraint) {
       return GestureDetector(
+        onLongPress: () => _showContextMenu(context),
         onTap: () => onTap(context),
         child: Container(
           padding: const EdgeInsets.all(10),
