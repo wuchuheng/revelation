@@ -1,4 +1,4 @@
-import 'package:snotes/model/user_model/user_model.dart';
+import 'package:revelation/model/user_model/user_model.dart';
 
 abstract class UserDaoAbstract {
   void create(UserModel userModel);

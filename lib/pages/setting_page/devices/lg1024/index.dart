@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/about_section/index.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/general_section/index.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/log_section/index.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/tab_section/header_section.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/user_section/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/about_section/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/general_section/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/log_section/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/tab_section/header_section.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/user_section/index.dart';
 
 import 'tab_section/index.dart';
 

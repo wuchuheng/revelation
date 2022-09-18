@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/general_section/sync_state_section.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/user_section/item_section.dart';
-import 'package:snotes/service/general_service/index.dart';
-import 'package:snotes/utils/date_time_util.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/general_section/sync_state_section.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/user_section/item_section.dart';
+import 'package:revelation/service/general_service/index.dart';
+import 'package:revelation/utils/date_time_util.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class GeneralSection extends StatefulWidget {

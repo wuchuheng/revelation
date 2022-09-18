@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/config/config.dart';
+import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class TitleSection extends StatelessWidget {

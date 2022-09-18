@@ -1,6 +1,6 @@
-import 'package:snotes/dao/sqlite_dao.dart';
-import 'package:snotes/dao/user_dao/index_abstract.dart';
-import 'package:snotes/model/user_model/user_model.dart';
+import 'package:revelation/dao/sqlite_dao.dart';
+import 'package:revelation/dao/user_dao/index_abstract.dart';
+import 'package:revelation/model/user_model/user_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class UserDao implements UserDaoAbstract {

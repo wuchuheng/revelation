@@ -1,10 +1,11 @@
 import 'dart:async';
+
 import 'package:path_provider/path_provider.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/errors/not_login_error.dart';
-import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/service/general_service/index.dart';
-import 'package:snotes/service/log_service/index.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/errors/not_login_error.dart';
+import 'package:revelation/service/chapter_service/index.dart';
+import 'package:revelation/service/general_service/index.dart';
+import 'package:revelation/service/log_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
@@ -35,7 +36,7 @@ class CacheService {
       imapServerHost: imapServerHost,
       imapServerPort: imapServerPort,
       isImapServerSecure: isImapServerSecure,
-      boxName: 'snotes',
+      boxName: 'revelation',
       syncIntervalSeconds: syncIntervalSeconds,
       isDebug: Config.isDebug,
       localCacheDirectory: directory.path,

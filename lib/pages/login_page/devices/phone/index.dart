@@ -1,6 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/service/user_service/index.dart';
+import 'package:revelation/service/user_service/index.dart';
 
 import '../form_section/account_info.dart';
 import '../form_section/index.dart';
@@ -20,6 +20,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.white,

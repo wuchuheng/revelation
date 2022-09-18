@@ -11,7 +11,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:snotes/main.dart';
+import 'package:revelation/main.dart';
 
 class Tmp {
   Future<void> printOk() {

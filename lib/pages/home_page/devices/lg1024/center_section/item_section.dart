@@ -5,10 +5,10 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/common/iconfont.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/model/chapter_model/index.dart';
-import 'package:snotes/service/chapter_service/index.dart';
+import 'package:revelation/common/iconfont.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/service/chapter_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 

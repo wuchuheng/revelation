@@ -4,9 +4,9 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section/index.dart';
-import 'package:snotes/service/directory_service/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/node_section/index.dart';
+import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
@@ -88,7 +88,7 @@ class _ItemSectionState extends State<ItemSection> {
     _lastClickedAt = DateTime.now();
   }
 
-  /// the  dialog for delete the node
+  /// the  on_dialog for delete the node
   void handleDeleteDialog() {
     showDialog<String>(
       context: context,

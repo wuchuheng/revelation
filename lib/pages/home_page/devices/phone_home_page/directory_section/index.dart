@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/service/directory_service/index.dart';
+import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import 'item_section.dart';

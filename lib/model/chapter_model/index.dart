@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:snotes/dao/directory_dao/index.dart';
-import 'package:snotes/model/directory_model/index.dart';
+import 'package:revelation/dao/directory_dao/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
 
 part 'index.g.dart';
 

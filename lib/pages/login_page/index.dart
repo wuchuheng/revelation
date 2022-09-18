@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/login_page/devices/lg1024/index.dart';
-import 'package:snotes/pages/login_page/devices/phone/index.dart';
-import 'package:snotes/service/device_service/index.dart';
+import 'package:revelation/pages/login_page/devices/lg1024/index.dart';
+import 'package:revelation/pages/login_page/devices/phone/index.dart';
+import 'package:revelation/service/device_service/index.dart';
 
 class LoginPage extends Page {
   @override

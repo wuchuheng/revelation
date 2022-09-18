@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/model/user_model/user_model.dart';
-import 'package:snotes/service/user_service/index.dart';
+import 'package:revelation/model/user_model/user_model.dart';
+import 'package:revelation/service/user_service/index.dart';
 
 import 'item_section.dart';
 

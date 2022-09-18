@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:snotes/config/config.dart';
+import 'package:revelation/config/config.dart';
 
 class AboutSection extends StatelessWidget {
   const AboutSection({Key? key}) : super(key: key);
@@ -12,7 +12,8 @@ class AboutSection extends StatelessWidget {
       assetName,
       height: 110,
     );
-    Widget container(Widget child) => Container(margin: const EdgeInsets.only(top: 10), child: child);
+    Widget container(Widget child) =>
+        Container(margin: const EdgeInsets.only(top: 10), child: child);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -24,7 +25,8 @@ class AboutSection extends StatelessWidget {
         )),
         container(const Text('Version 1.0.1')),
         container(
-          Text('Copyright © 2022 com.wuchuheng.snotes. All rights reserved.',
+          Text(
+              'Copyright © 2022 com.wuchuheng.revelation. All rights reserved.',
               style: TextStyle(color: Colors.grey[400]!)),
         ),
       ],

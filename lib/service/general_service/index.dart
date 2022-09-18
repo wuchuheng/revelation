@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:snotes/service/cache_service.dart';
+import 'package:revelation/service/cache_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class GeneralService {

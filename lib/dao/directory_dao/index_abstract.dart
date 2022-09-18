@@ -1,4 +1,4 @@
-import 'package:snotes/model/directory_model/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
 
 abstract class DirectoryDaoAbstract {
   List<DirectoryModel> fetchAll();

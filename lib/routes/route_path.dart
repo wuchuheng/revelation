@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:snotes/pages/chapter_list_page/index.dart';
-import 'package:snotes/pages/loading_page/index.dart';
+import 'package:revelation/pages/chapter_list_page/index.dart';
+import 'package:revelation/pages/loading_page/index.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_router/route/route_abstract.dart';
 import 'package:wuchuheng_router/wuchuheng_router.dart';

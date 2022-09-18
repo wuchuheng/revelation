@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/index.dart';
 
 class SettingPage extends Page {
   @override

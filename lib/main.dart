@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/device_service/index.dart';
+import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'config/config.dart';

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/common/iconfont.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/model/chapter_model/index.dart';
-import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/chapter_service/index.dart';
+import 'package:revelation/common/iconfont.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/chapter_service/index.dart';
+import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 class ChapterItem extends StatelessWidget {
   final ChapterModel chapter;
@@ -16,46 +17,25 @@ class ChapterItem extends StatelessWidget {
     RoutePath.pushChapterDetailPage();
   }
 
-  Offset _tapPosition = Offset.zero;
+  final radius = const Radius.circular(10);
 
-  void _showContextMenu(BuildContext context) async {
-    final RenderObject? overlay = Overlay.of(context)?.context.findRenderObject();
+  void onConfirmDelete(BuildContext context) {
+    onDialog(
+      context,
+      title: 'Delete Data',
+      describe: 'Are you sure?',
+      onConfirm: () {
+        ChapterService.delete(chapter);
+      },
+    );
+  }
 
-    final result = await showMenu(
-        context: context,
-
-        // Show the context menu at the tap location
-        position: RelativeRect.fromRect(Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
-            Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width, overlay.paintBounds.size.height)),
-
-        // set a list of choices for the context menu
-        items: [
-          const PopupMenuItem(
-            value: 'favorites',
-            child: Text('Add To Favorites'),
-          ),
-          const PopupMenuItem(
-            value: 'comment',
-            child: Text('Write Comment'),
-          ),
-          const PopupMenuItem(
-            value: 'hide',
-            child: Text('Hide'),
-          ),
-        ]);
-
-    // Implement the logic for each choice here
-    switch (result) {
-      case 'favorites':
-        debugPrint('Add To Favorites');
-        break;
-      case 'comment':
-        debugPrint('Write Comment');
-        break;
-      case 'hide':
-        debugPrint('Hide');
-        break;
-    }
+  void _showMenu(BuildContext context) {
+    onBottomSheet(
+      context: context,
+      items: [BottomSheetItem(title: 'Delete', color: Colors.red)],
+      onTap: (index) => onConfirmDelete(context),
+    );
   }
 
   @override
@@ -67,7 +47,7 @@ class ChapterItem extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constraint) {
       return GestureDetector(
-        onLongPress: () => _showContextMenu(context),
+        onLongPress: () => _showMenu(context),
         onTap: () => onTap(context),
         child: Container(
           padding: const EdgeInsets.all(10),

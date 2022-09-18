@@ -1,8 +1,8 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:snotes/dao/directory_dao/index.dart';
-import 'package:snotes/model/chapter_model/index.dart';
-import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/model/user_model/user_model.dart';
+import 'package:revelation/dao/directory_dao/index.dart';
+import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
+import 'package:revelation/model/user_model/user_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class SQLiteDao {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/common/editor_section/index.dart';
-import 'package:snotes/service/float_tool_bar_service/index.dart';
+import 'package:revelation/common/editor_section/index.dart';
+import 'package:revelation/service/float_tool_bar_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 

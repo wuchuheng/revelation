@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/create_button.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/tool_bar_section.dart';
-import 'package:snotes/service/directory_service/index.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/create_button.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/tool_bar_section.dart';
+import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
@@ -22,7 +22,8 @@ class _TreeSectionState extends State<TreeSection> {
   @override
   void initState() {
     super.initState();
-    treeSubscriptHandler = DirectoryService.directoryHook.subscribe((data) => setState(() => treeItems = data));
+    treeSubscriptHandler = DirectoryService.directoryHook
+        .subscribe((data) => setState(() => treeItems = data));
   }
 
   @override
@@ -37,11 +38,14 @@ class _TreeSectionState extends State<TreeSection> {
     double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(
-      height: MediaQuery.of(context).size.height - bottomBarHeight - Config.titleBarHeight,
+      height: MediaQuery.of(context).size.height -
+          bottomBarHeight -
+          Config.titleBarHeight,
       child: SingleChildScrollView(
         child: Column(
           children: [
-            for (var treeItem in treeItems) ItemSection(key: ValueKey(treeItem.id), data: treeItem),
+            for (var treeItem in treeItems)
+              ItemSection(key: ValueKey(treeItem.id), data: treeItem),
           ],
         ),
       ),

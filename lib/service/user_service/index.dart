@@ -1,9 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/dao/user_dao/index.dart';
-import 'package:snotes/model/user_model/user_model.dart';
-import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/cache_service.dart';
+import 'package:revelation/dao/user_dao/index.dart';
+import 'package:revelation/model/user_model/user_model.dart';
+import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/cache_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../pages/login_page/devices/form_section/account_info.dart';

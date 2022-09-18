@@ -1,6 +1,6 @@
 {
-    "name": "snotes",
-    "short_name": "snotes",
+    "name": "revelation",
+    "short_name": "revelation",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-package com.wuchuheng.snotes
+package com.wuchuheng.revelation
 
 import io.flutter.embedding.android.FlutterActivity
 

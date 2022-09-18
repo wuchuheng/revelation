@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:snotes/service/user_service/index.dart';
+import 'package:revelation/service/user_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../form_section/index.dart';

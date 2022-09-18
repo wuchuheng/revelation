@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/index.dart';
-import 'package:snotes/service/device_service/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/index.dart';
+import 'package:revelation/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'devices/phone_home_page/index_page.dart';

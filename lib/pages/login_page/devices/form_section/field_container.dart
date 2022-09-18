@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/service/device_service/index.dart';
+import 'package:revelation/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FieldContainer extends StatelessWidget {

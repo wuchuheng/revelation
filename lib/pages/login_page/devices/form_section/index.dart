@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:snotes/config/config.dart';
+import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 

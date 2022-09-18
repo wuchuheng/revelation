@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:snotes/config/config.dart';
-import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/directory_service/index.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/directory_service/index.dart';
 
 import '../../../../../common/iconfont.dart';
 import '../../../../../model/directory_model/index.dart';

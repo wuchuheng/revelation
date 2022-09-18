@@ -26,5 +26,5 @@ class Config {
 
   /// developer options
   static bool isDebug = DotEnv.get('IS_DEBUG', false);
-  static String appName = 'Snotes';
+  static String appName = 'revelation';
 }

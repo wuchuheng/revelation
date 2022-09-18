@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:snotes/model/directory_model/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
 
 import '../cache_service.dart';
 

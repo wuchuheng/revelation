@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'package:snotes/config/config.dart';
+import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class MarkdownSection extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:snotes/dao/directory_dao/index.dart';
-import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/service/cache_service.dart';
-import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/service/directory_service/directory_service_util.dart';
+import 'package:revelation/dao/directory_dao/index.dart';
+import 'package:revelation/model/directory_model/index.dart';
+import 'package:revelation/service/cache_service.dart';
+import 'package:revelation/service/chapter_service/index.dart';
+import 'package:revelation/service/directory_service/directory_service_util.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class DirectoryService {

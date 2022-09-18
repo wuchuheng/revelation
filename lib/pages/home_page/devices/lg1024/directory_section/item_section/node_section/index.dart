@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/item_section/node_section/title_section.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/node_section/title_section.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../config/config.dart';

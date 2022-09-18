@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'package:snotes/common/editor_section/index.dart';
-import 'package:snotes/common/iconfont.dart';
-import 'package:snotes/routes/route_path.dart';
-import 'package:snotes/service/chapter_service/index.dart';
-import 'package:snotes/service/directory_service/index.dart';
+import 'package:revelation/common/editor_section/index.dart';
+import 'package:revelation/common/iconfont.dart';
+import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/chapter_service/index.dart';
+import 'package:revelation/service/directory_service/index.dart';
 
 import '../../config/config.dart';
 

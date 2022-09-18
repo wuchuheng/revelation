@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:snotes/dao/chapter_dao/index.dart';
+import 'package:revelation/dao/chapter_dao/index.dart';
 
 part 'index.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/common/iconfont.dart';
+import 'package:revelation/common/iconfont.dart';
 
 import '../../config/config.dart';
 

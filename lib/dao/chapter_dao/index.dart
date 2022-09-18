@@ -1,7 +1,7 @@
-import 'package:snotes/dao/chapter_dao/chapter_util.dart';
-import 'package:snotes/dao/chapter_dao/index_abstract.dart';
-import 'package:snotes/dao/sqlite_dao.dart';
-import 'package:snotes/model/chapter_model/index.dart';
+import 'package:revelation/dao/chapter_dao/chapter_util.dart';
+import 'package:revelation/dao/chapter_dao/index_abstract.dart';
+import 'package:revelation/dao/sqlite_dao.dart';
+import 'package:revelation/model/chapter_model/index.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class ChapterDao implements ChapterDaoAbstract {

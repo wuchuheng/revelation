@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/center_section/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/directory_section/index.dart';
-import 'package:snotes/pages/home_page/devices/lg1024/edit_section/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/center_section/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/directory_section/index.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/edit_section/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'float_buttons_section/index.dart';

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wuchuheng.snotes">
+    package="com.wuchuheng.revelation">
    <application
-        android:label="snotes"
+        android:label="revelation"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

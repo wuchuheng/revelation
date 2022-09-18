@@ -1,7 +1,7 @@
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:flutter/material.dart';
-import 'package:snotes/pages/setting_page/devices/lg1024/log_section/item_section.dart';
-import 'package:snotes/service/log_service/index.dart';
+import 'package:revelation/pages/setting_page/devices/lg1024/log_section/item_section.dart';
+import 'package:revelation/service/log_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class LogSection extends StatefulWidget {

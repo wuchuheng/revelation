@@ -1,7 +1,7 @@
-import 'package:snotes/dao/directory_dao/directory_dao_util.dart';
-import 'package:snotes/dao/directory_dao/index_abstract.dart';
-import 'package:snotes/dao/sqlite_dao.dart';
-import 'package:snotes/model/directory_model/index.dart';
+import 'package:revelation/dao/directory_dao/directory_dao_util.dart';
+import 'package:revelation/dao/directory_dao/index_abstract.dart';
+import 'package:revelation/dao/sqlite_dao.dart';
+import 'package:revelation/model/directory_model/index.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class DirectoryDao implements DirectoryDaoAbstract {

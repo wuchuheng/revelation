@@ -1,5 +1,5 @@
-import 'package:snotes/model/directory_model/index.dart';
-import 'package:snotes/utils/date_time_util.dart';
+import 'package:revelation/model/directory_model/index.dart';
+import 'package:revelation/utils/date_time_util.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 class DirectoryDaoUtil {
