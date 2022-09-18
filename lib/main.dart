@@ -29,7 +29,7 @@ class App extends StatelessWidget {
     Logger.info('Build Widget App', symbol: 'build');
     return RoutePath.getAppPathInstance().build(
       context,
-      title: 'snote',
+      title: 'snotes',
       theme: ThemeData(),
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
