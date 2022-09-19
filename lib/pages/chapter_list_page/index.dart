@@ -48,6 +48,11 @@ class _ChapterListState extends State<ChapterList> {
     super.dispose();
   }
 
+  void onCreate() async {
+    await ChapterService.create();
+    RoutePath.pushChapterDetailPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     final chapters = ChapterService.chapterListHook.value;
@@ -58,6 +63,10 @@ class _ChapterListState extends State<ChapterList> {
         leading: IconButton(
           onPressed: () => onBack(context),
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+        ),
+        rightLeading: IconButton(
+          onPressed: onCreate,
+          icon: const Icon(Icons.add, color: Colors.black),
         ),
         title: title,
         children: [

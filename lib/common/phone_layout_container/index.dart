@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/common/iconfont.dart';
 
 import '../../config/config.dart';
 
 class PhoneLayoutContainer extends StatefulWidget {
   final List<Widget> children;
   final IconButton? leading;
+  final IconButton? rightLeading;
   final String title;
   const PhoneLayoutContainer({
     Key? key,
     required this.children,
     required this.title,
     this.leading,
+    this.rightLeading,
   }) : super(key: key);
 
   @override
@@ -46,12 +47,7 @@ class _PhoneLayoutContainerState extends State<PhoneLayoutContainer> {
                     widget.title,
                     style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
                   ),
-                  actions: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(IconFont.icon_notes, color: Colors.black),
-                    ),
-                  ],
+                  actions: [if (widget.rightLeading != null) widget.rightLeading!],
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(

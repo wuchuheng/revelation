@@ -10,7 +10,7 @@ class ChapterItem extends StatelessWidget {
   final ChapterModel chapter;
   final bool isLastItem;
 
-  ChapterItem({Key? key, required this.chapter, this.isLastItem = false}) : super(key: key);
+  const ChapterItem({Key? key, required this.chapter, this.isLastItem = false}) : super(key: key);
 
   void onTap(BuildContext context) {
     ChapterService.setEditChapter(chapter);
@@ -24,9 +24,7 @@ class ChapterItem extends StatelessWidget {
       context: context,
       title: 'Delete Data',
       describe: 'Are you sure?',
-      onConfirm: () {
-        ChapterService.delete(chapter);
-      },
+      onConfirm: () => ChapterService.delete(chapter),
     );
   }
 
