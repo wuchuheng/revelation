@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/routes/route_path.dart';
+import 'package:revelation/service/chapter_service/index.dart';
 import 'package:revelation/service/directory_service/index.dart';
+import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 import '../../../../../common/iconfont.dart';
 import '../../../../../model/directory_model/index.dart';
@@ -29,11 +31,91 @@ class _ItemSectionState extends State<ItemSection> {
     RoutePath.pushChapterListPage();
   }
 
+  onDelete() {
+    DirectoryService.delete(widget.directory.id.toString());
+  }
+
+  onRename(String newName) {
+    DirectoryService.setChangeNodeHook(widget.directory);
+    DirectoryService.update(newName);
+  }
+
+  void onCreateChapter() async {
+    DirectoryService.setActiveNode(widget.directory);
+    await ChapterService.create();
+    RoutePath.pushChapterDetailPage();
+  }
+
+  void onCreateNode(BuildContext context) {
+    onConfirmDialog(
+      initValue: DirectoryService.defaultTitle,
+      context: context,
+      title: 'Create Node',
+      validator: (String? value) {
+        if (value != null && value == '') {
+          return 'Node must be not empty.';
+        }
+        return null;
+      },
+      onConfirm: (value) {
+        DirectoryService.setActiveNode(widget.directory);
+        DirectoryService.create(value);
+        if (!isOpen) setState(() => isOpen = true);
+      },
+    );
+  }
+
+  void showMenu(BuildContext context) {
+    const renameKey = 'rename';
+    const deleteKey = 'delete';
+    const createChapterKey = 'create chapter';
+    const createNodeKey = 'create node';
+    final items = <BottomSheetItem>[
+      BottomSheetItem(title: 'Create Node', key: createNodeKey),
+      BottomSheetItem(title: 'Create Chapter', key: createChapterKey),
+      if (DirectoryService.rootNodeId != widget.directory.id) BottomSheetItem(title: 'Rename', key: renameKey),
+      if (DirectoryService.rootNodeId != widget.directory.id)
+        BottomSheetItem(title: 'Delete', color: Colors.red, key: deleteKey),
+    ];
+    onBottomSheet(
+      onTap: (String key) {
+        switch (key) {
+          case renameKey:
+            onConfirmDialog(
+              initValue: widget.directory.title,
+              validator: (String? value) {
+                if (value != null && value == '') {
+                  return 'Node must be not empty!';
+                }
+                return null;
+              },
+              onConfirm: (value) => onRename(value),
+              context: context,
+              title: 'Rename Node',
+            );
+            break;
+          case deleteKey:
+            onDialog(context: context, title: 'Delete Node', describe: 'Are you sure?', onConfirm: onDelete);
+            break;
+          case createChapterKey:
+            onCreateChapter();
+            break;
+          case createNodeKey:
+            onCreateNode(context);
+            break;
+        }
+      },
+      context: context,
+      items: items,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     const double padding = 10;
     final icon = Icon(Icons.arrow_back_ios, size: 15, color: Config.iconColor);
     final item = GestureDetector(
+      onLongPress: () => showMenu(context),
       behavior: HitTestBehavior.opaque,
       onTap: onTapItem,
       child: Container(

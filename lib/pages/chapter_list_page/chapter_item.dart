@@ -21,7 +21,7 @@ class ChapterItem extends StatelessWidget {
 
   void onConfirmDelete(BuildContext context) {
     onDialog(
-      context,
+      context: context,
       title: 'Delete Data',
       describe: 'Are you sure?',
       onConfirm: () {
@@ -33,8 +33,8 @@ class ChapterItem extends StatelessWidget {
   void _showMenu(BuildContext context) {
     onBottomSheet(
       context: context,
-      items: [BottomSheetItem(title: 'Delete', color: Colors.red)],
-      onTap: (index) => onConfirmDelete(context),
+      items: [BottomSheetItem(title: 'Delete', color: Colors.red, key: 'delete')],
+      onTap: (key) => onConfirmDelete(context),
     );
   }
 

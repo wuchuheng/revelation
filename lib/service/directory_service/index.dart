@@ -17,6 +17,10 @@ class DirectoryService {
   static Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
   static Hook<List<DirectoryModel>> directoryHook = Hook([]);
 
+  static void setChangeNodeHook(DirectoryModel? value) {
+    changedNodeHook.set(value);
+  }
+
   static Future<void> init() async {
     final rootNode = DirectoryDao().has(id: 0)!;
     activeNodeHook.set(rootNode);
@@ -59,8 +63,10 @@ class DirectoryService {
     return result;
   }
 
+  static String defaultTitle = 'New Folder';
+
   /// create new node for directory_section.
-  static create() async {
+  static create([String? title]) async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
     int pid = activeNodeHook.value.id;
@@ -68,7 +74,7 @@ class DirectoryService {
       id: id,
       pid: pid,
       sortNum: 0,
-      title: 'New Folder',
+      title: title ?? defaultTitle,
       children: [],
     );
     await DirectoryServiceUtil.setLocalCache(newItem);

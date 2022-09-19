@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart' hide MenuItem;
-import 'package:intl/intl.dart';
-import 'package:wuchuheng_logger/wuchuheng_logger.dart';
+import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 class TmpPage extends Page {
   @override
@@ -22,23 +23,32 @@ class Tmp extends StatefulWidget {
 }
 
 class _TmpState extends State<Tmp> {
+  Timer? timer;
   @override
   Widget build(BuildContext context) {
-    Logger.info('Build widget  _TmpState.', symbol: 'build');
-
-    final onlineTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse('2022-08-18 11:55:28', true).millisecondsSinceEpoch;
-    final localTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse('2022-08-18 12:54:05', true).millisecondsSinceEpoch;
-
     return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            Text('1660794928000 2022-08-18 11:55:28.264610 $onlineTime'),
-            //    1660794928264
-            Text('1660755245000 2022-08-18 12:54:05.454666 $localTime'),
-            //    1660798445454
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          timer?.cancel();
+          timer = Timer(
+              const Duration(seconds: 1),
+              () => {
+                    onConfirmDialog(
+                      onConfirm: (value) {
+                        print(value);
+                      },
+                      validator: (String? value) {
+                        if (value != null && value == '') {
+                          return 'Node name is not empty.';
+                        }
+                        return null;
+                      },
+                      context: context,
+                      title: 'create New Node',
+                    ),
+                  });
+          return const Text('hello');
+        },
       ),
     );
   }

@@ -72,6 +72,7 @@ class RoutePath {
             isImapServerSecure: user.isImapServerSecure,
           );
         } catch (e) {
+          // :TODO logger
           return loginPage;
         }
       }
