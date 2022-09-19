@@ -5,6 +5,7 @@ class LogService {
   static Hook<List<LoggerItem>> logHook = Hook([]);
   static int maxLogLength = 0;
   static int _calculationLogIndex = 0;
+  static int limit = 1000;
 
   static void push(LoggerItem loggerItem) {
     logHook.setCallback((data) {
@@ -20,6 +21,13 @@ class LogService {
       logLength += log.file.length;
       if (maxLogLength < logLength) maxLogLength = logLength;
       _calculationLogIndex++;
+    }
+    if (value.length == limit) {
+      logHook.setCallback((data) {
+        data.removeAt(0);
+        return data;
+      });
+      _calculationLogIndex--;
     }
   }
 }

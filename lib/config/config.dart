@@ -8,7 +8,7 @@ class Config {
   static final Color activeColor = HexColor('#AAF6C2');
   static final Color centerChapterActiveColor = HexColor('#AFF3CB');
   static final Color activeBorderColor = HexColor('#DC9607');
-  static final Color primaryColor = HexColor('#45B475');
+  static final Color primaryColor = HexColor('#6F42FF');
   static final Color backgroundColor = Colors.grey[100]!;
   static Color borderColor = Colors.grey[350]!;
   static Color subTitleColor = HexColor('#a1a1aa');
