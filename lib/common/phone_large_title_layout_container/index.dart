@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../config/config.dart';
 
-class PhoneLayoutContainer extends StatefulWidget {
+class PhoneLargeTitleLayoutContainer extends StatefulWidget {
   final List<Widget> children;
   final IconButton? leading;
   final IconButton? rightLeading;
   final String title;
-  const PhoneLayoutContainer({
+  const PhoneLargeTitleLayoutContainer({
     Key? key,
     required this.children,
     required this.title,
@@ -16,12 +16,12 @@ class PhoneLayoutContainer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PhoneLayoutContainer> createState() => _PhoneLayoutContainerState();
+  State<PhoneLargeTitleLayoutContainer> createState() => _PhoneLargeTitleLayoutContainerState();
 }
 
-class _PhoneLayoutContainerState extends State<PhoneLayoutContainer> {
+class _PhoneLargeTitleLayoutContainerState extends State<PhoneLargeTitleLayoutContainer> {
   final ScrollController scrollController = ScrollController();
-  Border? bottomBarBorder = null;
+  Border? bottomBarBorder;
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../common/phone_body_container/index.dart';
-import '../../common/phone_layout_container/index.dart';
+import '../../common/phone_large_title_layout_container/index.dart';
 
 class ChapterListPage extends Page {
   @override
@@ -59,7 +59,7 @@ class _ChapterListState extends State<ChapterList> {
     final title = '${DirectoryService.activeNodeHook.value.title}(${chapters.length})';
 
     return PhoneBodyContainer(
-      child: PhoneLayoutContainer(
+      child: PhoneLargeTitleLayoutContainer(
         leading: IconButton(
           onPressed: () => onBack(context),
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),

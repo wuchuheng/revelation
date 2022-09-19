@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/about_section/index.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/general_section/index.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/log_section/index.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/tab_section/header_section.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/user_section/index.dart';
+import 'package:revelation/service/setting_service/index.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import 'tab_section/index.dart';
 
@@ -15,21 +12,29 @@ class LG1024SettingPage extends StatefulWidget {
 }
 
 class _LG1024SettingPageState extends State<LG1024SettingPage> {
-  List<TabItem> tabs = [
-    TabItem(icon: Icons.settings, text: 'General', body: const GeneralSection()),
-    TabItem(icon: Icons.people, text: 'User', body: const UserSection()),
-    TabItem(icon: Icons.notes, text: 'Logs', body: const LogSection()),
-    TabItem(icon: Icons.info_outline, text: 'About', body: const AboutSection()),
-  ];
-  int activeIndex = 0;
+  UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
+
+  @override
+  void initState() {
+    unsubscribeCollect = UnsubscribeCollect([
+      SettingService.activeIndexHook.subscribe((value) => setState(() {})),
+    ]);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    unsubscribeCollect.unsubscribe();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabSection(
-        tabs: tabs,
-        activeIndex: activeIndex,
-        onChange: (index) => setState(() => activeIndex = index),
+        tabs: SettingService.tabs,
+        activeIndex: SettingService.activeIndexHook.value,
+        onChange: (index) => SettingService.setActiveIndex(index),
       ),
     );
   }

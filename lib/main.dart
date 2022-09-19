@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:revelation/routes/route_path.dart';
 import 'package:revelation/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -30,7 +31,12 @@ class App extends StatelessWidget {
     return RoutePath.getAppPathInstance().build(
       context,
       title: 'snotes',
-      theme: ThemeData(),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          color: Color(0xFF151026),
+        ),
+        primaryColor: HexColor('#4F23DA'),
+      ),
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
     );

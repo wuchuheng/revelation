@@ -31,10 +31,8 @@ class _HomePageState extends State<_HomePage> {
     switch (DeviceService.deviceHook.value) {
       case DeviceType.phone:
         return const PhoneHomePage();
-        break;
       case DeviceType.windows:
         return const LG1024HomePage();
-        break;
     }
   }
 }
