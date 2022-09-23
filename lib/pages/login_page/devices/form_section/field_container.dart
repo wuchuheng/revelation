@@ -26,6 +26,7 @@ class FieldContainer extends StatelessWidget {
     }
     return Row(
       crossAxisAlignment: cross,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: width,
