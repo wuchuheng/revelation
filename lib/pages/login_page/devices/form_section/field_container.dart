@@ -9,7 +9,11 @@ class FieldContainer extends StatelessWidget {
   final CrossAxisAlignment cross;
 
   const FieldContainer(
-      {Key? key, required this.label, required this.child, this.cross = CrossAxisAlignment.start, required this.height})
+      {Key? key,
+      required this.label,
+      required this.child,
+      this.cross = CrossAxisAlignment.center,
+      required this.height})
       : super(key: key);
 
   @override
@@ -28,8 +32,9 @@ class FieldContainer extends StatelessWidget {
       crossAxisAlignment: cross,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
+        Container(
           width: width,
+          alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.only(right: 7),
             child: Text(
