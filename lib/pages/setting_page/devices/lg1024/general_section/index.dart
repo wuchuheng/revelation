@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:revelation/config/config.dart';
 import 'package:revelation/pages/setting_page/devices/lg1024/general_section/sync_state_section.dart';
 import 'package:revelation/pages/setting_page/devices/lg1024/user_section/item_section.dart';
 import 'package:revelation/service/general_service/index.dart';

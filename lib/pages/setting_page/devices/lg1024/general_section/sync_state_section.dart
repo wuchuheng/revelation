@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:revelation/service/general_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
@@ -41,6 +39,7 @@ class _SyncStateSectionState extends State<SyncStateSection> {
         color: color,
         borderRadius: BorderRadius.all(Radius.circular(size)),
       ),
+      alignment: Alignment.center,
       width: size,
       height: size,
       child: Text(

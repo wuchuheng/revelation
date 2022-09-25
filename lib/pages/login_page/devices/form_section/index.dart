@@ -92,7 +92,7 @@ class _FormSectionState extends State<FormSection> {
   }
 
   Widget _getUserNameField() {
-    String label = 'User Name';
+    String label = 'Email';
     return FieldContainer(
       height: itemHeight,
       label: label,
