@@ -29,6 +29,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     Logger.info('Build Widget App', symbol: 'build');
     return RoutePath.getAppPathInstance().build(
+      debugShowCheckedModeBanner: false,
       context,
       title: 'snotes',
       theme: ThemeData(

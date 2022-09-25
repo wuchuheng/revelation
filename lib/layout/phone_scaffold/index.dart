@@ -29,7 +29,10 @@ class PhoneScaffoldLayout extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
-      body: body,
+      body: WillPopScope(
+        child: body,
+        onWillPop: () async => false,
+      ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[

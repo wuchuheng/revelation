@@ -37,9 +37,9 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
   @override
   Widget build(BuildContext context) {
     final activeNodeTitle = DirectoryService.activeNodeHook.value.title;
-    const double toolBarHeight = 50;
+    const double toolBarHeight = 65;
     const double toolbarFontSize = 19;
-    double leftRightPaddingSize = 5;
+    double leftRightPaddingSize = 7;
     editSection() => Container(
           padding: EdgeInsets.only(left: leftRightPaddingSize, right: leftRightPaddingSize),
           child: EditorFieldSection(content: '', onChange: (value) {}),
@@ -58,7 +58,7 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
             height: toolBarHeight,
             decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Config.borderColor))),
             child: Row(
@@ -81,7 +81,7 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height - toolBarHeight,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - leftRightPaddingSize * 2),

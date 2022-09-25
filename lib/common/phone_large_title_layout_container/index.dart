@@ -40,7 +40,15 @@ class _PhoneLargeTitleLayoutContainerState extends State<PhoneLargeTitleLayoutCo
               controller: scrollController,
               slivers: [
                 SliverAppBar.large(
-                  leading: widget.leading,
+                  leading: widget.leading ??
+                      IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.black,
+                          )),
                   expandedHeight: 130,
                   backgroundColor: Config.backgroundColor,
                   title: Text(
@@ -65,16 +73,6 @@ class _PhoneLargeTitleLayoutContainerState extends State<PhoneLargeTitleLayoutCo
             )),
           ),
         ),
-        // Container(
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        //     border: Border(top: BorderSide(width: 1, color: Config.borderColor)),
-        //   ),
-        //   height: barHeight,
-        //   child: Row(
-        //     children: widget.bottomToolbar,
-        //   ),
-        // ),
       ]);
     });
   }

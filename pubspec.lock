@@ -904,7 +904,7 @@ packages:
       path: "../tmp/router_dart"
       relative: true
     source: path
-    version: "0.0.18"
+    version: "0.0.19"
   wuchuheng_task_util:
     dependency: "direct main"
     description:
@@ -918,7 +918,7 @@ packages:
       path: "../tmp/wuchuheng_ui"
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1"
   xdg_directories:
     dependency: transitive
     description:
