@@ -113,13 +113,16 @@ class _ItemSectionState extends State<ItemSection> {
   @override
   Widget build(BuildContext context) {
     const double padding = 10;
-    final icon = Icon(Icons.arrow_back_ios, size: 15, color: Config.iconColor);
+    final icon = Padding(
+      padding: const EdgeInsets.only(left: 10),
+      child: Icon(Icons.arrow_back_ios, size: 19, color: Config.iconColor),
+    );
     final item = GestureDetector(
       onLongPress: () => showMenu(context),
       behavior: HitTestBehavior.opaque,
       onTap: onTapItem,
       child: Container(
-          height: 35,
+          height: 43,
           padding: EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,7 +134,7 @@ class _ItemSectionState extends State<ItemSection> {
                 ],
               ),
               SizedBox(
-                  width: 31,
+                  width: 43,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
