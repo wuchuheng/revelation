@@ -129,7 +129,7 @@ class _ItemSectionState extends State<ItemSection> {
               onLongPress: () => showMenu(context),
               behavior: HitTestBehavior.opaque,
               onTap: onTapItem,
-              child: Container(
+              child: SizedBox(
                 width: constraints.maxWidth - iconWrapperWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +142,7 @@ class _ItemSectionState extends State<ItemSection> {
             ),
             GestureDetector(
               onTap: () => widget.directory.children.isNotEmpty ? onOpenFolder() : null,
-              child: Container(
+              child: SizedBox(
                 width: iconWrapperWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
