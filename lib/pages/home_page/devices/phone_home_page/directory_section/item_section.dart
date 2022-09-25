@@ -117,38 +117,46 @@ class _ItemSectionState extends State<ItemSection> {
       padding: const EdgeInsets.only(left: 10),
       child: Icon(Icons.arrow_back_ios, size: 19, color: Config.iconColor),
     );
-    final item = GestureDetector(
-      onLongPress: () => showMenu(context),
-      behavior: HitTestBehavior.opaque,
-      onTap: onTapItem,
-      child: Container(
-          height: 43,
-          padding: EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const Icon(IconFont.icon_file_directory),
-                  Container(child: Text(' ${widget.directory.title}'))
-                ],
+    const iconWrapperWidth = 43.0;
+    final item = Container(
+      height: 43,
+      padding: EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onLongPress: () => showMenu(context),
+              behavior: HitTestBehavior.opaque,
+              onTap: onTapItem,
+              child: Container(
+                width: constraints.maxWidth - iconWrapperWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [const Icon(IconFont.icon_file_directory), Text(' ${widget.directory.title}')]),
+                    Text('${widget.directory.count}'),
+                  ],
+                ),
               ),
-              SizedBox(
-                  width: 43,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${widget.directory.count}'),
-                      widget.directory.children.isNotEmpty
-                          ? GestureDetector(
-                              onTap: onOpenFolder,
-                              child: isOpen ? Transform.rotate(angle: pi * -0.5, child: icon) : icon,
-                            )
-                          : const Text(''),
-                    ],
-                  ))
-            ],
-          )),
+            ),
+            GestureDetector(
+              onTap: () => widget.directory.children.isNotEmpty ? onOpenFolder() : null,
+              child: Container(
+                width: iconWrapperWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    widget.directory.children.isNotEmpty
+                        ? SizedBox(child: isOpen ? Transform.rotate(angle: pi * -0.5, child: icon) : icon)
+                        : const Text(''),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
     );
 
     return Column(
