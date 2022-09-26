@@ -71,11 +71,11 @@ class _ItemSectionState extends State<ItemSection> {
     const createChapterKey = 'create chapter';
     const createNodeKey = 'create node';
     final items = <BottomSheetItem>[
-      BottomSheetItem(title: 'Create Node', key: createNodeKey),
-      BottomSheetItem(title: 'Create Chapter', key: createChapterKey),
-      if (DirectoryService.rootNodeId != widget.directory.id) BottomSheetItem(title: 'Rename', key: renameKey),
+      BottomSheetItem(title: createNodeKey, key: createNodeKey),
+      BottomSheetItem(title: createChapterKey, key: createChapterKey),
+      if (DirectoryService.rootNodeId != widget.directory.id) BottomSheetItem(title: renameKey, key: renameKey),
       if (DirectoryService.rootNodeId != widget.directory.id)
-        BottomSheetItem(title: 'Delete', color: Colors.red, key: deleteKey),
+        BottomSheetItem(title: deleteKey, color: Colors.red, key: deleteKey),
     ];
     onBottomSheet(
       onTap: (String key) {
