@@ -51,7 +51,7 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Colors.black,
-      autofocus: true,
+      autofocus: false,
       onChanged: (String value) {
         final chapter = ChapterService.editChapterHook.value!;
         chapter.content = value;

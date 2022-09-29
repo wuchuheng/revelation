@@ -14,8 +14,11 @@ class ChapterListPage extends Page {
     return MaterialPageRoute(
       settings: this,
       builder: (BuildContext context) {
-        return const Scaffold(
-          body: ChapterList(),
+        return Scaffold(
+          body: WillPopScope(
+            child: const ChapterList(),
+            onWillPop: () => Future.value(false),
+          ),
         );
       },
     );
@@ -53,6 +56,10 @@ class _ChapterListState extends State<ChapterList> {
     pushChapterDetailPage();
   }
 
+  void onBack(BuildContext context) async {
+    await route.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final chapters = ChapterService.chapterListHook.value;
@@ -83,9 +90,5 @@ class _ChapterListState extends State<ChapterList> {
         ],
       ),
     );
-  }
-
-  void onBack(BuildContext context) async {
-    await route.pop(context);
   }
 }

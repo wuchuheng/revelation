@@ -34,10 +34,14 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
     setState(() => isPreview = !isPreview);
   }
 
+  void onBack(BuildContext context) async {
+    await route.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final activeNodeTitle = DirectoryService.activeNodeHook.value.title;
-    const double toolBarHeight = 65;
+    double toolBarHeight = 40 + MediaQuery.of(context).viewPadding.top;
     const double toolbarFontSize = 19;
     double leftRightPaddingSize = 7;
     editSection() => Container(
@@ -47,53 +51,50 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
 
     preview() {
       final content = ChapterService.editChapterHook.value?.content ?? '';
-
       return MarkdownWidget(
         data: content,
       );
-      // return MarkdownSection(width: 400, content: content);
     }
 
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            height: toolBarHeight,
-            decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Config.borderColor))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => onBack(context),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.arrow_back_ios, size: toolbarFontSize),
-                      Text(
-                        activeNodeTitle,
-                        style: const TextStyle(fontSize: toolbarFontSize),
-                      )
-                    ],
+      body: WillPopScope(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top, left: 10, right: 10),
+              height: toolBarHeight,
+              decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Config.borderColor))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => onBack(context),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.arrow_back_ios, size: toolbarFontSize),
+                        Text(
+                          activeNodeTitle,
+                          style: const TextStyle(fontSize: toolbarFontSize),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(onPressed: onChangePreview, icon: const Icon(IconFont.icon_preview, size: toolbarFontSize))
-              ],
+                  IconButton(onPressed: onChangePreview, icon: const Icon(IconFont.icon_preview, size: toolbarFontSize))
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - toolBarHeight,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - leftRightPaddingSize * 2),
-              child: isPreview ? preview() : editSection(),
-            ),
-          )
-        ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height - toolBarHeight,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - leftRightPaddingSize * 2),
+                child: isPreview ? preview() : editSection(),
+              ),
+            )
+          ],
+        ),
+        onWillPop: () => Future.value(false),
       ),
     );
-  }
-
-  void onBack(BuildContext context) async {
-    await route.pop(context);
   }
 }
