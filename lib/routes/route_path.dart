@@ -23,7 +23,7 @@ const settingRoute = '/setting';
 const chapterListRoute = '/chapters';
 const chapterDetailRoute = '/chapters/details';
 
-onBefore(RoutePageInfo pageInfo) async {
+Future<RoutePageInfo> onBefore(RoutePageInfo pageInfo) async {
   if (!isLoadEnv) {
     try {
       final content = await rootBundle.loadString('.env');
