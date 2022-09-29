@@ -86,6 +86,6 @@ class _ChapterListState extends State<ChapterList> {
   }
 
   void onBack(BuildContext context) async {
-    await RoutePath.getAppPathInstance().pop(context);
+    await route.pop(context);
   }
 }

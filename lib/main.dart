@@ -28,7 +28,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build Widget App', symbol: 'build');
-    return RoutePath.getAppPathInstance().build(
+    return route.build(
       debugShowCheckedModeBanner: false,
       context,
       title: 'snotes',

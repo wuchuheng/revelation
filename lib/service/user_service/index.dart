@@ -45,7 +45,7 @@ class UserService {
 
   static void disconnect() async {
     await CacheService.disconnect();
-    RoutePath.isSQLLiteInit = false;
+    isSQLLiteInit = false;
     pushLoginPage();
   }
 }

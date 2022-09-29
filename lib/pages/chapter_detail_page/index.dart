@@ -25,7 +25,7 @@ class _ChapterDetailPage extends StatefulWidget {
 class _ChapterDetailPageState extends State<_ChapterDetailPage> {
   bool isPreview = false;
   void onPressed(BuildContext context) async {
-    await RoutePath.getAppPathInstance().pop(context);
+    await route.pop(context);
   }
 
   TextEditingController textEditingController = TextEditingController();
@@ -94,6 +94,6 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
   }
 
   void onBack(BuildContext context) async {
-    await RoutePath.getAppPathInstance().pop(context);
+    await route.pop(context);
   }
 }
