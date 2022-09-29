@@ -50,7 +50,7 @@ class _ChapterListState extends State<ChapterList> {
 
   void onCreate() async {
     await ChapterService.create();
-    RoutePath.pushChapterDetailPage();
+    pushChapterDetailPage();
   }
 
   @override

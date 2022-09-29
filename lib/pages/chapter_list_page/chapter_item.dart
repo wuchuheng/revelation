@@ -14,7 +14,7 @@ class ChapterItem extends StatelessWidget {
 
   void onTap(BuildContext context) {
     ChapterService.setEditChapter(chapter);
-    RoutePath.pushChapterDetailPage();
+    pushChapterDetailPage();
   }
 
   final radius = const Radius.circular(10);

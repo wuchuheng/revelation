@@ -28,7 +28,7 @@ class _ItemSectionState extends State<ItemSection> {
 
   onTapItem() {
     DirectoryService.setActiveNode(widget.directory);
-    RoutePath.pushChapterListPage();
+    pushChapterListPage();
   }
 
   onDelete() {
@@ -43,7 +43,7 @@ class _ItemSectionState extends State<ItemSection> {
   void onCreateChapter() async {
     DirectoryService.setActiveNode(widget.directory);
     await ChapterService.create();
-    RoutePath.pushChapterDetailPage();
+    pushChapterDetailPage();
   }
 
   void onCreateNode(BuildContext context) {

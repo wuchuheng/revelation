@@ -26,7 +26,7 @@ class ToolBarSection extends StatelessWidget {
         children: [
           IconContainer(
             iconData: Icons.settings,
-            onTap: () => RoutePath.pushSettingPage(),
+            onTap: () => pushSettingPage(),
           )
         ],
       ),

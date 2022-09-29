@@ -22,14 +22,15 @@ const settingRoute = '/setting';
 const chapterListRoute = '/chapters';
 const chapterDetailRoute = '/chapters/details';
 
+pushHomePage() => RoutePath.getAppPathInstance().push(homeRoute);
+pushLoginPage() => RoutePath.getAppPathInstance().push(loginRoute);
+pushSettingPage() => RoutePath.getAppPathInstance().push(settingRoute);
+pushChapterListPage() => RoutePath.getAppPathInstance().push(chapterListRoute);
+pushChapterDetailPage() => RoutePath.getAppPathInstance().push(chapterDetailRoute);
+
 /// 路由
 class RoutePath {
   static WuchuhengRouter? _appRoutePathInstance;
-  static pushHomePage() => RoutePath.getAppPathInstance().push(homeRoute);
-  static pushLoginPage() => RoutePath.getAppPathInstance().push(loginRoute);
-  static pushSettingPage() => RoutePath.getAppPathInstance().push(settingRoute);
-  static pushChapterListPage() => RoutePath.getAppPathInstance().push(chapterListRoute);
-  static pushChapterDetailPage() => RoutePath.getAppPathInstance().push(chapterDetailRoute);
 
   static bool isSQLLiteInit = false;
   static WuchuhengRouter getAppPathInstance() {

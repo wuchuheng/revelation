@@ -40,12 +40,12 @@ class UserService {
       isImapServerSecure: accountInfo.tls,
     );
     UserDao().save(user);
-    RoutePath.pushHomePage();
+    pushHomePage();
   }
 
   static void disconnect() async {
     await CacheService.disconnect();
     RoutePath.isSQLLiteInit = false;
-    RoutePath.pushLoginPage();
+    pushLoginPage();
   }
 }
