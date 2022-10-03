@@ -1,13 +1,23 @@
-directory = release
+releaseDirectory = release
 version = 0.0.1
-$(shell mkdir -p $(directory))
+$(shell mkdir -p $(releaseDirectory))
 
 clean:
-	rm -rf $(directory)
+	rm -rf $(releaseDirectory)
 
 build-macos-x64:
 	echo 'build macos amd86 release.';
 	flutter build macos
-	appdmg macos/assets/config.json $(directory)/revelation-$(version)-x64.dmg
+	appdmg macos/assets/config.json $(releaseDirectory)/revelation-$(version)-x64.dmg
 
-build: build-macos-x64
+build-android:
+	echo 'build android release.';
+	flutter build apk --release
+	mv build/app/outputs/flutter-apk/app-release.apk $(releaseDirectory)
+
+pre-build: clean
+	mkdir $(releaseDirectory)
+
+build: pre-build build-macos-x64 build-android
+
+
