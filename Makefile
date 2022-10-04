@@ -8,6 +8,7 @@ clean:
 build-macos-x64:
 	echo 'build macos amd86 release.';
 	flutter build macos
+	# TODO 这里可以使用docker来执行appdmg
 	appdmg macos/assets/config.json $(releaseDirectory)/revelation-$(version)-x64.dmg
 
 build-android:
