@@ -19,4 +19,12 @@
 
 
 ## 2 发布
+
+## 3 FQA
+
+### 3.1 Failed to load dynamic library 'sqlite3.dll': error code 126
+在`windows`下， 构建时缺少`sqlite3.dll`文件，而引发的问题。下载[sqlite](https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll)
+后，放在`build/windows/runner/Debug`和`build/windows/runner/Release`就可以了。
+
+
     
