@@ -432,11 +432,9 @@ packages:
   iconfont_css_to_class:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "0.1.3"
-      resolved-ref: "9e1c37f970c5c80dd05d968c00723c57ae6cea6c"
-      url: "https://gitee.com/yin_shiyong/iconfont_css_to_class.git"
-    source: git
+      path: "../tmp/iconfont_css_to_class"
+      relative: true
+    source: path
     version: "0.1.1"
   image:
     dependency: transitive
