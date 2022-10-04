@@ -51,4 +51,5 @@ release
 .env
 
 # vagrant config
-vagrant/windows10/.vagrant
+vagrant/windows10/
+!vagrant/windows10/Vagrantfile
