@@ -48,3 +48,6 @@ app.*.map.json
 
 release
 .env
+
+# vagrant config
+vagrant/windows10/.vagrant
