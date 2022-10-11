@@ -59,13 +59,13 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
-      - uses: suisei-cn/actions-download-file@v1
-          id: sqlite3.dll
-          name: Download the file
-          with:
-            url: https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll
-            target: build/windows/runner/Release/
-            auto-match: true
+      - uses: suisei-cn/actions-download-file@v1.0.1
+        id: downloadfile  # Remember to give an ID if you need the output
+        name: Download the file
+        with:
+          url: https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll
+          target: build/windows/runner/Release/
+          auto-match: true
       - name: Package Release
         uses: thedoctor0/zip-release@master
         with:
