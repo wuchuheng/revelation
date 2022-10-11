@@ -76,6 +76,11 @@ jobs:
 #    runs-on: macos-latest
     runs-on: ubuntu-latest
     steps:
+      - name: use node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+        run: node -v
 #      - uses: actions/checkout@v3
 #      - uses: subosito/flutter-action@v2
 #        with:
@@ -90,11 +95,6 @@ jobs:
 #        run: flutter config --enable-macos-desktop
 #      - name: Build artifacts
 #        run: flutter build macos --release
-      - name: use node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-        run: node -v
 #      - name: Install appdmg
 #        run: npm install -g appdmg
 #      - name: package dmg
@@ -106,16 +106,16 @@ jobs:
 #        with:
 #          tag_name: ${{github.ref_name}}
 #          files: revelation-x64.dmg
-      - name: Package Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          filename: revelation-${{github.ref_name}}-macos.zip
-          directory: build/macos/Build/Products/Release
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: build/macos/Build/Products/Release/revelation-${{github.ref_name}}-macos.zip
+#      - name: Package Release
+#        uses: thedoctor0/zip-release@master
+#        with:
+#          type: 'zip'
+#          filename: revelation-${{github.ref_name}}-macos.zip
+#          directory: build/macos/Build/Products/Release
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: build/macos/Build/Products/Release/revelation-${{github.ref_name}}-macos.zip
