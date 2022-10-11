@@ -429,16 +429,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
-<<<<<<< HEAD
-=======
-  iconfont_css_to_class:
-    dependency: "direct main"
-    description:
-      path: "../tmp/iconfont_css_to_class"
-      relative: true
-    source: path
-    version: "0.1.1"
->>>>>>> e1506f0 (docs: update README.md)
   image:
     dependency: transitive
     description:
