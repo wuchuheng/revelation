@@ -89,11 +89,11 @@ jobs:
         run: flutter config --enable-macos-desktop
       - name: Build artifacts
         run: flutter build macos --release
-      - name: use node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-        run: node -v
+#      - name: use node
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#        run: node -v
 #      - name: Install appdmg
 #        run: npm install -g appdmg
 #      - name: package dmg
