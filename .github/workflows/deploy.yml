@@ -78,6 +78,10 @@ jobs:
       matrix:
         node: [ 14, 16, 18 ]
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: node -v
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
