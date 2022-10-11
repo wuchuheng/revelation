@@ -1,10 +1,12 @@
 
-name: Flutter Desktop Deployment
+name: Flutter Deployment
 
 on:
   push:
     branches:
-      - master
+      - dev
+    tags:
+      - '**'
 
 jobs:
   linux:
@@ -32,13 +34,13 @@ jobs:
           type: 'zip'
           filename: revelation-${{github.ref_name}}-linux.zip
           directory: build/linux/x64/release/bundle
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: build/linux/x64/release/bundle/revelation-${{github.ref_name}}-linux.zip
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: build/linux/x64/release/bundle/revelation-${{github.ref_name}}-linux.zip
 
   windows:
     runs-on: windows-latest
@@ -67,13 +69,13 @@ jobs:
           type: 'zip'
           filename: revelation-${{github.ref_name}}-windows.zip
           directory: build/windows/runner/Release
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: build/windows/runner/Release/revelation-${{github.ref_name}}-windows.zip
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: build/windows/runner/Release/revelation-${{github.ref_name}}-windows.zip
 
   macos:
     runs-on: macos-latest
@@ -100,13 +102,13 @@ jobs:
         with:
           node-version: 16
       - run: node -v
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: revelation-x64.dmg
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: revelation-x64.dmg
 
   android:
     runs-on: ubuntu-latest
@@ -122,10 +124,10 @@ jobs:
         run: flutter pub get
       - name: Build artifacts
         run: flutter build apk --release
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: build/app/outputs/flutter-apk/app-release.apk
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: build/app/outputs/flutter-apk/app-release.apk
