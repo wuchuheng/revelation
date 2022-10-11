@@ -11,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.3.4'
           channel: 'stable'
       - name: Install os dependencies
         run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
@@ -29,7 +30,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: local_api_server-${{github.ref_name}}-linux.zip
+          filename: revelation-${{github.ref_name}}-linux.zip
           directory: build/linux/x64/release/bundle
       - name: Release to github
         uses: softprops/action-gh-release@v1
@@ -37,16 +38,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: build/linux/x64/release/bundle/local_api_server-${{github.ref_name}}-linux.zip
+          files: build/linux/x64/release/bundle/revelation-${{github.ref_name}}-linux.zip
 
   windows:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.3.4'
           channel: 'stable'
+      - run: flutter --version
       - name: Install project dependencies
         run: flutter pub get
       - name: Generate intermediates
@@ -59,7 +62,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: local_api_server-${{github.ref_name}}-windows.zip
+          filename: revelation-${{github.ref_name}}-windows.zip
           directory: build/windows/runner/Release
       - name: Release to github
         uses: softprops/action-gh-release@v1
@@ -67,16 +70,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: build/windows/runner/Release/local_api_server-${{github.ref_name}}-windows.zip
+          files: build/windows/runner/Release/revelation-${{github.ref_name}}-windows.zip
 
   macos:
     runs-on: macos-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.3.4'
           channel: 'stable'
+      - run: flutter --version
       - name: Install project dependencies
         run: flutter pub get
       - name: Generate intermediates
@@ -89,7 +93,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          filename: local_api_server-${{github.ref_name}}-macos.zip
+          filename: revelation-${{github.ref_name}}-macos.zip
           directory: build/macos/Build/Products/Release
       - name: Release to github
         uses: softprops/action-gh-release@v1
@@ -97,4 +101,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: build/macos/Build/Products/Release/local_api_server-${{github.ref_name}}-macos.zip
+          files: build/macos/Build/Products/Release/revelation-${{github.ref_name}}-macos.zip
