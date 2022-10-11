@@ -59,10 +59,8 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
-      - name: wget
-        uses: wei/wget@v1
-        with:
-          args: -O build/windows/runner/Release/ https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll
+      - name: Download sqlite3.dll
+        run: (New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll', "build/windows/runner/Release/sqlite3.dll")
       - name: Package Release
         uses: thedoctor0/zip-release@master
         with:
@@ -110,7 +108,7 @@ jobs:
           tag_name: ${{github.ref_name}}
           files: revelation-x64.dmg
 
-  build_android:
+  android:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
