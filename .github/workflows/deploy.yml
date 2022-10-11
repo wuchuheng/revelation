@@ -74,6 +74,10 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        node: [ 14, 16, 18 ]
+      name: Node ${{ matrix.node }} sample
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
