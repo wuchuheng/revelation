@@ -89,6 +89,22 @@ jobs:
         run: flutter config --enable-macos-desktop
       - name: Build artifacts
         run: flutter build macos --release
+      - name: use node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+        run: node -v
+#      - name: Install appdmg
+#        run: npm install -g appdmg
+#      - name: package dmg
+#        run: appdmg macos/assets/config.json revelation-x64.dmg
+#      - name: Release to github
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{github.ref_name}}
+#          files: revelation-x64.dmg
       - name: Package Release
         uses: thedoctor0/zip-release@master
         with:
