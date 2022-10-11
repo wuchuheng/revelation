@@ -104,16 +104,3 @@ jobs:
         with:
           tag_name: ${{github.ref_name}}
           files: revelation-x64.dmg
-      - name: Package Release
-        uses: thedoctor0/zip-release@master
-        with:
-          type: 'zip'
-          filename: revelation-${{github.ref_name}}-macos.zip
-          directory: build/macos/Build/Products/Release
-      - name: Release to github
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{github.ref_name}}
-          files: build/macos/Build/Products/Release/revelation-${{github.ref_name}}-macos.zip
