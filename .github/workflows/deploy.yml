@@ -75,10 +75,6 @@ jobs:
   macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: node -v
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
@@ -97,6 +93,10 @@ jobs:
         run: npm install -g appdmg
       - name: package dmg
         run: appdmg macos/assets/config.json revelation-x64.dmg
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: node -v
       - name: Release to github
         uses: softprops/action-gh-release@v1
         env:
