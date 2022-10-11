@@ -123,7 +123,7 @@ jobs:
       - name: Build artifacts
         run: flutter build apk --release
       - name: Rename
-        run: build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
       - name: Release to github
         uses: softprops/action-gh-release@v1
         env:
