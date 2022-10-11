@@ -4,7 +4,7 @@ name: Flutter Desktop Deployment
 on:
   push:
     branches:
-      - tmp
+      - master
 
 jobs:
   linux:
@@ -102,5 +102,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{github.ref_name}}
+          tag_name: latest
           files: revelation-x64.dmg
