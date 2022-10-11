@@ -49,6 +49,5 @@ app.*.map.json
 release
 .env
 
-# vagrant config
-vagrant/windows10/
-!vagrant/windows10/Vagrantfile
+# .vagrant config
+.vagrant/**/.vagrant/

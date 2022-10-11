@@ -16,9 +16,10 @@ build-android:
 	flutter build apk --release
 	mv build/app/outputs/flutter-apk/app-release.apk $(releaseDirectory)
 
+build-windows:
+	./vagrant/windows11/buildScript.sh
+
 pre-build: clean
 	mkdir $(releaseDirectory)
 
 build: pre-build build-macos-x64 build-android
-
-

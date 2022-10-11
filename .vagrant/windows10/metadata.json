@@ -1,0 +1,14 @@
+{
+  "name": "wuchuheng/easy-build-flutter-for-windows",
+  "versions": [
+    {
+      "version": "0.0.1",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "./easy-build-flutter-win10.box"
+        }
+      ]
+    }
+  ]
+}
