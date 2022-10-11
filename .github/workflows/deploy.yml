@@ -59,6 +59,8 @@ jobs:
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
         run: flutter build windows --release
+      - name: Download sqlite3.dll
+        run: wget https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll -O build/windows/runner/Release/
       - name: Package Release
         uses: thedoctor0/zip-release@master
         with:
@@ -103,5 +105,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: latest
+          tag_name: ${{github.ref_name}}
           files: revelation-x64.dmg
