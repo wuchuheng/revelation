@@ -89,7 +89,7 @@ jobs:
         run: flutter config --enable-macos-desktop
       - name: Build artifacts
         run: flutter build macos --release
-     - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
        with:
          node-version: 16
        - run: node -v
