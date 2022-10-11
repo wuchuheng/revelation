@@ -106,7 +106,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: revelation-x64.dmg
+          files: revelation-${{github.ref_name}}-mac.dmg
 
   android:
     runs-on: ubuntu-latest
@@ -122,10 +122,12 @@ jobs:
         run: flutter pub get
       - name: Build artifacts
         run: flutter build apk --release
+      - name: Rename
+        run: build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
       - name: Release to github
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: build/app/outputs/flutter-apk/app-release.apk
+          files: build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
