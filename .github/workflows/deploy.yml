@@ -90,9 +90,9 @@ jobs:
       - name: Build artifacts
         run: flutter build macos --release
       - uses: actions/setup-node@v3
-       with:
-         node-version: 16
-       - run: node -v
+        with:
+          node-version: 16
+        run: node -v
 #      - name: use node
 #        uses: actions/setup-node@v3
 #        with:
