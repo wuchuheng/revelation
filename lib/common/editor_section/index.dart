@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../model/chapter_model/index.dart';
@@ -50,8 +51,8 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: Colors.black,
       autofocus: false,
+      style: TextStyle(fontSize: 14, height: 1.4, color: HexColor('#1C1F22')),
       onChanged: (String value) {
         final chapter = ChapterService.editChapterHook.value!;
         chapter.content = value;
