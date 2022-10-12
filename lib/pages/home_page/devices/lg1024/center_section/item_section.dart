@@ -155,7 +155,7 @@ class _ItemSectionState extends State<ItemSection> {
                 style: TextStyle(
                   color: Config.fontColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 15,
+                  fontSize: 13,
                 ),
               ),
               Row(
