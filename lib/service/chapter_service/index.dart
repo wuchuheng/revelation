@@ -67,6 +67,9 @@ createdAt: ${DateTime.now().toString()}
     onAnimationToTopSubject.next(null);
   }
 
+  static Future<void> setActiveEditChapter(ChapterModel chapter) async => editChapterHook.set(chapter);
+
+  /// Set the chapter currently being edited
   static Future<void> setEditChapter(ChapterModel chapter) async {
     editChapterHook.set(chapter);
     await CacheService.getImapCache().set(
