@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class AdvanceSection extends StatefulWidget {
   final List<Widget> child;
   final double height;
-  const AdvanceSection({Key? key, required this.child, required this.height}) : super(key: key);
+  final void Function(AnimationController controller) onChangeController;
+  const AdvanceSection({Key? key, required this.child, required this.height, required this.onChangeController})
+      : super(key: key);
 
   @override
   State<AdvanceSection> createState() => _AdvanceSectionState();
@@ -25,6 +27,7 @@ class _AdvanceSectionState extends State<AdvanceSection> with SingleTickerProvid
     ).animate(
       CurvedAnimation(parent: controller, curve: Curves.linear),
     );
+    widget.onChangeController(controller);
     super.initState();
   }
 
@@ -63,7 +66,7 @@ class _AdvanceSectionState extends State<AdvanceSection> with SingleTickerProvid
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         clickContainer(
-                          Transform.rotate(angle: animation.value, child: Icon(Icons.arrow_left)),
+                          Transform.rotate(angle: animation.value, child: const Icon(Icons.arrow_left)),
                         ),
                         clickContainer(const Text('Advance')),
                       ],

@@ -18,6 +18,8 @@ class FormSection extends StatefulWidget {
 
 class _FormSectionState extends State<FormSection> {
   late TextEditingController hostController;
+  late AnimationController controller;
+
   Color? cursorColor = Colors.grey[700];
   int maxLines = 1;
   double itemHeight = 50;
@@ -77,7 +79,11 @@ class _FormSectionState extends State<FormSection> {
   }
 
   void onSubmit() {
-    if (_formKey.currentState!.validate()) widget.onSubmit(accountInfo);
+    if (_formKey.currentState!.validate()) {
+      widget.onSubmit(accountInfo);
+    } else if (controller.value == 0) {
+      controller.forward(from: 0);
+    }
   }
 
   void onChangeUsername(String value) {
@@ -212,6 +218,7 @@ class _FormSectionState extends State<FormSection> {
             _getUserNameField(),
             _getPasswordField(),
             AdvanceSection(
+              onChangeController: (newController) => controller = newController,
               height: itemHeight,
               child: [
                 _getHostField(),
