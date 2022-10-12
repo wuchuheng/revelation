@@ -8,9 +8,11 @@ import Foundation
 import desktop_context_menu_macos
 import desktop_window
 import path_provider_macos
+import sqlite3_flutter_libs
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   DesktopContextMenuMacosPlugin.register(with: registry.registrar(forPlugin: "DesktopContextMenuMacosPlugin"))
   DesktopWindowPlugin.register(with: registry.registrar(forPlugin: "DesktopWindowPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  Sqlite3FlutterLibsPlugin.register(with: registry.registrar(forPlugin: "Sqlite3FlutterLibsPlugin"))
 }

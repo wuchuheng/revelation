@@ -39,7 +39,7 @@ dependencies:
   desktop_context_menu: ^0.1.1
   bot_toast: ^4.0.3
   intl: ^0.17.0
-  sqlite3: ^1.7.2
+  sqlite3: ^1.9.0
   path_provider: ^2.0.11
   desktop_window: ^0.4.0
   flutter_svg: ^1.1.3
@@ -57,6 +57,7 @@ dependencies:
   wuchuheng_env: ^1.0.4
   wuchuheng_helper: ^0.0.2
   wuchuheng_ui: ^1.0.2
+  sqlite3_flutter_libs: ^0.5.10
 
 flutter_icons:
   android: "launcher_icon"
