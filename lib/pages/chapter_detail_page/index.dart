@@ -57,6 +57,7 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: WillPopScope(
         child: Column(
           children: [
@@ -84,13 +85,19 @@ class _ChapterDetailPageState extends State<_ChapterDetailPage> {
                 ],
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - toolBarHeight,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - leftRightPaddingSize * 2),
-                child: isPreview ? preview() : editSection(),
+            Padding(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxHeight: double.infinity,
+                ),
+                height: MediaQuery.of(context).size.height - toolBarHeight - MediaQuery.of(context).viewInsets.bottom,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - leftRightPaddingSize * 2),
+                  child: isPreview ? preview() : editSection(),
+                ),
               ),
-            )
+            ),
           ],
         ),
         onWillPop: () => Future.value(false),
