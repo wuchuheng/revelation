@@ -48,7 +48,7 @@ dependencies:
   stack_trace: ^1.10.0
   adaptive_scrollbar: ^2.1.2
   flutter_launcher_icons: ^0.10.0
-  wuchuheng_imap_cache: ^1.0.5
+  wuchuheng_imap_cache: ^1.0.8
   wuchuheng_router: ^0.0.21
   wuchuheng_local_cache: ^0.0.2
   wuchuheng_task_util: ^0.0.3
