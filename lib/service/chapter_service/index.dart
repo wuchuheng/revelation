@@ -103,7 +103,9 @@ createdAt: ${DateTime.now().toString()}
       if (activeNode.id == DirectoryModel.rootNodeId) return;
       if (activeNode.id == editChapter.id) return;
       if (chapters.isNotEmpty) {
-        ChapterService.editChapterHook.set(chapters[0]);
+        if (activeNode.id != DirectoryModel.rootNodeId && activeNode.id != editChapter.directoryId) {
+          ChapterService.editChapterHook.set(chapters[0]);
+        }
       } else {
         ChapterService.editChapterHook.set(null);
       }
