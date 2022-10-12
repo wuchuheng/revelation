@@ -95,7 +95,7 @@ jobs:
       - name: Install appdmg
         run: npm install -g appdmg
       - name: package dmg
-        run: appdmg macos/assets/config.json revelation-x64.dmg
+        run: appdmg macos/assets/config.json revelation-${{github.ref_name}}-mac.dmg
       - uses: actions/setup-node@v3
         with:
           node-version: 16
