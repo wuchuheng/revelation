@@ -28,11 +28,16 @@ class ChapterService {
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
       triggerUpdateChapterListHook();
-      if (oldData == null || chapter.deletedAt != null) DirectoryService.triggerUpdateDirectoryHook();
+      if (oldData == null || chapter.deletedAt != null) {
+        DirectoryService.triggerUpdateDirectoryHook();
+      }
+
       if (chapter.id == editChapterHook.value?.id) {
         if (chapter.deletedAt != null) {
           editChapterHook.set(null);
-        } else if (chapter.content != oldData?.content) {
+        } else if (oldData != null &&
+            chapter.content != oldData.content &&
+            oldData.updatedAt.millisecondsSinceEpoch > chapter.updatedAt.millisecondsSinceEpoch) {
           editChapterHook.set(chapter);
         }
       }
