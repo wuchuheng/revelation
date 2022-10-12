@@ -24,6 +24,10 @@ class _EditorSectionState extends State<EditorSection> {
   @override
   void initState() {
     unsubscribeCollect.addAll([
+      ChapterService.editChapterHook.subscribe((value) {
+        content = value?.content ?? '';
+        setState(() {});
+      }),
       FloatingToolBarService.isSplittingPreviewHook.subscribe((value) {
         if (value != isSplittingPreview) setState(() => isSplittingPreview = value);
       }),
