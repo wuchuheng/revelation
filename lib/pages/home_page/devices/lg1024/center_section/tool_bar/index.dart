@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/center_section/tool_bar/icon_container.dart';
+import 'package:revelation/service/cache_service.dart';
 import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -20,11 +21,30 @@ class _ToolBarState extends State<ToolBar> {
   Color? color;
   String title = DirectoryService.activeNodeHook.value.title;
   final unsubscribeCollect = UnsubscribeCollect([]);
+  String syncTip = '';
+
+  String syncStatusToStr(SyncStatus syncStatus) {
+    switch (syncStatus) {
+      case SyncStatus.DOWNLOAD:
+        return '(下载中)';
+      case SyncStatus.DOWNLOADED:
+        return '';
+      case SyncStatus.UPLOAD:
+        return '(上传中)';
+      case SyncStatus.UPLOADED:
+        return '';
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    syncTip = syncStatusToStr(CacheService.syncStatus.value);
     unsubscribeCollect.addAll([
+      CacheService.syncStatus.subscribe((value) {
+        syncTip = syncStatusToStr(value);
+        setState(() {});
+      }),
       DirectoryService.activeNodeHook.subscribe((data) {
         if (data != null && data.title != title) setState(() => title = data.title);
       }),
@@ -56,7 +76,7 @@ class _ToolBarState extends State<ToolBar> {
             iconData: IconFont.icon_sort,
             onTap: () {},
           ),
-          Text(title),
+          Text('''$title$syncTip'''),
           IconContainer(
             iconData: IconFont.icon_notes,
             onTap: () async {

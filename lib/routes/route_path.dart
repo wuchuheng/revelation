@@ -59,14 +59,15 @@ Future<RoutePageInfo> onBefore(RoutePageInfo pageInfo) async {
 }
 
 final WuchuhengRouter route = WuchuhengRouter(
-  {
-    homeRoute: () => HomePage(),
-    settingRoute: () => SettingPage(),
-    loginRoute: () => LoginPage(),
-    chapterListRoute: () => ChapterListPage(),
-    chapterDetailRoute: () => ChapterDetailPage(),
-  },
-  loadingPage: const LoadingPage(),
+  [
+    RoutePageInfo(homeRoute, () => HomePage()),
+    RoutePageInfo(settingRoute, () => SettingPage()),
+    RoutePageInfo(loginRoute, () => LoginPage()),
+    RoutePageInfo(loginRoute, () => LoginPage()),
+    RoutePageInfo(chapterListRoute, () => ChapterListPage()),
+    RoutePageInfo(chapterDetailRoute, () => ChapterDetailPage()),
+  ],
+  initLoadingPage: const LoadingPage(),
   before: (RoutePageInfo pageInfo) => onBefore(pageInfo),
 );
 

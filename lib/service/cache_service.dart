@@ -11,8 +11,12 @@ import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
 import 'directory_service/index.dart';
 
+enum SyncStatus { DOWNLOAD, DOWNLOADED, UPLOAD, UPLOADED }
+
 class CacheService {
   static Hook<bool> isConnectHook = Hook(false);
+  static Hook<SyncStatus> syncStatus = Hook(SyncStatus.DOWNLOADED);
+
   static ImapCacheService? _cacheServiceInstance;
   static ImapCacheService getImapCache() {
     if (_cacheServiceInstance == null) throw NotLoginError();
@@ -20,6 +24,7 @@ class CacheService {
   }
 
   static late Unsubscribe unsubscribeLog;
+  static late UnsubscribeCollect syncStatusSubscriptionCollect;
 
   static Future<ImapCacheService> connect({
     required String userName,
@@ -67,11 +72,20 @@ class CacheService {
       GeneralService.setSyncState(false);
       return true;
     });
+
+    syncStatusSubscriptionCollect = UnsubscribeCollect([
+      cacheServiceInstance.onDownloaded(() => syncStatus.set(SyncStatus.DOWNLOADED)),
+      cacheServiceInstance.onDownload(() => syncStatus.set(SyncStatus.DOWNLOAD)),
+      cacheServiceInstance.onUpdate(() => syncStatus.set(SyncStatus.UPLOAD)),
+      cacheServiceInstance.onUpdated(() => syncStatus.set(SyncStatus.UPLOADED)),
+    ]);
+
     return imapCacheInstance;
   }
 
   static Future<void> disconnect() async {
     unsubscribeLog.unsubscribe();
+    syncStatusSubscriptionCollect.unsubscribe();
     await getImapCache().disconnect();
   }
 }
