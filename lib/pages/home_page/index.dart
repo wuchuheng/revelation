@@ -35,4 +35,7 @@ class _HomePageState extends State<_HomePage> {
         return const LG1024HomePage();
     }
   }
+
+  @override
+  void dispose() {}
 }

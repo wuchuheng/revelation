@@ -42,8 +42,10 @@ class _ToolBarState extends State<ToolBar> {
     syncTip = syncStatusToStr(CacheService.syncStatus.value);
     unsubscribeCollect.addAll([
       CacheService.syncStatus.subscribe((value) {
-        syncTip = syncStatusToStr(value);
-        setState(() {});
+        if (syncTip != syncStatusToStr(value)) {
+          syncTip = syncStatusToStr(value);
+          setState(() {});
+        }
       }),
       DirectoryService.activeNodeHook.subscribe((data) {
         if (data != null && data.title != title) setState(() => title = data.title);

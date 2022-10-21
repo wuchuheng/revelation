@@ -87,5 +87,7 @@ class CacheService {
     unsubscribeLog.unsubscribe();
     syncStatusSubscriptionCollect.unsubscribe();
     await getImapCache().disconnect();
+    ChapterService.distroy();
+    DirectoryService.distroy();
   }
 }

@@ -7,6 +7,7 @@ import 'package:revelation/service/chapter_service/chapter_service_util.dart';
 import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
+import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/index.dart';
@@ -15,13 +16,21 @@ class ChapterService {
   static Hook<List<ChapterModel>> chapterListHook = Hook([]);
   static Hook<ChapterModel?> editChapterHook = Hook(null);
   static SubjectHook<void> onAnimationToTopSubject = SubjectHook();
+  static late Unsubscribe afterSetHandle;
+
+  static distroy() => afterSetHandle.unsubscribe();
 
   static Future<void> init() async {
     chapterListHook.set(ChapterDao().fetchAll());
-    CacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
+    afterSetHandle = CacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
   }
 
-  static Future<void> _afterSetSubscribe({required String key, required String value, required String hash}) async {
+  static Future<void> _afterSetSubscribe({
+    required String key,
+    required String value,
+    required String hash,
+    required From from,
+  }) async {
     if (ChapterServiceUtil.isChapterByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
@@ -37,7 +46,7 @@ class ChapterService {
           editChapterHook.set(null);
         } else if (oldData != null &&
             chapter.content != oldData.content &&
-            oldData.updatedAt.millisecondsSinceEpoch > chapter.updatedAt.millisecondsSinceEpoch) {
+            oldData.updatedAt.millisecondsSinceEpoch < chapter.updatedAt.millisecondsSinceEpoch) {
           editChapterHook.set(chapter);
         }
       }
@@ -129,7 +138,7 @@ createdAt: ${DateTime.now().toString()}
       final pregResult = regexp.firstMatch(chapter.content)?.group(0);
       if (pregResult != null) {
         var doc = loadYaml(pregResult) as Map;
-        chapter.title = doc['title'] ?? '';
+        chapter.title = doc['title'].toString() ?? '';
       }
       chapter.updatedAt = DateTime.now();
       ChapterService.setEditChapter(chapter);

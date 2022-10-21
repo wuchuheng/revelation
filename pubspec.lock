@@ -246,6 +246,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+  drift:
+    dependency: transitive
+    description:
+      name: drift
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.0"
   encrypt:
     dependency: transitive
     description:
@@ -878,10 +885,10 @@ packages:
   wuchuheng_imap_cache:
     dependency: "direct main"
     description:
-      name: wuchuheng_imap_cache
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.9"
+      path: "../tmp/imap_cache"
+      relative: true
+    source: path
+    version: "1.0.10"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
@@ -906,10 +913,10 @@ packages:
   wuchuheng_router:
     dependency: "direct main"
     description:
-      path: "../tmp/router_dart"
-      relative: true
-    source: path
-    version: "0.0.21"
+      name: wuchuheng_router
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.22"
   wuchuheng_task_util:
     dependency: "direct main"
     description:

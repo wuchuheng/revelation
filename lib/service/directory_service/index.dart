@@ -7,6 +7,7 @@ import 'package:revelation/service/cache_service.dart';
 import 'package:revelation/service/chapter_service/index.dart';
 import 'package:revelation/service/directory_service/directory_service_util.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
+import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
 class DirectoryService {
   static int rootNodeId = 0;
@@ -16,17 +17,20 @@ class DirectoryService {
   static Hook<DirectoryModel?> changedNodeHook = Hook(null);
   static Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
   static Hook<List<DirectoryModel>> directoryHook = Hook([]);
+  static late Unsubscribe afterUnsubscription;
 
-  static void setChangeNodeHook(DirectoryModel? value) {
-    changedNodeHook.set(value);
+  static void distroy() {
+    afterUnsubscription.unsubscribe();
   }
+
+  static void setChangeNodeHook(DirectoryModel? value) => changedNodeHook.set(value);
 
   static Future<void> init() async {
     final rootNode = DirectoryDao().has(id: 0)!;
     activeNodeHook.set(rootNode);
     setActiveNode(rootNode);
     triggerUpdateDirectoryHook();
-    CacheService.getImapCache().afterSet(callback: _afterSetSubscription);
+    afterUnsubscription = CacheService.getImapCache().afterSet(callback: _afterSetSubscription);
   }
 
   static void triggerUpdateDirectoryHook() {
@@ -36,7 +40,12 @@ class DirectoryService {
   }
 
   /// modify the directory_section tree when the local cache is modified.
-  static Future<void> _afterSetSubscription({required String value, required String key, required String hash}) async {
+  static Future<void> _afterSetSubscription({
+    required String value,
+    required String key,
+    required String hash,
+    required From from,
+  }) async {
     if (DirectoryServiceUtil.isDirectoryByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       DirectoryModel directory = DirectoryModel.fromJson(jsonMapData);
