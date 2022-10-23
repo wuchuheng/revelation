@@ -38,9 +38,9 @@ class _UserSectionState extends State<UserSection> {
             ItemSection(label: 'Username', child: Text(userInfo!.userName)),
             ItemSection(
                 label: 'Password', child: Text(List.generate(userInfo!.password.length, (index) => '*').join(''))),
-            ItemSection(label: 'Host', child: Text(userInfo!.imapServerHost)),
-            ItemSection(label: 'Port', child: Text(userInfo!.imapServerPort.toString())),
-            ItemSection(label: 'TLS', child: Text(userInfo!.isImapServerSecure ? 'True' : 'False')),
+            ItemSection(label: 'Host', child: Text(userInfo!.host)),
+            ItemSection(label: 'Port', child: Text(userInfo!.port.toString())),
+            ItemSection(label: 'TLS', child: Text(userInfo!.tls ? 'True' : 'False')),
             ItemSection(label: 'Status', child: const Text('Online')),
             Container(
               margin: const EdgeInsets.only(top: 30),

@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:revelation/pages/chapter_list_page/index.dart';
-import 'package:revelation/pages/loading_page/index.dart';
+import 'package:revelation/pages/setting_page/index.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_router/route/route_abstract.dart';
 import 'package:wuchuheng_router/wuchuheng_router.dart';
@@ -9,9 +9,10 @@ import '../dao/sqlite_dao.dart';
 import '../dao/user_dao/index.dart';
 import '../model/user_model/user_model.dart';
 import '../pages/chapter_detail_page/index.dart';
+import '../pages/chapter_list_page/index.dart';
 import '../pages/home_page/index.dart';
+import '../pages/loading_page/index.dart';
 import '../pages/login_page/index.dart';
-import '../pages/setting_page/index.dart';
 import '../service/cache_service.dart';
 
 bool isLoadEnv = false;
@@ -45,9 +46,9 @@ Future<RoutePageInfo> onBefore(RoutePageInfo pageInfo) async {
       await CacheService.connect(
         userName: user.userName,
         password: user.password,
-        imapServerHost: user.imapServerHost,
-        imapServerPort: user.imapServerPort,
-        isImapServerSecure: user.isImapServerSecure,
+        imapServerHost: user.host,
+        imapServerPort: user.port,
+        isImapServerSecure: user.tls,
       );
     } catch (e) {
 // :TODO logger
@@ -71,8 +72,9 @@ final WuchuhengRouter route = WuchuhengRouter(
   before: (RoutePageInfo pageInfo) => onBefore(pageInfo),
 );
 
+pop(BuildContext context) async => await route.pop(context);
 pushHomePage() => route.push(homeRoute);
 pushLoginPage() => route.push(loginRoute);
-pushSettingPage() => route.push(settingRoute);
+pushSettingPage(BuildContext context) => route.push(settingRoute);
 pushChapterListPage() => route.push(chapterListRoute);
 pushChapterDetailPage() => route.push(chapterDetailRoute);

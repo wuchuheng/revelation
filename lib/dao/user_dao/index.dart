@@ -19,9 +19,9 @@ class UserDao implements UserDaoAbstract {
     ''', [
       user.userName,
       user.password,
-      user.imapServerHost,
-      user.imapServerPort,
-      user.isImapServerSecure,
+      user.host,
+      user.port,
+      user.tls,
     ]);
   }
 
@@ -35,9 +35,9 @@ class UserDao implements UserDaoAbstract {
       final user = UserModel(
         userName: row['user_name'],
         password: row['password'],
-        imapServerHost: row['imap_server_host'],
-        imapServerPort: row['imap_server_port'],
-        isImapServerSecure: row['is_imap_server_secure'] > 0,
+        host: row['imap_server_host'],
+        port: row['imap_server_port'],
+        tls: row['is_imap_server_secure'] > 0,
       );
       return user;
     }

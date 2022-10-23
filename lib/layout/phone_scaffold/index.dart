@@ -16,7 +16,7 @@ class PhoneScaffoldLayout extends StatelessWidget {
 
   void onTapSetting(BuildContext context) {
     Navigator.pop(context);
-    pushSettingPage();
+    pushSettingPage(context);
   }
 
   void onTapNotes(BuildContext context) {

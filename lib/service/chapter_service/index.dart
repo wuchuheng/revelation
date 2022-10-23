@@ -8,6 +8,7 @@ import 'package:revelation/service/directory_service/index.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/index.dart';
@@ -40,6 +41,7 @@ class ChapterService {
       if (oldData == null || chapter.deletedAt != null) {
         DirectoryService.triggerUpdateDirectoryHook();
       }
+      Logger.error("Value: " + chapter.title);
 
       if (chapter.id == editChapterHook.value?.id) {
         if (chapter.deletedAt != null) {

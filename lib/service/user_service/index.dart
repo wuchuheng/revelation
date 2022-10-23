@@ -35,9 +35,9 @@ class UserService {
     UserModel user = UserModel(
       userName: accountInfo.userName,
       password: accountInfo.password,
-      imapServerHost: accountInfo.host,
-      imapServerPort: accountInfo.port,
-      isImapServerSecure: accountInfo.tls,
+      host: accountInfo.host,
+      port: accountInfo.port,
+      tls: accountInfo.tls,
     );
     UserDao().save(user);
     pushHomePage();

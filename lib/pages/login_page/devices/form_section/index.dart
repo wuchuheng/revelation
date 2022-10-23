@@ -4,6 +4,8 @@ import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import '../../../../dao/user_dao/index.dart';
+import '../../../../model/user_model/user_model.dart';
 import 'account_info.dart';
 import 'advance_section.dart';
 import 'field_container.dart';
@@ -25,8 +27,23 @@ class _FormSectionState extends State<FormSection> {
   double itemHeight = 50;
   TextAlignVertical textAlignVertical = TextAlignVertical.center;
 
+  AccountInfo accountInfo = AccountInfo(
+    userName: DotEnv.get('USER_NAME', ''),
+    password: DotEnv.get('PASSWORD', ''),
+    host: DotEnv.get('HOST', ''),
+    port: 993,
+    tls: true,
+  );
+
   @override
   void initState() {
+    final UserModel? user = UserDao().has();
+    if (user != null) {
+      accountInfo.userName = user.userName;
+      accountInfo.host = user.host;
+      accountInfo.port = user.port;
+      accountInfo.tls = user.tls;
+    }
     hostController = TextEditingController();
     hostController.text = accountInfo.host;
     super.initState();
@@ -37,14 +54,6 @@ class _FormSectionState extends State<FormSection> {
     hostController.dispose();
     super.dispose();
   }
-
-  AccountInfo accountInfo = AccountInfo(
-    userName: DotEnv.get('USER_NAME', ''),
-    password: DotEnv.get('PASSWORD', ''),
-    host: DotEnv.get('HOST', ''),
-    port: 993,
-    tls: true,
-  );
 
   InputDecoration _decoration(String label) {
     return InputDecoration(

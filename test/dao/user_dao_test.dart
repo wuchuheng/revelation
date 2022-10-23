@@ -6,16 +6,17 @@ import 'package:revelation/model/user_model/user_model.dart';
 
 void main() {
   test('TestCreateUser', () async {
-    const MethodChannel channel = MethodChannel('plugins.flutter.io/path_provider');
+    const MethodChannel channel =
+        MethodChannel('plugins.flutter.io/path_provider');
     await SQLiteDao.init();
     final userDao = UserDao();
     userDao.create(
       UserModel(
           userName: 'userName',
           password: 'password',
-          imapServerHost: 'hello',
-          imapServerPort: 993,
-          isImapServerSecure: true),
+          host: 'hello',
+          port: 993,
+          tls: true),
     );
   });
 }

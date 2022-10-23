@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/pages/setting_page/devices/lg1024/index.dart';
-import 'package:revelation/pages/setting_page/devices/phone_setting_page/index.dart';
-import 'package:revelation/service/device_service/index.dart';
+
+import '../../service/device_service/index.dart';
+import 'devices/lg1024/index.dart';
+import 'devices/phone_setting_page/index.dart';
 
 class SettingPage extends Page {
   @override

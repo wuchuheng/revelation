@@ -727,7 +727,7 @@ packages:
       name: sqlite3
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.9.1"
   sqlite3_flutter_libs:
     dependency: "direct main"
     description:
@@ -885,10 +885,10 @@ packages:
   wuchuheng_imap_cache:
     dependency: "direct main"
     description:
-      path: "../tmp/imap_cache"
-      relative: true
-    source: path
-    version: "1.0.10"
+      name: wuchuheng_imap_cache
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.11"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
@@ -916,7 +916,7 @@ packages:
       name: wuchuheng_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.22"
+    version: "0.0.23"
   wuchuheng_task_util:
     dependency: "direct main"
     description:

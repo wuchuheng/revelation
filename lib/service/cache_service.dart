@@ -8,6 +8,7 @@ import 'package:revelation/service/general_service/index.dart';
 import 'package:revelation/service/log_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import 'directory_service/index.dart';
 
@@ -33,6 +34,7 @@ class CacheService {
     required int imapServerPort,
     required bool isImapServerSecure,
   }) async {
+    Logger.info('Connect to IMAP.');
     final directory = await getApplicationDocumentsDirectory();
     int syncIntervalSeconds = GeneralService.syncIntervalHook.value;
     final config = ConnectConfig(

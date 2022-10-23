@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/pages/home_page/devices/lg1024/index.dart';
-import 'package:revelation/service/device_service/index.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import '../../service/device_service/index.dart';
+import 'devices/lg1024/index.dart';
 import 'devices/phone_home_page/index_page.dart';
 
 class HomePage extends Page {
@@ -11,31 +11,15 @@ class HomePage extends Page {
     return MaterialPageRoute(
       settings: this,
       builder: (BuildContext context) {
-        return const _HomePage();
+        Logger.info('Build widget HomePage', symbol: 'build');
+
+        switch (DeviceService.deviceHook.value) {
+          case DeviceType.phone:
+            return const PhoneHomePage();
+          case DeviceType.windows:
+            return const LG1024HomePage();
+        }
       },
     );
   }
-}
-
-class _HomePage extends StatefulWidget {
-  const _HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<_HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<_HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    Logger.info('Build widget HomePage', symbol: 'build');
-    switch (DeviceService.deviceHook.value) {
-      case DeviceType.phone:
-        return const PhoneHomePage();
-      case DeviceType.windows:
-        return const LG1024HomePage();
-    }
-  }
-
-  @override
-  void dispose() {}
 }
