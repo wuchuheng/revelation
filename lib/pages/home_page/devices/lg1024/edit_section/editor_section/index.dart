@@ -44,14 +44,38 @@ class _EditorSectionState extends State<EditorSection> {
 
   Widget getTextFormField(double width) {
     Logger.info('Build TextFormField', symbol: 'build');
+    const double tipHeight = 20;
     return SizedBox(
       width: width,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: EditorFieldSection(
-          content: content,
-          onChange: (String newContent) => setState(() => content = newContent),
-        ),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(top: tipHeight),
+            child: SingleChildScrollView(
+              child: Container(
+                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: EditorFieldSection(
+                  content: content,
+                  onChange: (String newContent) => setState(() => content = newContent),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: SizedBox(
+              height: tipHeight,
+              width: width,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Last updated at 7:00',
+                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/config/config.dart';
-import 'package:revelation/model/chapter_model/index.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/center_section/tool_bar/index.dart';
 import 'package:revelation/service/chapter_service/index.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
@@ -18,7 +17,6 @@ class CenterSection extends StatefulWidget {
 
 class _CenterSectionState extends State<CenterSection> {
   late ScrollController _scrollController;
-  List<ChapterModel> chapters = ChapterService.chapterListHook.value;
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
 
   @override
@@ -27,7 +25,8 @@ class _CenterSectionState extends State<CenterSection> {
     _scrollController = ScrollController();
     unsubscribeCollect.addAll([
       ChapterService.chapterListHook.subscribe((data) {
-        setState(() => chapters = data.toList());
+        print(data);
+        setState(() {});
       }),
       ChapterService.onAnimationToTopSubject.subscribe((value) {
         final pixels = _scrollController.position.pixels ~/ 3;
@@ -65,6 +64,7 @@ class _CenterSectionState extends State<CenterSection> {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget CenterSection', symbol: 'build');
+    final chapters = ChapterService.chapterListHook.value;
     return Container(
       width: Config.lg1024CenterSectionWidth,
       height: MediaQuery.of(context).size.height,

@@ -38,9 +38,9 @@ class _ChapterListState extends State<ChapterList> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      ChapterService.chapterListHook.subscribe(
-        (value) => setState(() {}),
-      ),
+      ChapterService.chapterListHook.subscribe((value) {
+        setState(() {});
+      }),
     ]);
     super.initState();
   }
