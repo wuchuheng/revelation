@@ -123,14 +123,14 @@ jobs:
       - name: Build artifacts
         run: flutter build apk --release
       - name: Rename
-        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/revelation-${{github.ref_name}}-android.apk
       - name: Release to github
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{github.ref_name}}
-          files: build/app/outputs/flutter-apk/android-${{github.ref_name}}.apk
+          files: build/app/outputs/flutter-apk/revelation-${{github.ref_name}}-android.apk
 
   release:
     if: startsWith(github.ref, 'refs/tags/')
@@ -141,7 +141,6 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Release
         uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
         with:
