@@ -31,8 +31,7 @@ class App extends StatelessWidget {
     return route.build(
       debugShowCheckedModeBanner: false,
       context,
-      // Todo:  Change title
-      title: 'snotes',
+      title: 'Revelation',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           color: Color(0xFF151026),
