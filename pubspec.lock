@@ -888,7 +888,7 @@ packages:
       name: wuchuheng_imap_cache
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.11"
+    version: "1.0.13"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
@@ -916,7 +916,7 @@ packages:
       name: wuchuheng_router
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.23"
+    version: "0.0.24"
   wuchuheng_task_util:
     dependency: "direct main"
     description:
