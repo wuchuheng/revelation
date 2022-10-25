@@ -17,3 +17,6 @@ class AuthenticationStatusChanged extends AuthenticationEvent {
 }
 
 class AuthenticationLogoutRequested extends AuthenticationEvent {}
+
+/// Automatic login events.
+class AuthenticationAutoLoginRequested extends AuthenticationEvent {}
