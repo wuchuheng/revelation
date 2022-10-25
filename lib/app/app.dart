@@ -1,7 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:revelation/global_states/global_states.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../routes/route_path.dart';
@@ -12,7 +14,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build Widget App', symbol: 'build');
-    return route.build(
+    final child = route.build(
       debugShowCheckedModeBanner: false,
       context,
       title: 'Revelation',
@@ -24,6 +26,11 @@ class App extends StatelessWidget {
       ),
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
+    );
+
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => DirectoryTreeBloc())],
+      child: child,
     );
   }
 }

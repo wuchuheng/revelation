@@ -59,6 +59,7 @@ dependencies:
   wuchuheng_ui: ^1.0.2
   sqlite3_flutter_libs: ^0.5.10
   flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
 
 flutter_icons:
   android: "launcher_icon"

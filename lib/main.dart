@@ -7,7 +7,7 @@ import 'package:revelation/service/device_service/index.dart';
 
 import 'app/app.dart';
 import 'config/config.dart';
-import 'global_state/global_state_observer.dart';
+import 'global_states/global_states_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +18,6 @@ void main() async {
     DeviceService.setDevice(DeviceType.phone);
   }
 
-  Bloc.observer = GlobalStateObserver();
+  Bloc.observer = GlobalStatesObserver();
   runApp(const App());
 }

@@ -10,7 +10,6 @@ import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
 class DirectoryService {
-  static int rootNodeId = 0;
   static Hook<DirectoryModel> activeNodeHook = Hook(DirectoryModel.getRootNodeInitData());
 
   /// The node  being modified.

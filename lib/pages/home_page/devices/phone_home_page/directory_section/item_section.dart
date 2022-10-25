@@ -73,8 +73,8 @@ class _ItemSectionState extends State<ItemSection> {
     final items = <BottomSheetItem>[
       BottomSheetItem(title: createNodeKey, key: createNodeKey),
       BottomSheetItem(title: createChapterKey, key: createChapterKey),
-      if (DirectoryService.rootNodeId != widget.directory.id) BottomSheetItem(title: renameKey, key: renameKey),
-      if (DirectoryService.rootNodeId != widget.directory.id)
+      if (DirectoryModel.rootNodeId != widget.directory.id) BottomSheetItem(title: renameKey, key: renameKey),
+      if (DirectoryModel.rootNodeId != widget.directory.id)
         BottomSheetItem(title: deleteKey, color: Colors.red, key: deleteKey),
     ];
     onBottomSheet(
