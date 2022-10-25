@@ -1,14 +1,11 @@
 import 'dart:io';
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:revelation/routes/route_path.dart';
 import 'package:revelation/service/device_service/index.dart';
-import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import 'app/app.dart';
 import 'config/config.dart';
 import 'global_state/global_state_observer.dart';
 
@@ -23,26 +20,4 @@ void main() async {
 
   Bloc.observer = GlobalStateObserver();
   runApp(const App());
-}
-
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Logger.info('Build Widget App', symbol: 'build');
-    return route.build(
-      debugShowCheckedModeBanner: false,
-      context,
-      title: 'Revelation',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          color: Color(0xFF151026),
-        ),
-        primaryColor: HexColor('#4F23DA'),
-      ),
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
-    );
-  }
 }
