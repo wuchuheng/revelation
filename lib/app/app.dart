@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:revelation/global_states/authorization_bloc/authentication_bloc.dart';
 import 'package:revelation/global_states/global_states.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
@@ -29,7 +30,10 @@ class App extends StatelessWidget {
     );
 
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => DirectoryTreeBloc())],
+      providers: [
+        BlocProvider(create: (_) => DirectoryTreeBloc()),
+        BlocProvider(create: (_) => AuthenticationBloc()),
+      ],
       child: child,
     );
   }

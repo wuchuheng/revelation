@@ -2,24 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoadingPage extends StatelessWidget {
-  const LoadingPage({Key? key}) : super(key: key);
+  const LoadingPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _LoadingPage(),
-    );
-  }
-}
+  static Route<void> route() => MaterialPageRoute(builder: (_) => const LoadingPage());
 
-class _LoadingPage extends StatefulWidget {
-  const _LoadingPage({Key? key}) : super(key: key);
-
-  @override
-  State<_LoadingPage> createState() => _LoadingPageState();
-}
-
-class _LoadingPageState extends State<_LoadingPage> {
   @override
   Widget build(BuildContext context) {
     const String assetName = 'assets/images/svg/undraw_floating_re_xtcj.svg';
@@ -28,7 +14,7 @@ class _LoadingPageState extends State<_LoadingPage> {
       semanticsLabel: 'Acme Logo',
       width: 300,
     );
-    return Center(
+    final child = Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -43,5 +29,7 @@ class _LoadingPageState extends State<_LoadingPage> {
         ],
       ),
     );
+
+    return Scaffold(body: child);
   }
 }
