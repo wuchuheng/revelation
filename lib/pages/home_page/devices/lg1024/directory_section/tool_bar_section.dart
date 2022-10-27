@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../../../../../routes/route_path.dart';
+import '../../../../setting_page/setting_page.dart';
 import '../center_section/tool_bar/icon_container.dart';
 
 class ToolBarSection extends StatelessWidget {
@@ -26,7 +26,7 @@ class ToolBarSection extends StatelessWidget {
         children: [
           IconContainer(
             iconData: Icons.settings,
-            onTap: () => pushSettingPage(context),
+            onTap: () => Navigator.of(context).push(SettingPage.route()),
           )
         ],
       ),

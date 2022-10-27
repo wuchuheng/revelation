@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/model/user_model/user_model.dart';
 
 import '../../dao/sqlite_dao.dart';
-import '../../dao/user_dao/index.dart';
+import '../../dao/user_dao/user_dao.dart';
 import '../../service/cache_service.dart';
 
 part 'authentication_event.dart';

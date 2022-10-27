@@ -1,7 +1,7 @@
 import 'package:path_provider/path_provider.dart';
-import 'package:revelation/dao/directory_dao/index.dart';
-import 'package:revelation/model/chapter_model/index.dart';
-import 'package:revelation/model/directory_model/index.dart';
+import 'package:revelation/dao/directory_dao/directory_dao.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
+import 'package:revelation/model/directory_model/directory_model.dart';
 import 'package:revelation/model/user_model/user_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 

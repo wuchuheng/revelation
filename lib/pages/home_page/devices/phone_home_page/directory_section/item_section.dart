@@ -3,12 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/index.dart';
-import 'package:revelation/service/directory_service/index.dart';
+import 'package:revelation/service/chapter_service/chapter_service.dart';
+import 'package:revelation/service/directory_service/directory_service.dart';
 import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 import '../../../../../common/iconfont.dart';
-import '../../../../../model/directory_model/index.dart';
+import '../../../../../model/directory_model/directory_model.dart';
 
 class ItemSection extends StatefulWidget {
   final DirectoryModel directory;
@@ -28,7 +28,7 @@ class _ItemSectionState extends State<ItemSection> {
 
   onTapItem() {
     DirectoryService.setActiveNode(widget.directory);
-    pushChapterListPage();
+    pushChapterListPage(context);
   }
 
   onDelete() {
@@ -40,10 +40,10 @@ class _ItemSectionState extends State<ItemSection> {
     DirectoryService.update(newName);
   }
 
-  void onCreateChapter() async {
+  void onCreateChapter(BuildContext context) async {
     DirectoryService.setActiveNode(widget.directory);
     await ChapterService.create();
-    pushChapterDetailPage();
+    pushChapterDetailPage(context);
   }
 
   void onCreateNode(BuildContext context) {
@@ -98,7 +98,7 @@ class _ItemSectionState extends State<ItemSection> {
             onDialog(context: context, title: 'Delete Node', describe: 'Are you sure?', onConfirm: onDelete);
             break;
           case createChapterKey:
-            onCreateChapter();
+            onCreateChapter(context);
             break;
           case createNodeKey:
             onCreateNode(context);

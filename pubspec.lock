@@ -945,13 +945,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  wuchuheng_router:
-    dependency: "direct main"
-    description:
-      name: wuchuheng_router
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.24"
   wuchuheng_task_util:
     dependency: "direct main"
     description:

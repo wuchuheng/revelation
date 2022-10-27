@@ -1,4 +1,4 @@
-import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
 
 abstract class ChapterDaoAbstract {
   ChapterModel save(ChapterModel chapter);

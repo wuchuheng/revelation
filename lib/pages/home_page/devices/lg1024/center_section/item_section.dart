@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
-import 'package:revelation/model/chapter_model/index.dart';
-import 'package:revelation/service/chapter_service/index.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
+import 'package:revelation/service/chapter_service/chapter_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../../../../../service/directory_service/index.dart';
+import '../../../../../service/directory_service/directory_service.dart';
 
 class ItemSection extends StatefulWidget {
   final bool isFirst;

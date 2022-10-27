@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../../../../../../../service/directory_service/index.dart';
+import '../../../../../../../service/directory_service/directory_service.dart';
 
 class InputSection extends StatelessWidget {
   final void Function(String? value) onFieldSubmitted;

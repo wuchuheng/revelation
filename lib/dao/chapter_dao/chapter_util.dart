@@ -1,4 +1,4 @@
-import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
 import 'package:revelation/utils/date_time_util.dart';
 import 'package:sqlite3/sqlite3.dart';
 

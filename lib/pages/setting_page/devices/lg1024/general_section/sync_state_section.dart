@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/service/general_service/index.dart';
+import 'package:revelation/service/general_service/general_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class SyncStateSection extends StatefulWidget {

@@ -1,0 +1,45 @@
+import 'package:flutter/material.dart';
+import 'package:revelation/config/config.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
+import 'package:revelation/service/chapter_service/chapter_service.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
+import 'package:wuchuheng_logger/wuchuheng_logger.dart';
+
+import 'editor_section/editor_section.dart';
+import 'empty_section.dart';
+
+class EditSection extends StatefulWidget {
+  const EditSection({Key? key}) : super(key: key);
+
+  @override
+  State<EditSection> createState() => _EditSectionState();
+}
+
+class _EditSectionState extends State<EditSection> {
+  final unsubscribeCollect = UnsubscribeCollect([]);
+  ChapterModel? chapter = ChapterService.editChapterHook.value;
+
+  @override
+  void initState() {
+    unsubscribeCollect.addAll([
+      ChapterService.editChapterHook.subscribe((data) {
+        if (data?.id != chapter?.id) setState(() => chapter = data);
+      }),
+    ]);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    unsubscribeCollect.unsubscribe();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Logger.info('Build widget EditSection', symbol: 'build');
+    final fullWidth = MediaQuery.of(context).size.width;
+    final width = fullWidth - Config.lg1024DirectoryWidth - Config.lg1024CenterSectionWidth;
+    return chapter == null ? EmptySection(width: width) : EditorSection(width: width);
+  }
+}

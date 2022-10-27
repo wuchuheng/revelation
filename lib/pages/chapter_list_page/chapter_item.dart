@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
-import 'package:revelation/model/chapter_model/index.dart';
+import 'package:revelation/model/chapter_model/chapter_model.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/index.dart';
+import 'package:revelation/service/chapter_service/chapter_service.dart';
 import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 class ChapterItem extends StatelessWidget {
@@ -14,7 +14,7 @@ class ChapterItem extends StatelessWidget {
 
   void onTap(BuildContext context) {
     ChapterService.setEditChapter(chapter);
-    pushChapterDetailPage();
+    pushChapterDetailPage(context);
   }
 
   final radius = const Radius.circular(10);

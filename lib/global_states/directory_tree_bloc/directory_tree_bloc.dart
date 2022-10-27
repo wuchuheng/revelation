@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../dao/directory_dao/index.dart';
-import '../../model/directory_model/index.dart';
+import '../../dao/directory_dao/directory_dao.dart';
+import '../../model/directory_model/directory_model.dart';
 
 part 'directory_tree_event.dart';
 part 'directory_tree_state.dart';

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../global_states/global_states.dart';
-import '../pages/loading_page/index.dart';
 import '../routes/route_path.dart';
 
 final themeData = ThemeData(
@@ -24,18 +23,27 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final botToastBuilder = BotToastInit();
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      theme: themeData,
-      navigatorObservers: [BotToastNavigatorObserver()],
-      builder: (context, child) {
-        final blocChild = BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) => authenticationRouteGuard(context, state, _navigator),
-          child: child,
-        );
-        return botToastBuilder(context, blocChild);
+
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      buildWhen: (previous, current) {
+        return true;
       },
-      onGenerateRoute: (_) => LoadingPage.route(),
+      builder: (context, state) {
+        return MaterialApp(
+          navigatorKey: _navigatorKey,
+          theme: themeData,
+          navigatorObservers: [BotToastNavigatorObserver()],
+          builder: (context, child) {
+            final blocChild = BlocListener<AuthenticationBloc, AuthenticationState>(
+              listener: (context, state) => authenticationRouteGuard(context, state, _navigator),
+              child: child,
+            );
+            return botToastBuilder(context, blocChild);
+          },
+          routes: routes,
+          initialRoute: state.status == AuthenticationStatus.unknown ? '/loading' : null,
+        );
+      },
     );
   }
 }
