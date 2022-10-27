@@ -47,6 +47,8 @@ class _EditorSectionState extends State<EditorSection> {
 
   Widget getTextFormField(double width) {
     Logger.info('Build TextFormField', symbol: 'build');
+    final updateAt = widget.globalService.chapterService.editChapterHook.value!.updatedAt;
+
     const double tipHeight = 20;
     return SizedBox(
       width: width,
@@ -73,7 +75,7 @@ class _EditorSectionState extends State<EditorSection> {
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Last updated at 7:00',
+                  'Last updated at ${updateAt.hour}:${updateAt.minute}',
                   style: TextStyle(color: Colors.grey[500], fontSize: 12),
                 ),
               ),
