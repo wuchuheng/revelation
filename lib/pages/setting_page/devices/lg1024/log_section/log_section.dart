@@ -55,7 +55,7 @@ class _LogSectionState extends State<LogSection> {
     final item = Container(
       padding: const EdgeInsets.all(10),
       height: double.infinity,
-      width: widget.globalService.logService.maxLogLength.toDouble() * 8,
+      width: widget.globalService.logService.maxLogLength.toDouble() * 10,
       child: ListView.builder(
           controller: scrollController,
           itemCount: logs.length,

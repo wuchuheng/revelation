@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:wuchuheng_env/wuchuheng_env.dart';
 
 class Config {
   static final Color textGrey = Colors.grey[700]!;
@@ -26,6 +25,6 @@ class Config {
   static const double toolBarHeight = 50;
 
   /// developer options
-  static bool isDebug = DotEnv.get('IS_DEBUG', false);
+  static bool isDebug = true;
   static String appName = 'My Revelation';
 }

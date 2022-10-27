@@ -67,6 +67,7 @@ class _CenterSectionState extends State<CenterSection> {
     Logger.info('Build widget CenterSection', symbol: 'build');
     final GlobalService globalService = RepositoryProvider.of(context);
     final chapters = globalService.chapterService.chapterListHook.value;
+
     return Container(
       width: Config.lg1024CenterSectionWidth,
       height: MediaQuery.of(context).size.height,
@@ -83,7 +84,7 @@ class _CenterSectionState extends State<CenterSection> {
               ItemSection(
                 globalService: globalService,
                 isFirst: true,
-                key: Key(chapters[index].id.toString()),
+                key: Key(chapters[index].id.toString() + chapters[index].updatedAt.toString()),
                 chapter: chapters[index],
               ),
           ]),

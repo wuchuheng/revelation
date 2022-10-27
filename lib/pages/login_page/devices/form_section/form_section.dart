@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:revelation/config/config.dart';
-import 'package:wuchuheng_env/wuchuheng_env.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../dao/user_dao/user_dao.dart';
@@ -28,9 +27,9 @@ class _FormSectionState extends State<FormSection> {
   TextAlignVertical textAlignVertical = TextAlignVertical.center;
 
   AccountInfo accountInfo = AccountInfo(
-    userName: DotEnv.get('USER_NAME', ''),
-    password: DotEnv.get('PASSWORD', ''),
-    host: DotEnv.get('HOST', ''),
+    userName: '',
+    password: '',
+    host: '',
     port: 993,
     tls: true,
   );

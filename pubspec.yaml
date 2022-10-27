@@ -93,7 +93,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - .env
     - assets/images/svg/undraw_no_data_re_kwbl.svg
     - assets/images/svg/undraw_notebook_re_id0r.svg
     - assets/images/svg/undraw_floating_re_xtcj.svg
