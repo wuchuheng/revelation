@@ -12,8 +12,7 @@ class AboutSection extends StatelessWidget {
       assetName,
       height: 110,
     );
-    Widget container(Widget child) =>
-        Container(margin: const EdgeInsets.only(top: 10), child: child);
+    Widget container(Widget child) => Container(margin: const EdgeInsets.only(top: 10), child: child);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -23,11 +22,14 @@ class AboutSection extends StatelessWidget {
           Config.appName,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         )),
-        container(const Text('Version 1.0.1')),
-        container(
-          Text(
-              'Copyright © 2022 com.wuchuheng.revelation. All rights reserved.',
-              style: TextStyle(color: Colors.grey[400]!)),
+        container(const Text('Version 1.2.2')),
+        Padding(
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Text(
+            'Copyright © 2022 com.wuchuheng.revelation. All rights reserved.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey[400]!),
+          ),
         ),
       ],
     );
