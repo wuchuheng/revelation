@@ -4,20 +4,23 @@ import 'package:desktop_context_menu/desktop_context_menu.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/node_section/node_section.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class ItemSection extends StatefulWidget {
   final DirectoryModel data;
   final int level;
+  final GlobalService globalService;
 
   const ItemSection({
     super.key,
     required this.data,
     this.level = 0,
+    required this.globalService,
   });
 
   @override
@@ -35,15 +38,15 @@ class _ItemSectionState extends State<ItemSection> {
   @override
   void initState() {
     super.initState();
-    final activeNode = DirectoryService.activeNodeHook.value;
-    final pointerTreeItem = DirectoryService.pointerNodeHook.value;
+    final activeNode = widget.globalService.directoryService.activeNodeHook.value;
+    final pointerTreeItem = widget.globalService.directoryService.pointerNodeHook.value;
     isBorder = activeNode.id != pointerTreeItem?.id && widget.data.id == pointerTreeItem?.id;
-    final activeTreeItem = DirectoryService.activeNodeHook.value;
+    final activeTreeItem = widget.globalService.directoryService.activeNodeHook.value;
     isActive = activeTreeItem.id == widget.data.id;
     unsubscribeCollect.addAll([
-      DirectoryService.activeNodeHook.subscribe(activeNodeSubscription),
-      DirectoryService.changedNodeHook.subscribe(changeNodeSubscription),
-      DirectoryService.pointerNodeHook.subscribe(pointerNodeSubscription),
+      widget.globalService.directoryService.activeNodeHook.subscribe(activeNodeSubscription),
+      widget.globalService.directoryService.changedNodeHook.subscribe(changeNodeSubscription),
+      widget.globalService.directoryService.pointerNodeHook.subscribe(pointerNodeSubscription),
     ]);
   }
 
@@ -58,8 +61,8 @@ class _ItemSectionState extends State<ItemSection> {
   }
 
   void pointerNodeSubscription(DirectoryModel? data) {
-    final activeNode = DirectoryService.activeNodeHook.value;
-    final pointerTreeItem = DirectoryService.pointerNodeHook.value;
+    final activeNode = widget.globalService.directoryService.activeNodeHook.value;
+    final pointerTreeItem = widget.globalService.directoryService.pointerNodeHook.value;
     final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode.id;
     if (newIsBorder != isBorder) {
       setState(() => isBorder = newIsBorder);
@@ -78,12 +81,12 @@ class _ItemSectionState extends State<ItemSection> {
 
   /// Click on the title event.
   void handleTap() {
-    DirectoryService.setActiveNode(widget.data);
+    widget.globalService.directoryService.setActiveNode(widget.data);
     // doubleTap
     if (DateTime.now().microsecondsSinceEpoch - _lastClickedAt.microsecondsSinceEpoch < 500000) {
-      DirectoryService.changedNodeHook.set(widget.data);
+      widget.globalService.directoryService.changedNodeHook.set(widget.data);
     } else {
-      DirectoryService.changedNodeHook.set(null);
+      widget.globalService.directoryService.changedNodeHook.set(null);
     }
     _lastClickedAt = DateTime.now();
   }
@@ -109,7 +112,7 @@ class _ItemSectionState extends State<ItemSection> {
           ),
           TextButton(
             onPressed: () {
-              DirectoryService.delete(widget.data.id.toString());
+              widget.globalService.directoryService.delete(widget.data.id.toString());
               Navigator.pop(context, 'OK');
             },
             child: const Text('Delete'),
@@ -119,7 +122,7 @@ class _ItemSectionState extends State<ItemSection> {
     );
   }
 
-  void handleRenameFolder() => DirectoryService.changedNodeHook.set(widget.data);
+  void handleRenameFolder() => widget.globalService.directoryService.changedNodeHook.set(widget.data);
 
   /// show the  context  menu.
   _showContext() async {
@@ -154,7 +157,7 @@ class _ItemSectionState extends State<ItemSection> {
     if (_openContext) {
       _showContext();
       _openContext = false;
-      DirectoryService.pointerNodeHook.set(null);
+      widget.globalService.directoryService.pointerNodeHook.set(null);
     }
   }
 
@@ -162,17 +165,19 @@ class _ItemSectionState extends State<ItemSection> {
   void handlePointerDown(PointerDownEvent e) {
     _openContext = e.kind == PointerDeviceKind.mouse && e.buttons == kSecondaryMouseButton;
     if (_openContext) {
-      DirectoryService.pointerNodeHook.set(widget.data);
+      widget.globalService.directoryService.pointerNodeHook.set(widget.data);
     } else {
       setState(() {});
     }
   }
 
-  void handleSaveNodeName(String? value) => DirectoryService.changedNodeHook.set(null);
+  void handleSaveNodeName(String? value) => widget.globalService.directoryService.changedNodeHook.set(null);
 
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget ItemSection', symbol: 'build');
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+
     return Column(
       children: [
         NodeSectionState(
@@ -193,6 +198,7 @@ class _ItemSectionState extends State<ItemSection> {
         if (isOpenFold)
           for (DirectoryModel item in widget.data.children)
             ItemSection(
+              globalService: globalService,
               key: ValueKey(item.id),
               data: item,
               level: widget.level + 1,

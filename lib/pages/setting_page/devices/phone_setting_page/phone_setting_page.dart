@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/layout/phone_scaffold/phone_scaffold.dart';
-import 'package:revelation/service/setting_service/setting_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../../../config/config.dart';
 
 class PhoneSettingPage extends StatefulWidget {
-  const PhoneSettingPage({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const PhoneSettingPage({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<PhoneSettingPage> createState() => _PhoneSettingPageState();
@@ -16,13 +17,13 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
 
   void onTapBottomNavigation(int index) {
-    SettingService.setActiveIndex(index);
+    widget.globalService.settingService.setActiveIndex(index);
   }
 
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      SettingService.activeIndexHook.subscribe((value) => setState(() {})),
+      widget.globalService.settingService.activeIndexHook.subscribe((value) => setState(() {})),
     ]);
     super.initState();
   }
@@ -35,13 +36,14 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final activeItem = SettingService.tabs[SettingService.activeIndexHook.value];
-    final navigationItemColor = Colors.black;
-    final item = activeItem.body;
+    final activeItem =
+        widget.globalService.settingService.tabs[widget.globalService.settingService.activeIndexHook.value];
+    const navigationItemColor = Colors.black;
+    final item = activeItem(context).body;
 
     return PhoneScaffoldLayout(
       appBar: AppBar(
-        title: Text('Setting-${activeItem.text}'),
+        title: Text('Setting-${activeItem(context).text}'),
       ),
       body: item,
       bottomNavigationBar: Container(
@@ -50,24 +52,27 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
         ),
         height: 50,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          for (int index = 0; index < SettingService.tabs.length; index++)
+          for (int index = 0; index < widget.globalService.settingService.tabs.length; index++)
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => onTapBottomNavigation(index),
-              child: Container(
-                width: MediaQuery.of(context).size.width / SettingService.tabs.length,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width / widget.globalService.settingService.tabs.length,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Icon(
-                      SettingService.tabs[index].icon,
-                      color: SettingService.activeIndexHook.value == index ? Config.primaryColor : navigationItemColor,
+                      widget.globalService.settingService.tabs[index](context).icon,
+                      color: widget.globalService.settingService.activeIndexHook.value == index
+                          ? Config.primaryColor
+                          : navigationItemColor,
                     ),
                     Text(
-                      SettingService.tabs[index].text,
+                      widget.globalService.settingService.tabs[index](context).text,
                       style: TextStyle(
-                        color:
-                            SettingService.activeIndexHook.value == index ? Config.primaryColor : navigationItemColor,
+                        color: widget.globalService.settingService.activeIndexHook.value == index
+                            ? Config.primaryColor
+                            : navigationItemColor,
                       ),
                     ),
                   ],

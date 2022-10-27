@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class CreateButton extends StatelessWidget {
@@ -12,8 +13,10 @@ class CreateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget CreateButton', symbol: 'build');
+    final GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+
     return InkWell(
-      onTap: DirectoryService.create,
+      onTap: globalService.directoryService.create,
       child: SizedBox(
         height: bottomBarHeight,
         width: double.infinity,

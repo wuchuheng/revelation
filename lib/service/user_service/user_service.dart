@@ -2,20 +2,22 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:revelation/dao/user_dao/user_dao.dart';
 import 'package:revelation/model/user_model/user_model.dart';
-import 'package:revelation/pages/home_page/home_page.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/cache_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../pages/login_page/devices/form_section/account_info.dart';
+import '../global_service.dart';
 
 class UserService {
-  static UserModel? getUserInfo() => UserDao().has();
+  final GlobalService _globalService;
+  UserService({required GlobalService globalService}) : _globalService = globalService;
 
-  static void onConnect(AccountInfo accountInfo, BuildContext context) async {
+  UserModel? getUserInfo() => UserDao().has();
+
+  void onConnect(AccountInfo accountInfo, BuildContext context) async {
     final cancel = BotToast.showLoading(); //popup a loading toast
     try {
-      await CacheService.connect(
+      await _globalService.cacheService.connect(
         userName: accountInfo.userName,
         password: accountInfo.password,
         imapServerHost: accountInfo.host,
@@ -41,11 +43,11 @@ class UserService {
       tls: accountInfo.tls,
     );
     UserDao().save(user);
-    Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (route) => false);
+    pushHomePage(context);
   }
 
-  static void disconnect(BuildContext context) async {
-    await CacheService.disconnect();
+  void disconnect(BuildContext context) async {
+    await _globalService.cacheService.disconnect();
     pushLoginPage(context);
   }
 }

@@ -1,8 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:revelation/config/config.dart';
-import 'package:revelation/service/user_service/user_service.dart';
+import 'package:revelation/service/global_service.dart';
 
 import '../form_section/account_info.dart';
 import '../form_section/form_section.dart';
@@ -19,6 +20,8 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -43,7 +46,7 @@ class _PhoneLoginPageState extends State<PhoneLoginPage> {
                   ],
                 ),
                 FormSection(
-                  onSubmit: (value) => UserService.onConnect(value, context),
+                  onSubmit: (value) => globalService.userService.onConnect(value, context),
                 ),
               ],
             )),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/service/general_service/general_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class SyncStateSection extends StatefulWidget {
-  const SyncStateSection({Key? key}) : super(key: key);
+  GlobalService globalService;
+  SyncStateSection({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<SyncStateSection> createState() => _SyncStateSectionState();
@@ -15,7 +16,7 @@ class _SyncStateSectionState extends State<SyncStateSection> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      GeneralService.timerHook.subscribe(
+      widget.globalService.generalService.timerHook.subscribe(
         (value) => setState(() {}),
       ),
     ]);
@@ -30,8 +31,8 @@ class _SyncStateSectionState extends State<SyncStateSection> {
 
   @override
   Widget build(BuildContext context) {
-    final color = GeneralService.syncStateHook.value ? Colors.green : Colors.red;
-    GeneralService.lastSyncTimeHook;
+    final color = widget.globalService.generalService.syncStateHook.value ? Colors.green : Colors.red;
+    widget.globalService.generalService.lastSyncTimeHook;
     double size = 20;
     return Container(
       margin: const EdgeInsets.only(right: 10),
@@ -43,9 +44,9 @@ class _SyncStateSectionState extends State<SyncStateSection> {
       width: size,
       height: size,
       child: Text(
-        '${GeneralService.timerHook.value}',
+        '${widget.globalService.generalService.timerHook.value}',
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

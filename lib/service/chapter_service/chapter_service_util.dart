@@ -1,10 +1,10 @@
 class ChapterServiceUtil {
-  static const String _cachePrefix = 'chapter_item_';
-  static String getCacheKeyById(int id) {
+  final String _cachePrefix = 'chapter_item_';
+  String getCacheKeyById(int id) {
     return '${_cachePrefix}_$id';
   }
 
-  static bool isChapterByCacheKey(String key) {
+  bool isChapterByCacheKey(String key) {
     if (key.length < _cachePrefix.length) {
       return false;
     }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/common/editor_section/editor_section.dart';
-import 'package:revelation/service/float_tool_bar_service/float_tool_bar_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../common/markdown_section/markdown_section.dart';
-import '../../../../../../service/chapter_service/chapter_service.dart';
 
 class EditorSection extends StatefulWidget {
   final double width;
-  const EditorSection({Key? key, required this.width}) : super(key: key);
+  final GlobalService globalService;
+  const EditorSection({Key? key, required this.width, required this.globalService}) : super(key: key);
 
   @override
   State<EditorSection> createState() => _EditorSectionState();
@@ -17,21 +17,24 @@ class EditorSection extends StatefulWidget {
 
 class _EditorSectionState extends State<EditorSection> {
   final UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
-  bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
-  String content = ChapterService.editChapterHook.value?.content ?? '';
-  bool isPreview = FloatingToolBarService.isPreviewHook.value;
+  late bool isSplittingPreview;
+  late String content;
+  late bool isPreview;
 
   @override
   void initState() {
+    isPreview = widget.globalService.floatingToolBarService.isPreviewHook.value;
+    isSplittingPreview = widget.globalService.floatingToolBarService.isSplittingPreviewHook.value;
+    content = widget.globalService.chapterService.editChapterHook.value?.content ?? '';
     unsubscribeCollect.addAll([
-      ChapterService.editChapterHook.subscribe((value) {
+      widget.globalService.chapterService.editChapterHook.subscribe((value) {
         content = value?.content ?? '';
         setState(() {});
       }),
-      FloatingToolBarService.isSplittingPreviewHook.subscribe((value) {
+      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((value) {
         if (value != isSplittingPreview) setState(() => isSplittingPreview = value);
       }),
-      FloatingToolBarService.isPreviewHook.subscribe((value) => setState(() => isPreview = value))
+      widget.globalService.floatingToolBarService.isPreviewHook.subscribe((value) => setState(() => isPreview = value))
     ]);
     super.initState();
   }
@@ -57,6 +60,7 @@ class _EditorSectionState extends State<EditorSection> {
                 child: EditorFieldSection(
                   content: content,
                   onChange: (String newContent) => setState(() => content = newContent),
+                  chapterService: widget.globalService.chapterService,
                 ),
               ),
             ),

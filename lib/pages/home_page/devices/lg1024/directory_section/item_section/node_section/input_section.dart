@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
-
-import '../../../../../../../service/directory_service/directory_service.dart';
 
 class InputSection extends StatelessWidget {
   final void Function(String? value) onFieldSubmitted;
@@ -16,12 +16,13 @@ class InputSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget InputSection', symbol: 'build');
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     return Container(
       height: 17.5,
       width: 200,
       margin: const EdgeInsets.only(left: 4),
       child: TextFormField(
-        onChanged: DirectoryService.update,
+        onChanged: globalService.directoryService.update,
         onFieldSubmitted: onFieldSubmitted,
         initialValue: initialValue,
         autofocus: true,

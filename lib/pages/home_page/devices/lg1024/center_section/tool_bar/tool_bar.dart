@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:revelation/api/cache_service.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/center_section/tool_bar/icon_container.dart';
-import 'package:revelation/service/cache_service.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import '../../../../../../service/chapter_service/chapter_service.dart';
-
 class ToolBar extends StatefulWidget {
-  const ToolBar({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const ToolBar({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<ToolBar> createState() => _ToolBarState();
@@ -19,7 +18,7 @@ class ToolBar extends StatefulWidget {
 
 class _ToolBarState extends State<ToolBar> {
   Color? color;
-  String title = DirectoryService.activeNodeHook.value.title;
+  String title = '';
   final unsubscribeCollect = UnsubscribeCollect([]);
   String syncTip = '';
 
@@ -38,17 +37,18 @@ class _ToolBarState extends State<ToolBar> {
 
   @override
   void initState() {
+    String title = widget.globalService.directoryService.activeNodeHook.value.title;
     super.initState();
-    syncTip = syncStatusToStr(CacheService.syncStatus.value);
+    syncTip = syncStatusToStr(widget.globalService.cacheService.syncStatus.value);
     unsubscribeCollect.addAll([
-      CacheService.syncStatus.subscribe((value) {
+      widget.globalService.cacheService.syncStatus.subscribe((value) {
         if (syncTip != syncStatusToStr(value)) {
           syncTip = syncStatusToStr(value);
           setState(() {});
         }
       }),
-      DirectoryService.activeNodeHook.subscribe((data) {
-        if (data != null && data.title != title) setState(() => title = data.title);
+      widget.globalService.directoryService.activeNodeHook.subscribe((data) {
+        if (data.title != title) setState(() => title = data.title);
       }),
     ]);
   }
@@ -82,7 +82,7 @@ class _ToolBarState extends State<ToolBar> {
           IconContainer(
             iconData: IconFont.icon_notes,
             onTap: () async {
-              await ChapterService.create();
+              await widget.globalService.chapterService.create();
             },
           ),
         ],

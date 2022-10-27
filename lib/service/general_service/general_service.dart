@@ -1,16 +1,19 @@
 import 'dart:async';
 
-import 'package:revelation/service/cache_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class GeneralService {
-  static Hook<DateTime?> lastSyncTimeHook = Hook(null);
-  static Hook<bool> syncStateHook = Hook(false);
-  static Hook<int> syncIntervalHook = Hook(5);
-  static Hook<int> timerHook = Hook(0);
-  static Timer? timer;
+  final GlobalService _globalService;
+  GeneralService({required GlobalService globalService}) : _globalService = globalService;
 
-  static setSyncState(bool value) {
+  Hook<DateTime?> lastSyncTimeHook = Hook(null);
+  Hook<bool> syncStateHook = Hook(false);
+  Hook<int> syncIntervalHook = Hook(5);
+  Hook<int> timerHook = Hook(0);
+  Timer? timer;
+
+  setSyncState(bool value) {
     syncStateHook.set(value);
     timer?.cancel();
     const duration = Duration(seconds: 1);
@@ -23,8 +26,8 @@ class GeneralService {
     }
   }
 
-  static Future<void> setSyncInterval(int newInterval) async {
-    await CacheService.getImapCache().setSyncInterval(newInterval);
+  Future<void> setSyncInterval(int newInterval) async {
+    await _globalService.cacheService.getImapCache().setSyncInterval(newInterval);
     syncIntervalHook.set(newInterval);
     setSyncState(syncStateHook.value);
   }

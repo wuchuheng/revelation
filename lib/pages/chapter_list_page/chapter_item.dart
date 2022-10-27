@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/model/chapter_model/chapter_model.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 class ChapterItem extends StatelessWidget {
@@ -13,18 +14,21 @@ class ChapterItem extends StatelessWidget {
   const ChapterItem({Key? key, required this.chapter, this.isLastItem = false}) : super(key: key);
 
   void onTap(BuildContext context) {
-    ChapterService.setEditChapter(chapter);
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+
+    globalService.chapterService.setEditChapter(chapter);
     pushChapterDetailPage(context);
   }
 
   final radius = const Radius.circular(10);
 
   void onConfirmDelete(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     onDialog(
       context: context,
       title: 'Delete Data',
       describe: 'Are you sure?',
-      onConfirm: () => ChapterService.delete(chapter),
+      onConfirm: () => globalService.chapterService.delete(chapter),
     );
   }
 

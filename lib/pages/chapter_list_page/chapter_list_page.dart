@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/pages/chapter_list_page/chapter_item.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../common/phone_body_container/phone_body_container.dart';
 import '../../common/phone_large_title_layout_container/phone_large_title_layout_container.dart';
 
-class ChapterListPage extends StatelessWidget {
-  const ChapterListPage({super.key});
-  static Route<void> route() => MaterialPageRoute(builder: (_) => const ChapterListPage());
+class ChapterListPage extends StatefulWidget {
+  final GlobalService globalService;
+  ChapterListPage({super.key, required BuildContext context})
+      : globalService = RepositoryProvider.of<GlobalService>(context);
+  static Route<void> route(BuildContext context) =>
+      MaterialPageRoute(builder: (_) => ChapterListPage(context: context));
 
   @override
-  Widget build(BuildContext context) => const Scaffold(body: ChapterList());
+  State<ChapterListPage> createState() => _ChapterListPageState();
 }
 
-class ChapterList extends StatefulWidget {
-  const ChapterList({Key? key}) : super(key: key);
-
-  @override
-  State<ChapterList> createState() => _ChapterListState();
-}
-
-class _ChapterListState extends State<ChapterList> {
+class _ChapterListPageState extends State<ChapterListPage> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
 
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      ChapterService.chapterListHook.subscribe((value) {
+      widget.globalService.chapterService.chapterListHook.subscribe((value) {
         setState(() {});
       }),
     ]);
@@ -43,14 +39,14 @@ class _ChapterListState extends State<ChapterList> {
   }
 
   void onCreate(BuildContext context) {
-    ChapterService.create();
+    widget.globalService.chapterService.create();
     pushChapterDetailPage(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final chapters = ChapterService.chapterListHook.value;
-    final title = '${DirectoryService.activeNodeHook.value.title}(${chapters.length})';
+    final chapters = widget.globalService.chapterService.chapterListHook.value;
+    final title = '${widget.globalService.directoryService.activeNodeHook.value.title}(${chapters.length})';
 
     return PhoneBodyContainer(
       child: PhoneLargeTitleLayoutContainer(

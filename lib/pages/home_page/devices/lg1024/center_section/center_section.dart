@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/center_section/tool_bar/tool_bar.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
@@ -9,7 +10,8 @@ import 'empty_section.dart';
 import 'item_section.dart';
 
 class CenterSection extends StatefulWidget {
-  const CenterSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const CenterSection({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<CenterSection> createState() => _CenterSectionState();
@@ -24,11 +26,10 @@ class _CenterSectionState extends State<CenterSection> {
     super.initState();
     _scrollController = ScrollController();
     unsubscribeCollect.addAll([
-      ChapterService.chapterListHook.subscribe((data) {
-        print(data);
+      widget.globalService.chapterService.chapterListHook.subscribe((data) {
         setState(() {});
       }),
-      ChapterService.onAnimationToTopSubject.subscribe((value) {
+      widget.globalService.chapterService.onAnimationToTopSubject.subscribe((value) {
         final pixels = _scrollController.position.pixels ~/ 3;
         final duration = Duration(milliseconds: pixels);
         _scrollController.animateTo(0, duration: duration, curve: Curves.linear);
@@ -64,7 +65,8 @@ class _CenterSectionState extends State<CenterSection> {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget CenterSection', symbol: 'build');
-    final chapters = ChapterService.chapterListHook.value;
+    final GlobalService globalService = RepositoryProvider.of(context);
+    final chapters = globalService.chapterService.chapterListHook.value;
     return Container(
       width: Config.lg1024CenterSectionWidth,
       height: MediaQuery.of(context).size.height,
@@ -75,10 +77,11 @@ class _CenterSectionState extends State<CenterSection> {
       ),
       child: Column(
         children: [
-          const ToolBar(),
+          ToolBar(globalService: RepositoryProvider.of<GlobalService>(context)),
           getContainer(children: [
             for (int index = 0; index < chapters.length; index++)
               ItemSection(
+                globalService: globalService,
                 isFirst: true,
                 key: Key(chapters[index].id.toString()),
                 chapter: chapters[index],

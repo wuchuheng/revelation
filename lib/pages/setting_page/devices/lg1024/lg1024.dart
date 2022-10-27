@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/service/setting_service/setting_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import 'tab_section/tab_section.dart';
 
 class LG1024SettingPage extends StatefulWidget {
-  const LG1024SettingPage({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const LG1024SettingPage({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<LG1024SettingPage> createState() => _LG1024SettingPageState();
@@ -17,7 +18,7 @@ class _LG1024SettingPageState extends State<LG1024SettingPage> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      SettingService.activeIndexHook.subscribe((value) => setState(() {})),
+      widget.globalService.settingService.activeIndexHook.subscribe((value) => setState(() {})),
     ]);
     super.initState();
   }
@@ -32,9 +33,9 @@ class _LG1024SettingPageState extends State<LG1024SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabSection(
-        tabs: SettingService.tabs,
-        activeIndex: SettingService.activeIndexHook.value,
-        onChange: (index) => SettingService.setActiveIndex(index),
+        tabs: widget.globalService.settingService.tabs,
+        activeIndex: widget.globalService.settingService.activeIndexHook.value,
+        onChange: (index) => widget.globalService.settingService.setActiveIndex(index),
       ),
     );
   }

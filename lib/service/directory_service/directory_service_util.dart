@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:revelation/model/directory_model/directory_model.dart';
 
-import '../cache_service.dart';
+import '../../api/cache_service.dart';
 
 class DirectoryServiceUtil {
   static const String _cachePrefix = 'directory_item_data';
@@ -17,10 +17,10 @@ class DirectoryServiceUtil {
     return key.substring(0, _cachePrefix.length) == _cachePrefix;
   }
 
-  static Future<void> setLocalCache(DirectoryModel directory) async {
-    await CacheService.getImapCache().set(
-      key: DirectoryServiceUtil.getCacheKeyById(directory.id),
-      value: jsonEncode(directory),
-    );
+  static Future<void> setLocalCache(DirectoryModel directory, CacheService cacheService) async {
+    await cacheService.getImapCache().set(
+          key: DirectoryServiceUtil.getCacheKeyById(directory.id),
+          value: jsonEncode(directory),
+        );
   }
 }

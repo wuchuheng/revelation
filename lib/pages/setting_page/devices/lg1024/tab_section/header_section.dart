@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../config/config.dart';
 
+typedef TabItemFunc = TabItem Function(BuildContext);
+
 class TabItem {
   final IconData icon;
   final String text;
@@ -11,7 +13,7 @@ class TabItem {
 }
 
 class HeaderSection extends StatelessWidget {
-  final List<TabItem> tabs;
+  final List<TabItemFunc> tabs;
   final int activeIndex;
   final Function(int activeIndeex) onChange;
   const HeaderSection({Key? key, required this.tabs, required this.activeIndex, required this.onChange})
@@ -19,7 +21,7 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text = tabs[activeIndex] != null ? tabs[activeIndex].text : '';
+    String text = tabs[activeIndex] != null ? tabs[activeIndex](context).text : '';
 
     return Container(
       padding: const EdgeInsets.only(left: 80, right: 0),
@@ -62,11 +64,11 @@ class HeaderSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Icon(
-                              tabs[index].icon,
+                              tabs[index](context).icon,
                               color: index == activeIndex ? Colors.black : Colors.grey,
                             ),
                             Text(
-                              tabs[index].text,
+                              tabs[index](context).text,
                               style: TextStyle(color: index == activeIndex ? Colors.black : Colors.grey),
                             ),
                           ],

@@ -1,11 +1,16 @@
 import 'package:adaptive_scrollbar/adaptive_scrollbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/pages/setting_page/devices/lg1024/log_section/item_section.dart';
-import 'package:revelation/service/log_service/log_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class LogSection extends StatefulWidget {
-  const LogSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+
+  LogSection(BuildContext context, {Key? key})
+      : globalService = RepositoryProvider.of<GlobalService>(context),
+        super(key: key);
 
   @override
   State<LogSection> createState() => _LogSectionState();
@@ -18,7 +23,7 @@ class _LogSectionState extends State<LogSection> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      LogService.logHook.subscribe((value) {
+      widget.globalService.logService.logHook.subscribe((value) {
         setState(() {
           final bottomPosition = scrollController.position.maxScrollExtent;
           final currentPosition = scrollController.position.pixels;
@@ -46,11 +51,11 @@ class _LogSectionState extends State<LogSection> {
 
   @override
   Widget build(BuildContext context) {
-    final logs = LogService.logHook.value;
+    final logs = widget.globalService.logService.logHook.value;
     final item = Container(
       padding: const EdgeInsets.all(10),
       height: double.infinity,
-      width: LogService.maxLogLength.toDouble() * 8,
+      width: widget.globalService.logService.maxLogLength.toDouble() * 8,
       child: ListView.builder(
           controller: scrollController,
           itemCount: logs.length,

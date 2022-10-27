@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:revelation/common/editor_section/editor_section.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 
 import '../../config/config.dart';
 
@@ -31,17 +31,19 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final activeNodeTitle = DirectoryService.activeNodeHook.value.title;
+    final globalService = RepositoryProvider.of<GlobalService>(context);
+
+    final activeNodeTitle = globalService.directoryService.activeNodeHook.value.title;
     double toolBarHeight = 40 + MediaQuery.of(context).viewPadding.top;
     const double toolbarFontSize = 19;
     double leftRightPaddingSize = 7;
     editSection() => Container(
           padding: EdgeInsets.only(left: leftRightPaddingSize, right: leftRightPaddingSize),
-          child: EditorFieldSection(content: '', onChange: (value) {}),
+          child: EditorFieldSection(content: '', onChange: (value) {}, chapterService: globalService.chapterService),
         );
 
     preview() {
-      final content = ChapterService.editChapterHook.value?.content ?? '';
+      final content = globalService.chapterService.editChapterHook.value?.content ?? '';
       return MarkdownWidget(
         data: content,
       );

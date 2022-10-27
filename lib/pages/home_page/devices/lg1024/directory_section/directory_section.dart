@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/create_button.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/item_section.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/tool_bar_section.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../model/directory_model/directory_model.dart';
 
 class TreeSection extends StatefulWidget {
-  const TreeSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const TreeSection({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<TreeSection> createState() => _TreeSectionState();
 }
 
 class _TreeSectionState extends State<TreeSection> {
-  List<DirectoryModel> treeItems = DirectoryService.directoryHook.value;
+  List<DirectoryModel> treeItems = [];
   late Unsubscribe treeSubscriptHandler;
   @override
   void initState() {
+    treeItems = widget.globalService.directoryService.directoryHook.value;
     super.initState();
-    treeSubscriptHandler = DirectoryService.directoryHook.subscribe((data) => setState(() => treeItems = data));
+    treeSubscriptHandler = widget.globalService.directoryService.directoryHook.subscribe(
+      (data) => setState(
+        () => treeItems = data,
+      ),
+    );
   }
 
   @override
@@ -34,6 +41,7 @@ class _TreeSectionState extends State<TreeSection> {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget TreeSection', symbol: 'build');
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(
@@ -41,7 +49,12 @@ class _TreeSectionState extends State<TreeSection> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            for (var treeItem in treeItems) ItemSection(key: ValueKey(treeItem.id), data: treeItem),
+            for (var treeItem in treeItems)
+              ItemSection(
+                key: ValueKey(treeItem.id),
+                data: treeItem,
+                globalService: globalService,
+              ),
           ],
         ),
       ),

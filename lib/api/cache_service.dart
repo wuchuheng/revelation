@@ -3,31 +3,30 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/errors/not_login_error.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
-import 'package:revelation/service/general_service/general_service.dart';
-import 'package:revelation/service/log_service/log_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
-import 'directory_service/directory_service.dart';
+import '../service/global_service.dart';
 
 enum SyncStatus { DOWNLOAD, DOWNLOADED, UPLOAD, UPLOADED }
 
 class CacheService {
-  static Hook<bool> isConnectHook = Hook(false);
-  static Hook<SyncStatus> syncStatus = Hook(SyncStatus.DOWNLOADED);
+  final GlobalService _globalService;
+  CacheService({required GlobalService globalService}) : _globalService = globalService;
 
-  static ImapCacheService? _cacheServiceInstance;
-  static ImapCacheService getImapCache() {
+  Hook<SyncStatus> syncStatus = Hook(SyncStatus.DOWNLOADED);
+
+  ImapCacheService? _cacheServiceInstance;
+  ImapCacheService getImapCache() {
     if (_cacheServiceInstance == null) throw NotLoginError();
     return _cacheServiceInstance!;
   }
 
-  static late Unsubscribe unsubscribeLog;
-  static late UnsubscribeCollect syncStatusSubscriptionCollect;
+  late Unsubscribe unsubscribeLog;
+  late UnsubscribeCollect syncStatusSubscriptionCollect;
 
-  static Future<ImapCacheService> connect({
+  Future<ImapCacheService> connect({
     required String userName,
     required String password,
     required String imapServerHost,
@@ -36,7 +35,7 @@ class CacheService {
   }) async {
     Logger.info('Connect to IMAP.');
     final directory = await getApplicationDocumentsDirectory();
-    int syncIntervalSeconds = GeneralService.syncIntervalHook.value;
+    int syncIntervalSeconds = _globalService.generalService.syncIntervalHook.value;
     final config = ConnectConfig(
       userName: userName,
       password: password,
@@ -49,29 +48,28 @@ class CacheService {
       localCacheDirectory: directory.path,
     );
     ImapCacheService cacheServiceInstance = await ImapCache().connectToServer(config);
-    CacheService._cacheServiceInstance = cacheServiceInstance;
+    _cacheServiceInstance = cacheServiceInstance;
 
     ///  initialized data
     final imapCacheInstance = getImapCache();
     await Future.wait([
-      DirectoryService.init(),
-      ChapterService.init(),
+      _globalService.directoryService.init(),
+      _globalService.chapterService.init(),
     ]);
-    isConnectHook.set(true);
-    final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => LogService.push(loggerItem));
+    final unsubscribe = imapCacheInstance.subscribeLog((loggerItem) => _globalService.logService.push(loggerItem));
     final afterSyncUnsubscribe = imapCacheInstance.afterSync((duration) {
-      GeneralService.lastSyncTimeHook.set(DateTime.now());
-      GeneralService.setSyncState(false);
+      _globalService.generalService.lastSyncTimeHook.set(DateTime.now());
+      _globalService.generalService.setSyncState(false);
     });
     final imapCacheInstanceUnsubscribe = imapCacheInstance.beforeSync((loggerItem) {
-      GeneralService.setSyncState(true);
+      _globalService.generalService.setSyncState(true);
     });
 
     unsubscribeLog = Unsubscribe(() {
       unsubscribe.unsubscribe();
       afterSyncUnsubscribe.unsubscribe();
       imapCacheInstanceUnsubscribe.unsubscribe();
-      GeneralService.setSyncState(false);
+      _globalService.generalService.setSyncState(false);
       return true;
     });
 
@@ -85,11 +83,11 @@ class CacheService {
     return imapCacheInstance;
   }
 
-  static Future<void> disconnect() async {
+  Future<void> disconnect() async {
     unsubscribeLog.unsubscribe();
     syncStatusSubscriptionCollect.unsubscribe();
     await getImapCache().disconnect();
-    ChapterService.distroy();
-    DirectoryService.distroy();
+    _globalService.chapterService.distroy();
+    _globalService.directoryService.distroy();
   }
 }

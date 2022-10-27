@@ -1,13 +1,17 @@
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class LogService {
-  static Hook<List<LoggerItem>> logHook = Hook([]);
-  static int maxLogLength = 0;
-  static int _calculationLogIndex = 0;
-  static int limit = 1000;
+  Hook<List<LoggerItem>> logHook = Hook([]);
+  int maxLogLength = 0;
+  int _calculationLogIndex = 0;
+  int limit = 1000;
+  final GlobalService _globalService;
 
-  static void push(LoggerItem loggerItem) {
+  LogService({required GlobalService globalService}) : _globalService = globalService;
+
+  void push(LoggerItem loggerItem) {
     logHook.setCallback((data) {
       data.add(loggerItem);
       return data;

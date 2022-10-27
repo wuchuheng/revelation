@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/float_buttons_section/button_section.dart';
-import 'package:revelation/service/float_tool_bar_service/float_tool_bar_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class FloatButtonSection extends StatefulWidget {
-  const FloatButtonSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const FloatButtonSection({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<FloatButtonSection> createState() => _FloatButtonsSectionState();
@@ -16,17 +17,20 @@ class FloatButtonSection extends StatefulWidget {
 class _FloatButtonsSectionState extends State<FloatButtonSection> {
   double buttonCount = 3;
   final unsubscribeCollect = UnsubscribeCollect([]);
-  bool isPreview = FloatingToolBarService.isPreviewHook.value;
-  bool isSplittingPreview = FloatingToolBarService.isSplittingPreviewHook.value;
+  late bool isPreview;
+  late bool isSplittingPreview;
 
   @override
   void initState() {
+    isPreview = widget.globalService.floatingToolBarService.isPreviewHook.value;
+    isPreview = widget.globalService.floatingToolBarService.isPreviewHook.value;
+    isSplittingPreview = widget.globalService.floatingToolBarService.isSplittingPreviewHook.value;
     super.initState();
     unsubscribeCollect.addAll([
-      FloatingToolBarService.isPreviewHook.subscribe((data) {
+      widget.globalService.floatingToolBarService.isPreviewHook.subscribe((data) {
         if (data != isPreview) setState(() => isPreview = data);
       }),
-      FloatingToolBarService.isSplittingPreviewHook.subscribe((data) {
+      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((data) {
         if (data != isSplittingPreview) setState(() => isSplittingPreview = data);
       })
     ]);
@@ -47,12 +51,12 @@ class _FloatButtonsSectionState extends State<FloatButtonSection> {
       ButtonSection(
         isActive: isPreview,
         iconData: IconFont.icon_preview,
-        onTap: FloatingToolBarService.onTapPreview,
+        onTap: widget.globalService.floatingToolBarService.onTapPreview,
       ),
       ButtonSection(
         isActive: isSplittingPreview,
         iconData: IconFont.icon_split,
-        onTap: FloatingToolBarService.onTapSplittingPreview,
+        onTap: widget.globalService.floatingToolBarService.onTapSplittingPreview,
       ),
     ];
 

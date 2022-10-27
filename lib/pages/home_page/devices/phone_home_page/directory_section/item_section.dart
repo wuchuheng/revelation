@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/routes/route_path.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_ui/wuchuheng_ui.dart';
 
 import '../../../../../common/iconfont.dart';
@@ -26,29 +26,34 @@ class _ItemSectionState extends State<ItemSection> {
     return;
   }
 
-  onTapItem() {
-    DirectoryService.setActiveNode(widget.directory);
+  onTapItem(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+    globalService.directoryService.setActiveNode(widget.directory);
     pushChapterListPage(context);
   }
 
-  onDelete() {
-    DirectoryService.delete(widget.directory.id.toString());
+  onDelete(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+    globalService.directoryService.delete(widget.directory.id.toString());
   }
 
-  onRename(String newName) {
-    DirectoryService.setChangeNodeHook(widget.directory);
-    DirectoryService.update(newName);
+  onRename(String newName, BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+    globalService.directoryService.setChangeNodeHook(widget.directory);
+    globalService.directoryService.update(newName);
   }
 
   void onCreateChapter(BuildContext context) async {
-    DirectoryService.setActiveNode(widget.directory);
-    await ChapterService.create();
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+    globalService.directoryService.setActiveNode(widget.directory);
+    await globalService.chapterService.create();
     pushChapterDetailPage(context);
   }
 
   void onCreateNode(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     onConfirmDialog(
-      initValue: DirectoryService.defaultTitle,
+      initValue: globalService.directoryService.defaultTitle,
       context: context,
       title: 'Create Node',
       validator: (String? value) {
@@ -58,8 +63,8 @@ class _ItemSectionState extends State<ItemSection> {
         return null;
       },
       onConfirm: (value) {
-        DirectoryService.setActiveNode(widget.directory);
-        DirectoryService.create(value);
+        globalService.directoryService.setActiveNode(widget.directory);
+        globalService.directoryService.create(value);
         if (!isOpen) setState(() => isOpen = true);
       },
     );
@@ -89,13 +94,18 @@ class _ItemSectionState extends State<ItemSection> {
                 }
                 return null;
               },
-              onConfirm: (value) => onRename(value),
+              onConfirm: (value) => onRename(value, context),
               context: context,
               title: 'Rename Node',
             );
             break;
           case deleteKey:
-            onDialog(context: context, title: 'Delete Node', describe: 'Are you sure?', onConfirm: onDelete);
+            onDialog(
+              context: context,
+              title: 'Delete Node',
+              describe: 'Are you sure?',
+              onConfirm: () => onDelete(context),
+            );
             break;
           case createChapterKey:
             onCreateChapter(context);
@@ -128,7 +138,7 @@ class _ItemSectionState extends State<ItemSection> {
             GestureDetector(
               onLongPress: () => showMenu(context),
               behavior: HitTestBehavior.opaque,
-              onTap: onTapItem,
+              onTap: () => onTapItem(context),
               child: SizedBox(
                 width: constraints.maxWidth - iconWrapperWidth,
                 child: Row(

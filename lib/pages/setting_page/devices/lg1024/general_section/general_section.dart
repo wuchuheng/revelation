@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/pages/setting_page/devices/lg1024/general_section/sync_state_section.dart';
 import 'package:revelation/pages/setting_page/devices/lg1024/user_section/item_section.dart';
-import 'package:revelation/service/general_service/general_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:revelation/utils/date_time_util.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 class GeneralSection extends StatefulWidget {
-  const GeneralSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  GeneralSection({Key? key, required BuildContext context})
+      : globalService = RepositoryProvider.of<GlobalService>(context),
+        super(key: key);
 
   @override
   State<GeneralSection> createState() => _GeneralSectionState();
@@ -16,19 +20,20 @@ class GeneralSection extends StatefulWidget {
 class _GeneralSectionState extends State<GeneralSection> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   TextEditingController controller = TextEditingController();
-  int newInterval = GeneralService.syncIntervalHook.value;
+  late int newInterval;
   final _formKey = GlobalKey<FormState>();
 
   onSubmit() async {
     if (_formKey.currentState!.validate()) {
-      await GeneralService.setSyncInterval(newInterval);
+      await widget.globalService.generalService.setSyncInterval(newInterval);
     }
   }
 
   @override
   void initState() {
+    newInterval = widget.globalService.generalService.syncIntervalHook.value;
     unsubscribeCollect = UnsubscribeCollect([
-      GeneralService.lastSyncTimeHook.subscribe((value) => setState(() {})),
+      widget.globalService.generalService.lastSyncTimeHook.subscribe((value) => setState(() {})),
     ]);
     super.initState();
   }
@@ -42,10 +47,10 @@ class _GeneralSectionState extends State<GeneralSection> {
   @override
   Widget build(BuildContext context) {
     String lastSyncTime = '';
-    if (GeneralService.lastSyncTimeHook.value != null) {
-      lastSyncTime = DateTimeUtil.formatDateTime(GeneralService.lastSyncTimeHook.value!);
+    if (widget.globalService.generalService.lastSyncTimeHook.value != null) {
+      lastSyncTime = DateTimeUtil.formatDateTime(widget.globalService.generalService.lastSyncTimeHook.value!);
     }
-    final String syncInterval = GeneralService.syncIntervalHook.value.toString();
+    final String syncInterval = widget.globalService.generalService.syncIntervalHook.value.toString();
 
     return Form(
       key: _formKey,
@@ -65,7 +70,7 @@ class _GeneralSectionState extends State<GeneralSection> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SyncStateSection(),
+                  SyncStateSection(globalService: widget.globalService),
                   Text(lastSyncTime),
                 ],
               ),

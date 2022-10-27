@@ -3,43 +3,45 @@ import 'dart:convert';
 
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
-import 'package:revelation/service/cache_service.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
 import 'package:revelation/service/directory_service/directory_service_util.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 
 class DirectoryService {
-  static Hook<DirectoryModel> activeNodeHook = Hook(DirectoryModel.getRootNodeInitData());
+  late GlobalService _globalService;
+  DirectoryService({required GlobalService globalService}) : _globalService = globalService;
+
+  Hook<DirectoryModel> activeNodeHook = Hook(DirectoryModel.getRootNodeInitData());
 
   /// The node  being modified.
-  static Hook<DirectoryModel?> changedNodeHook = Hook(null);
-  static Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
-  static Hook<List<DirectoryModel>> directoryHook = Hook([]);
-  static late Unsubscribe afterUnsubscription;
+  Hook<DirectoryModel?> changedNodeHook = Hook(null);
+  Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
+  Hook<List<DirectoryModel>> directoryHook = Hook([]);
+  late Unsubscribe afterUnsubscription;
 
-  static void distroy() {
+  void distroy() {
     afterUnsubscription.unsubscribe();
   }
 
-  static void setChangeNodeHook(DirectoryModel? value) => changedNodeHook.set(value);
+  void setChangeNodeHook(DirectoryModel? value) => changedNodeHook.set(value);
 
-  static Future<void> init() async {
+  Future<void> init() async {
     final rootNode = DirectoryDao().has(id: 0)!;
     activeNodeHook.set(rootNode);
     setActiveNode(rootNode);
     triggerUpdateDirectoryHook();
-    afterUnsubscription = CacheService.getImapCache().afterSet(callback: _afterSetSubscription);
+    afterUnsubscription = _globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscription);
   }
 
-  static void triggerUpdateDirectoryHook() {
+  void triggerUpdateDirectoryHook() {
     final directoryData = DirectoryDao().fetchAll();
     final directories = idMapTreeItemConvertToTree(directoryData);
     directoryHook.set(directories);
   }
 
   /// modify the directory_section tree when the local cache is modified.
-  static Future<void> _afterSetSubscription({
+  Future<void> _afterSetSubscription({
     required String value,
     required String key,
     required String hash,
@@ -54,7 +56,7 @@ class DirectoryService {
   }
 
   /// convert data  from map to  directory_section data.
-  static List<DirectoryModel> idMapTreeItemConvertToTree(List<DirectoryModel> directories) {
+  List<DirectoryModel> idMapTreeItemConvertToTree(List<DirectoryModel> directories) {
     Map<int, DirectoryModel> idMapTreeItem = {};
     List<DirectoryModel> result = [];
     for (final value in directories) {
@@ -71,10 +73,10 @@ class DirectoryService {
     return result;
   }
 
-  static String defaultTitle = 'New Folder';
+  String defaultTitle = 'New Folder';
 
   /// create new node for directory_section.
-  static create([String? title]) async {
+  create([String? title]) async {
     final now = DateTime.now();
     final int id = now.microsecondsSinceEpoch;
     int pid = activeNodeHook.value.id;
@@ -85,23 +87,23 @@ class DirectoryService {
       title: title ?? defaultTitle,
       children: [],
     );
-    await DirectoryServiceUtil.setLocalCache(newItem);
+    await DirectoryServiceUtil.setLocalCache(newItem, _globalService.cacheService);
     activeNodeHook.set(newItem);
     changedNodeHook.set(newItem);
   }
 
   /// delete the node from the directory_section.
-  static delete(String id) async {
+  delete(String id) async {
     final directory = DirectoryDao().has(id: int.parse(id))!;
     directory.deletedAt = DateTime.now();
-    await DirectoryServiceUtil.setLocalCache(directory);
+    await DirectoryServiceUtil.setLocalCache(directory, _globalService.cacheService);
   }
 
-  static Future<void> update(String nodeName) async {
+  Future<void> update(String nodeName) async {
     final id = changedNodeHook.value!.id;
     final directory = DirectoryDao().has(id: id)!;
     directory.title = nodeName;
-    await DirectoryServiceUtil.setLocalCache(directory);
+    await DirectoryServiceUtil.setLocalCache(directory, _globalService.cacheService);
     if (activeNodeHook.value.id == id) {
       activeNodeHook.setCallback((data) {
         data.title = nodeName;
@@ -110,8 +112,8 @@ class DirectoryService {
     }
   }
 
-  static void setActiveNode(DirectoryModel node) {
-    DirectoryService.activeNodeHook.set(node);
-    ChapterService.triggerUpdateChapterListHook();
+  void setActiveNode(DirectoryModel node) {
+    activeNodeHook.set(node);
+    _globalService.chapterService.triggerUpdateChapterListHook();
   }
 }

@@ -2,9 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/model/user_model/user_model.dart';
 
+import '../../api/cache_service.dart';
 import '../../dao/sqlite_dao.dart';
 import '../../dao/user_dao/user_dao.dart';
-import '../../service/cache_service.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -20,7 +20,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       case AuthenticationStatus.authenticated:
         final user = event.user;
         try {
-          await CacheService.connect(
+          _cacheService.connect(
             userName: user.userName,
             password: user.password,
             imapServerHost: user.host,
@@ -40,7 +40,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   Future<void> _onAuthenticationLogoutRequested(
       AuthenticationLogoutRequested event, Emitter<AuthenticationState> emit) async {
-    await CacheService.disconnect();
+    await _cacheService.disconnect();
     emit(const AuthenticationState.unauthenticated());
   }
 
@@ -54,7 +54,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       return;
     }
     try {
-      await CacheService.connect(
+      await _cacheService.connect(
         userName: user.userName,
         password: user.password,
         imapServerHost: user.host,
@@ -67,7 +67,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     }
   }
 
-  AuthenticationBloc() : super(const AuthenticationState.unknown()) {
+  final CacheService _cacheService;
+
+  AuthenticationBloc({required CacheService cacheService})
+      : _cacheService = cacheService,
+        super(const AuthenticationState.unknown()) {
     on<AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
     on<AuthenticationLogoutRequested>(_onAuthenticationLogoutRequested);
     on<AuthenticationAutoLoginRequested>(_onAuthenticationAutoLoginRequested);

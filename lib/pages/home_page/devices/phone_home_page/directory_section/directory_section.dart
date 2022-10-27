@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import 'item_section.dart';
 
 class DirectorySection extends StatefulWidget {
-  const DirectorySection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  const DirectorySection({Key? key, required this.globalService}) : super(key: key);
 
   @override
   State<DirectorySection> createState() => _DirectorySectionState();
@@ -16,7 +17,9 @@ class _DirectorySectionState extends State<DirectorySection> {
 
   @override
   void initState() {
-    unsubscribeCollect = UnsubscribeCollect([DirectoryService.directoryHook.subscribe((value) => setState(() {}))]);
+    unsubscribeCollect = UnsubscribeCollect([
+      widget.globalService.directoryService.directoryHook.subscribe((value) => setState(() {})),
+    ]);
     super.initState();
   }
 
@@ -28,7 +31,7 @@ class _DirectorySectionState extends State<DirectorySection> {
 
   @override
   Widget build(BuildContext context) {
-    final directory = DirectoryService.directoryHook.value;
+    final directory = widget.globalService.directoryService.directoryHook.value;
     print(directory);
 
     return Container(

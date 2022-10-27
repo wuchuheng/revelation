@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:revelation/service/global_service.dart';
 
 import '../../service/device_service/device_service.dart';
 import 'devices/lg1024/lg1024.dart';
@@ -11,11 +13,13 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+
     switch (DeviceService.deviceHook.value) {
       case DeviceType.phone:
-        return const PhoneSettingPage();
+        return PhoneSettingPage(globalService: globalService);
       case DeviceType.windows:
-        return const LG1024SettingPage();
+        return LG1024SettingPage(globalService: globalService);
     }
   }
 }

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/model/user_model/user_model.dart';
-import 'package:revelation/service/user_service/user_service.dart';
+import 'package:revelation/service/global_service.dart';
 
 import 'item_section.dart';
 
 class UserSection extends StatefulWidget {
-  const UserSection({Key? key}) : super(key: key);
+  final GlobalService globalService;
+  UserSection(BuildContext context, {Key? key})
+      : globalService = RepositoryProvider.of<GlobalService>(context),
+        super(key: key);
 
   @override
   State<UserSection> createState() => _UserSectionState();
@@ -16,7 +20,7 @@ class _UserSectionState extends State<UserSection> {
 
   @override
   void initState() {
-    userInfo = UserService.getUserInfo();
+    userInfo = widget.globalService.userService.getUserInfo();
     super.initState();
   }
 
@@ -48,7 +52,7 @@ class _UserSectionState extends State<UserSection> {
               height: 35,
               child: ElevatedButton(
                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                onPressed: () => UserService.disconnect(context),
+                onPressed: () => widget.globalService.userService.disconnect(context),
                 child: const Text('Disconnect'),
               ),
             )

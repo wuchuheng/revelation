@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:revelation/service/user_service/user_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../form_section/form_section.dart';
@@ -40,6 +41,7 @@ class _Lg1024LoginPageState extends State<Lg1024LoginPage> {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget LoginPage', symbol: 'build');
+    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -56,7 +58,7 @@ class _Lg1024LoginPageState extends State<Lg1024LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      FormSection(onSubmit: (account) => UserService.onConnect(account, context)),
+                      FormSection(onSubmit: (account) => globalService.userService.onConnect(account, context)),
                     ],
                   ),
                 ),

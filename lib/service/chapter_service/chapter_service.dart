@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
-import 'package:revelation/service/cache_service.dart';
 import 'package:revelation/service/chapter_service/chapter_service_util.dart';
-import 'package:revelation/service/directory_service/directory_service.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
@@ -12,34 +10,39 @@ import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/chapter_model.dart';
+import '../global_service.dart';
 
 class ChapterService {
-  static Hook<List<ChapterModel>> chapterListHook = Hook([]);
-  static Hook<ChapterModel?> editChapterHook = Hook(null);
-  static SubjectHook<void> onAnimationToTopSubject = SubjectHook();
-  static late Unsubscribe afterSetHandle;
+  final GlobalService _globalService;
 
-  static distroy() => afterSetHandle.unsubscribe();
+  ChapterService({required GlobalService globalService}) : _globalService = globalService;
 
-  static Future<void> init() async {
+  Hook<List<ChapterModel>> chapterListHook = Hook([]);
+  Hook<ChapterModel?> editChapterHook = Hook(null);
+  SubjectHook<void> onAnimationToTopSubject = SubjectHook();
+  late Unsubscribe afterSetHandle;
+
+  distroy() => afterSetHandle.unsubscribe();
+
+  Future<void> init() async {
     chapterListHook.set(ChapterDao().fetchAll());
-    afterSetHandle = CacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
+    afterSetHandle = _globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
   }
 
-  static Future<void> _afterSetSubscribe({
+  Future<void> _afterSetSubscribe({
     required String key,
     required String value,
     required String hash,
     required From from,
   }) async {
-    if (ChapterServiceUtil.isChapterByCacheKey(key)) {
+    if (ChapterServiceUtil().isChapterByCacheKey(key)) {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
       triggerUpdateChapterListHook();
       if (oldData == null || chapter.deletedAt != null) {
-        DirectoryService.triggerUpdateDirectoryHook();
+        _globalService.directoryService.triggerUpdateDirectoryHook();
       }
       Logger.error("Value: " + chapter.title);
 
@@ -55,8 +58,8 @@ class ChapterService {
     }
   }
 
-  static Future<void> create() async {
-    final directoryId = DirectoryService.activeNodeHook.value.id;
+  Future<void> create() async {
+    final directoryId = _globalService.directoryService.activeNodeHook.value.id;
     final id = DateTime.now().microsecondsSinceEpoch;
     ChapterModel chapter = ChapterModel(
       title: 'New Note',
@@ -74,76 +77,83 @@ createdAt: ${DateTime.now().toString()}
 ''',
       updatedAt: DateTime.now(),
     );
-    await CacheService.getImapCache().set(
-      key: ChapterServiceUtil.getCacheKeyById(chapter.id),
-      value: jsonEncode(chapter),
-    );
+    await _globalService.cacheService.getImapCache().set(
+          key: ChapterServiceUtil().getCacheKeyById(chapter.id),
+          value: jsonEncode(chapter),
+        );
     editChapterHook.set(chapter);
-    DirectoryService.triggerUpdateDirectoryHook();
+    _globalService.directoryService.triggerUpdateDirectoryHook();
     onAnimationToTopSubject.next(null);
   }
 
-  static Future<void> setActiveEditChapter(ChapterModel chapter) async => editChapterHook.set(chapter);
+  setActiveEditChapter(ChapterModel chapter) {
+    editChapterHook.set(chapter);
+  }
 
   /// Set the chapter currently being edited
-  static Future<void> setEditChapter(ChapterModel chapter) async {
+  Future<void> setEditChapter(ChapterModel chapter) async {
     editChapterHook.set(chapter);
-    await CacheService.getImapCache().set(
-      key: ChapterServiceUtil.getCacheKeyById(chapter.id),
-      value: jsonEncode(chapter),
-    );
+    await _globalService.cacheService.getImapCache().set(
+          key: ChapterServiceUtil().getCacheKeyById(chapter.id),
+          value: jsonEncode(chapter),
+        );
   }
 
-  static Future<void> delete(ChapterModel chapter) async {
+  Future<void> delete(ChapterModel chapter) async {
     chapter.deletedAt = DateTime.now();
-    await CacheService.getImapCache().set(
-      key: ChapterServiceUtil.getCacheKeyById(chapter.id),
-      value: jsonEncode(chapter),
-    );
+    await _globalService.cacheService.getImapCache().set(
+          key: ChapterServiceUtil().getCacheKeyById(chapter.id),
+          value: jsonEncode(chapter),
+        );
     triggerUpdateChapterListHook();
-    DirectoryService.triggerUpdateDirectoryHook();
+    _globalService.directoryService.triggerUpdateDirectoryHook();
   }
 
-  static void triggerUpdateChapterListHook() {
-    final nodeId = DirectoryService.activeNodeHook.value.id;
+  void triggerUpdateChapterListHook() {
+    final nodeId = _globalService.directoryService.activeNodeHook.value.id;
     final isRootNode = DirectoryModel.rootNodeId == nodeId;
     final chapters = isRootNode ? ChapterDao().fetchAll() : ChapterDao().fetchByDirectoryId(nodeId);
     setChapterList(chapters);
   }
 
-  static void setChapterList(List<ChapterModel> chapters) {
+  void setChapterList(List<ChapterModel> chapters) {
     chapterListHook.set(chapters);
-    final editChapter = ChapterService.editChapterHook.value;
-    final activeNode = DirectoryService.activeNodeHook.value;
+    final editChapter = _globalService.chapterService.editChapterHook.value;
+    final activeNode = _globalService.directoryService.activeNodeHook.value;
     if (editChapter != null) {
       if (activeNode.id == DirectoryModel.rootNodeId) return;
       if (activeNode.id == editChapter.id) return;
       if (chapters.isNotEmpty) {
         if (activeNode.id != DirectoryModel.rootNodeId && activeNode.id != editChapter.directoryId) {
-          ChapterService.editChapterHook.set(chapters[0]);
+          _globalService.chapterService.editChapterHook.set(chapters[0]);
         }
       } else {
-        ChapterService.editChapterHook.set(null);
+        _globalService.chapterService.editChapterHook.set(null);
       }
     } else {
       if (chapters.isNotEmpty) {
-        ChapterService.editChapterHook.set(chapters[0]);
+        _globalService.chapterService.editChapterHook.set(chapters[0]);
       }
     }
   }
 
-  static Function(ChapterModel value) onSave = Helper.debounce((ChapterModel newChapter) {
-    final chapter = ChapterService.editChapterHook.value;
-    if (chapter?.id == newChapter.id) {
-      chapter!.content = newChapter.content;
-      final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
-      final pregResult = regexp.firstMatch(chapter.content)?.group(0);
-      if (pregResult != null) {
-        var doc = loadYaml(pregResult) as Map;
-        chapter.title = doc['title'].toString() ?? '';
+  Function(ChapterModel value)? _debounce;
+  onSave(ChapterModel value) {
+    _debounce ??= Helper.debounce((ChapterModel newChapter) {
+      final chapter = _globalService.chapterService.editChapterHook.value;
+      if (chapter?.id == newChapter.id) {
+        chapter!.content = newChapter.content;
+        final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
+        final pregResult = regexp.firstMatch(chapter.content)?.group(0);
+        if (pregResult != null) {
+          var doc = loadYaml(pregResult) as Map;
+          chapter.title = doc['title'].toString() ?? '';
+        }
+        chapter.updatedAt = DateTime.now();
+        _globalService.chapterService.setEditChapter(chapter);
       }
-      chapter.updatedAt = DateTime.now();
-      ChapterService.setEditChapter(chapter);
-    }
-  }, 1000);
+    }, 1000);
+
+    _debounce!(value);
+  }
 }

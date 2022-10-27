@@ -12,7 +12,7 @@ pop(BuildContext context) => Navigator.of(context).pop();
 pushHomePage(BuildContext context) => Navigator.of(context).pushAndRemoveUntil(HomePage.route(), (route) => false);
 pushLoginPage(BuildContext context) => Navigator.of(context).pushAndRemoveUntil(LoginPage.route(), (route) => false);
 pushSettingPage(BuildContext context) => Navigator.of(context).push(SettingPage.route());
-pushChapterListPage(BuildContext context) => Navigator.of(context).push(ChapterListPage.route());
+pushChapterListPage(BuildContext context) => Navigator.of(context).push(ChapterListPage.route(context));
 pushChapterDetailPage(BuildContext context) => Navigator.of(context).push(ChapterDetailPage.route());
 
 final Map<String, WidgetBuilder> routes = {

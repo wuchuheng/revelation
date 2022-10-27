@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/item_section/node_section/title_section.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../../../../config/config.dart';
-import '../../../../../../../service/directory_service/directory_service.dart';
 import 'count_section.dart';
 import 'direct_icon_section.dart';
 import 'folder_icon_section.dart';
@@ -46,7 +47,7 @@ class NodeSectionState extends StatelessWidget {
   Widget build(BuildContext context) {
     Logger.info('Build widget NodeSectionState', symbol: 'build');
     double padding = (8 * level).toDouble();
-    final activeTreeItem = DirectoryService.activeNodeHook.value;
+    final activeTreeItem = RepositoryProvider.of<GlobalService>(context).directoryService.activeNodeHook.value;
 
     final child = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

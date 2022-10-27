@@ -8,16 +8,15 @@ import 'package:flutter/services.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/model/chapter_model/chapter_model.dart';
-import 'package:revelation/service/chapter_service/chapter_service.dart';
+import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
-
-import '../../../../../service/directory_service/directory_service.dart';
 
 class ItemSection extends StatefulWidget {
   final bool isFirst;
   final ChapterModel chapter;
-  const ItemSection({super.key, required this.isFirst, required this.chapter});
+  final GlobalService globalService;
+  const ItemSection({super.key, required this.isFirst, required this.chapter, required this.globalService});
 
   @override
   State<ItemSection> createState() => _ItemSectionState();
@@ -33,18 +32,18 @@ class _ItemSectionState extends State<ItemSection> {
   void initState() {
     chapter = widget.chapter;
     super.initState();
-    isActive = ChapterService.editChapterHook.value?.id == widget.chapter.id;
+    isActive = widget.globalService.chapterService.editChapterHook.value?.id == widget.chapter.id;
     unsubscribeCollect.addAll([
-      ChapterService.editChapterHook.subscribe((data) {
-        final result = ChapterService.editChapterHook.value?.id == widget.chapter.id;
+      widget.globalService.chapterService.editChapterHook.subscribe((data) {
+        final result = widget.globalService.chapterService.editChapterHook.value?.id == widget.chapter.id;
         bool isChange = false;
         if (result != isActive) {
           isChange = true;
           isActive = result;
         }
-        if (widget.chapter.id == ChapterService.editChapterHook.value?.id) {
+        if (widget.chapter.id == widget.globalService.chapterService.editChapterHook.value?.id) {
           isChange = true;
-          chapter = ChapterService.editChapterHook.value!;
+          chapter = widget.globalService.chapterService.editChapterHook.value!;
         }
         if (isChange) setState(() {});
       }),
@@ -77,7 +76,7 @@ class _ItemSectionState extends State<ItemSection> {
           ),
           TextButton(
             onPressed: () async {
-              await ChapterService.delete(widget.chapter);
+              await widget.globalService.chapterService.delete(widget.chapter);
               Navigator.pop(context, 'OK');
             },
             child: const Text('Delete'),
@@ -110,7 +109,7 @@ class _ItemSectionState extends State<ItemSection> {
     if (_openContext) {
       _showContext();
       _openContext = false;
-      DirectoryService.pointerNodeHook.set(null);
+      widget.globalService.directoryService.pointerNodeHook.set(null);
     }
   }
 
@@ -134,7 +133,7 @@ class _ItemSectionState extends State<ItemSection> {
       onPointerDown: handlePointerDown,
       onPointerUp: handlePointerUp,
       child: GestureDetector(
-        onTap: () => ChapterService.setActiveEditChapter(chapter),
+        onTap: () => widget.globalService.chapterService.setActiveEditChapter(chapter),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
