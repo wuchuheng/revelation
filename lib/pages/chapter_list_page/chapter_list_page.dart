@@ -48,7 +48,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
     final chapters = widget.globalService.chapterService.chapterListHook.value;
     final title = '${widget.globalService.directoryService.activeNodeHook.value.title}(${chapters.length})';
 
-    return PhoneBodyContainer(
+    final child = PhoneBodyContainer(
       child: PhoneLargeTitleLayoutContainer(
         leading: IconButton(
           onPressed: () => pop(context),
@@ -73,5 +73,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
         ],
       ),
     );
+
+    return Scaffold(body: child);
   }
 }
