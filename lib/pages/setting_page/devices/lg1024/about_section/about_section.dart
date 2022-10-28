@@ -22,7 +22,7 @@ class AboutSection extends StatelessWidget {
           Config.appName,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         )),
-        container(const Text('Version 1.2.2')),
+        container(const Text('Version 1.2.5')),
         Padding(
           padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Text(
