@@ -5,6 +5,7 @@ import '../../routes/route_path.dart';
 
 class PhoneScaffoldLayout extends StatelessWidget {
   final PreferredSizeWidget? appBar;
+  final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
   final Widget body;
   const PhoneScaffoldLayout({
@@ -12,6 +13,7 @@ class PhoneScaffoldLayout extends StatelessWidget {
     required this.body,
     this.bottomNavigationBar,
     this.appBar,
+    this.floatingActionButton,
   }) : super(key: key);
 
   void onTapSetting(BuildContext context) {
@@ -49,6 +51,7 @@ class PhoneScaffoldLayout extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: floatingActionButton,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revelation/pages/setting_page/devices/widgets/float_buttons_section.dart';
 import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
@@ -37,6 +38,7 @@ class _LG1024SettingPageState extends State<LG1024SettingPage> {
         activeIndex: widget.globalService.settingService.activeIndexHook.value,
         onChange: (index) => widget.globalService.settingService.setActiveIndex(index),
       ),
+      floatingActionButton: FloatButtonsSection(globalService: widget.globalService),
     );
   }
 }

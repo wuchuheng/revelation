@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/layout/phone_scaffold/phone_scaffold.dart';
+import 'package:revelation/pages/setting_page/devices/widgets/float_buttons_section.dart';
 import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
@@ -42,9 +43,7 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
     final item = activeItem(context).body;
 
     return PhoneScaffoldLayout(
-      appBar: AppBar(
-        title: Text('Setting-${activeItem(context).text}'),
-      ),
+      appBar: AppBar(title: Text('Setting-${activeItem(context).text}')),
       body: item,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -81,6 +80,7 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
             ),
         ]),
       ),
+      floatingActionButton: FloatButtonsSection(globalService: widget.globalService),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:revelation/pages/setting_page/devices/lg1024/log_section/item_se
 import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
+import '../../../../../service/log_service/log_service.dart';
+
 class LogSection extends StatefulWidget {
   final GlobalService globalService;
 
@@ -24,23 +26,49 @@ class _LogSectionState extends State<LogSection> {
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
       widget.globalService.logService.logHook.subscribe((value) {
-        setState(() {
-          final bottomPosition = scrollController.position.maxScrollExtent;
-          final currentPosition = scrollController.position.pixels;
-          final duration = bottomPosition - currentPosition;
-          if (duration < 100 && duration > 0) {
-            scrollController.animateTo(
-              bottomPosition,
-              duration: Duration(
-                milliseconds: duration ~/ 20,
-              ),
-              curve: Curves.linear,
-            );
-          }
-        });
+        double bottomPosition = scrollController.position.maxScrollExtent;
+        double currentPosition = scrollController.position.pixels;
+        final duration = bottomPosition - currentPosition;
+        if (duration < 100 && duration > 0) {
+          toBottom();
+          currentPosition = bottomPosition;
+        }
+        setState(() {});
+      }),
+      widget.globalService.logService.currentPositionHook.subscribe((value) {
+        switch (value) {
+          case CurrentPosition.top:
+            toTop();
+            break;
+          case CurrentPosition.bottom:
+            toBottom();
+            break;
+          case CurrentPosition.unknown:
+            break;
+        }
       }),
     ]);
     super.initState();
+  }
+
+  toBottom() {
+    double bottomPosition = scrollController.position.maxScrollExtent;
+    double currentPosition = scrollController.position.pixels;
+    final duration = bottomPosition - currentPosition;
+    scrollController.animateTo(
+      bottomPosition,
+      duration: Duration(milliseconds: duration ~/ 20),
+      curve: Curves.linear,
+    );
+  }
+
+  toTop() {
+    double currentPosition = scrollController.position.pixels;
+    scrollController.animateTo(
+      0,
+      duration: Duration(milliseconds: currentPosition ~/ 20),
+      curve: Curves.linear,
+    );
   }
 
   @override

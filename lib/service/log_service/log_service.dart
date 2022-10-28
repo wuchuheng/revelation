@@ -2,12 +2,16 @@ import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+enum CurrentPosition { top, bottom, unknown }
+
 class LogService {
+  final GlobalService _globalService;
+
   Hook<List<LoggerItem>> logHook = Hook([]);
   int maxLogLength = 0;
   int _calculationLogIndex = 0;
   int limit = 1000;
-  final GlobalService _globalService;
+  Hook<int> activeIndexHook = Hook(0);
 
   LogService({required GlobalService globalService}) : _globalService = globalService;
 
@@ -34,4 +38,8 @@ class LogService {
       _calculationLogIndex--;
     }
   }
+
+  Hook<CurrentPosition> currentPositionHook = Hook(CurrentPosition.unknown);
+
+  setCurrentPosition(CurrentPosition value) => currentPositionHook.set(value);
 }
