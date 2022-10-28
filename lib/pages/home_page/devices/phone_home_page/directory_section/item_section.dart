@@ -128,8 +128,9 @@ class _ItemSectionState extends State<ItemSection> {
       child: Icon(Icons.arrow_back_ios, size: 19, color: Config.iconColor),
     );
     const iconWrapperWidth = 43.0;
+    const double height = 43;
     final item = Container(
-      height: 43,
+      height: height,
       padding: EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
       child: LayoutBuilder(builder: (context, constraints) {
         return Row(
@@ -140,6 +141,7 @@ class _ItemSectionState extends State<ItemSection> {
               behavior: HitTestBehavior.opaque,
               onTap: () => onTapItem(context),
               child: SizedBox(
+                height: height,
                 width: constraints.maxWidth - iconWrapperWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
