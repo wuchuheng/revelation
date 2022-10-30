@@ -102,9 +102,12 @@ class CacheService {
     isStartConnectListener = false;
   }
 
+  Timer? connectListenerTimer;
+
   /// 连接监听
   void connectListener() {
-    Timer.periodic(const Duration(seconds: 10), (timer) async {
+    connectListenerTimer?.cancel();
+    connectListenerTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
       if (!isStartConnectListener) {
         timer.cancel();
         return;
@@ -114,11 +117,15 @@ class CacheService {
         Logger.error('Try to connect.');
         getImapCache().disconnect();
         await Future.delayed(const Duration(seconds: 1));
-        if (isStartConnectListener) {
-          timer.cancel();
-          return;
-        }
-        await getImapCache().connectToServer(config);
+        connectListenerTimer?.cancel();
+        lastSyncAtHook.set(DateTime.now());
+        await connect(
+          userName: config.userName,
+          password: config.password,
+          imapServerHost: config.imapServerHost,
+          imapServerPort: config.imapServerPort,
+          isImapServerSecure: config.isImapServerSecure,
+        );
       }
       Logger.info('ConnectListener is running.');
       Logger.info('Last sync At: ${lastSyncAtHook.value.toString()}');
