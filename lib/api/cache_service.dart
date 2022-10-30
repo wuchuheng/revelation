@@ -108,8 +108,9 @@ class CacheService {
   /// 连接监听并尝试断网重连
   void connectListener() {
     connectListenerTimer?.cancel();
-    connectListenerTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-      if (lastSyncAtHook.value.microsecondsSinceEpoch + (config.syncIntervalSeconds + 20) * 1000000 <
+    int intervalSeconds = config.syncIntervalSeconds * 2;
+    connectListenerTimer = Timer.periodic(Duration(seconds: intervalSeconds), (timer) async {
+      if (lastSyncAtHook.value.microsecondsSinceEpoch + intervalSeconds * 1000000 <
           DateTime.now().microsecondsSinceEpoch) {
         Logger.error('Try to connect.');
         getImapCache().disconnect();
