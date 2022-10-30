@@ -33,7 +33,7 @@ class _GeneralSectionState extends State<GeneralSection> {
   void initState() {
     newInterval = widget.globalService.generalService.syncIntervalHook.value;
     unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.generalService.lastSyncTimeHook.subscribe((value) => setState(() {})),
+      widget.globalService.generalService.lastSyncTimeHook.subscribe((value, _) => setState(() {})),
     ]);
     super.initState();
   }

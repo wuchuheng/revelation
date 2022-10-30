@@ -25,7 +25,7 @@ class _EditSectionState extends State<EditSection> {
   void initState() {
     chapter = widget.globalService.chapterService.editChapterHook.value;
     unsubscribeCollect.addAll([
-      widget.globalService.chapterService.editChapterHook.subscribe((data) {
+      widget.globalService.chapterService.editChapterHook.subscribe((data, _) {
         if (data?.id != chapter?.id) setState(() => chapter = data);
       }),
     ]);

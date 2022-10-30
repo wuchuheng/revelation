@@ -27,14 +27,15 @@ class _EditorSectionState extends State<EditorSection> {
     isSplittingPreview = widget.globalService.floatingToolBarService.isSplittingPreviewHook.value;
     content = widget.globalService.chapterService.editChapterHook.value?.content ?? '';
     unsubscribeCollect.addAll([
-      widget.globalService.chapterService.editChapterHook.subscribe((value) {
+      widget.globalService.chapterService.editChapterHook.subscribe((value, _) {
         content = value?.content ?? '';
         setState(() {});
       }),
-      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((value) {
+      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((value, _) {
         if (value != isSplittingPreview) setState(() => isSplittingPreview = value);
       }),
-      widget.globalService.floatingToolBarService.isPreviewHook.subscribe((value) => setState(() => isPreview = value))
+      widget.globalService.floatingToolBarService.isPreviewHook
+          .subscribe((value, _) => setState(() => isPreview = value))
     ]);
     super.initState();
   }

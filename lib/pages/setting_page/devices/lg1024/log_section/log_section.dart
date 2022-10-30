@@ -25,7 +25,7 @@ class _LogSectionState extends State<LogSection> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.logService.logHook.subscribe((value) {
+      widget.globalService.logService.logHook.subscribe((value, _) {
         double bottomPosition = scrollController.position.maxScrollExtent;
         double currentPosition = scrollController.position.pixels;
         final duration = bottomPosition - currentPosition;
@@ -35,7 +35,7 @@ class _LogSectionState extends State<LogSection> {
         }
         setState(() {});
       }),
-      widget.globalService.logService.currentPositionHook.subscribe((value) {
+      widget.globalService.logService.currentPositionHook.subscribe((value, _) {
         switch (value) {
           case CurrentPosition.top:
             toTop();

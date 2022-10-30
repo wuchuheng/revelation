@@ -34,7 +34,7 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
       textEditingController.text = chapter!.content;
     }
     unsubscribeCollect = UnsubscribeCollect([
-      widget.chapterService.editChapterHook.subscribe((data) {
+      widget.chapterService.editChapterHook.subscribe((data, cancel) {
         if (chapter != null &&
             data?.content != chapter?.content &&
             data != null &&

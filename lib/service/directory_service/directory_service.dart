@@ -18,6 +18,7 @@ class DirectoryService {
   Hook<DirectoryModel?> changedNodeHook = Hook(null);
   Hook<DirectoryModel?> pointerNodeHook = Hook(null); // 右键点击的项
   Hook<List<DirectoryModel>> directoryHook = Hook([]);
+  SubjectHook<DirectoryModel> updatedDirectorySubject = SubjectHook(); //已更新的目录，用于更新章节目录
   late Unsubscribe afterUnsubscription;
 
   void distroy() {
@@ -51,6 +52,7 @@ class DirectoryService {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       DirectoryModel directory = DirectoryModel.fromJson(jsonMapData);
       DirectoryDao().save(directory);
+      updatedDirectorySubject.next(directory);
       triggerUpdateDirectoryHook();
     }
   }

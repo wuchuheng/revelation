@@ -27,10 +27,10 @@ class _FloatButtonsSectionState extends State<FloatButtonSection> {
     isSplittingPreview = widget.globalService.floatingToolBarService.isSplittingPreviewHook.value;
     super.initState();
     unsubscribeCollect.addAll([
-      widget.globalService.floatingToolBarService.isPreviewHook.subscribe((data) {
+      widget.globalService.floatingToolBarService.isPreviewHook.subscribe((data, _) {
         if (data != isPreview) setState(() => isPreview = data);
       }),
-      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((data) {
+      widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((data, _) {
         if (data != isSplittingPreview) setState(() => isSplittingPreview = data);
       })
     ]);

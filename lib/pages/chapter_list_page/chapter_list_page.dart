@@ -25,7 +25,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.chapterService.chapterListHook.subscribe((value) {
+      widget.globalService.chapterService.chapterListHook.subscribe((value, _) {
         setState(() {});
       }),
     ]);

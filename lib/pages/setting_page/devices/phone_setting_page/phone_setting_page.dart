@@ -24,7 +24,7 @@ class _PhoneSettingPageState extends State<PhoneSettingPage> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.settingService.activeIndexHook.subscribe((value) => setState(() {})),
+      widget.globalService.settingService.activeIndexHook.subscribe((value, _) => setState(() {})),
     ]);
     super.initState();
   }

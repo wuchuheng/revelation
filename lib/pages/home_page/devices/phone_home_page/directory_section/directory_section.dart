@@ -18,7 +18,7 @@ class _DirectorySectionState extends State<DirectorySection> {
   @override
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.directoryService.directoryHook.subscribe((value) => setState(() {})),
+      widget.globalService.directoryService.directoryHook.subscribe((value, _) => setState(() {})),
     ]);
     super.initState();
   }

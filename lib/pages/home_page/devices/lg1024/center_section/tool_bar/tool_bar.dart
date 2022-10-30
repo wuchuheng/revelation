@@ -41,13 +41,13 @@ class _ToolBarState extends State<ToolBar> {
     super.initState();
     syncTip = syncStatusToStr(widget.globalService.cacheService.syncStatus.value);
     unsubscribeCollect.addAll([
-      widget.globalService.cacheService.syncStatus.subscribe((value) {
+      widget.globalService.cacheService.syncStatus.subscribe((value, _) {
         if (syncTip != syncStatusToStr(value)) {
           syncTip = syncStatusToStr(value);
           setState(() {});
         }
       }),
-      widget.globalService.directoryService.activeNodeHook.subscribe((data) {
+      widget.globalService.directoryService.activeNodeHook.subscribe((data, _) {
         if (data.title != title) setState(() => title = data.title);
       }),
     ]);

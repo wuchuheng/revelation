@@ -50,17 +50,17 @@ class _ItemSectionState extends State<ItemSection> {
     ]);
   }
 
-  void changeNodeSubscription(DirectoryModel? data) {
+  void changeNodeSubscription(DirectoryModel? data, _) {
     final result = data?.id == widget.data.id;
     if (result != isChangeNode) setState(() => isChangeNode = result);
   }
 
-  void activeNodeSubscription(DirectoryModel? data) {
+  void activeNodeSubscription(DirectoryModel? data, _) {
     final newResult = data?.id == widget.data.id;
     if (newResult != isActive) setState(() => isActive = newResult);
   }
 
-  void pointerNodeSubscription(DirectoryModel? data) {
+  void pointerNodeSubscription(DirectoryModel? data, _) {
     final activeNode = widget.globalService.directoryService.activeNodeHook.value;
     final pointerTreeItem = widget.globalService.directoryService.pointerNodeHook.value;
     final newIsBorder = widget.data.id == pointerTreeItem?.id && widget.data.id != activeNode.id;

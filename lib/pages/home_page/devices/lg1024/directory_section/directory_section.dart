@@ -26,7 +26,7 @@ class _TreeSectionState extends State<TreeSection> {
     treeItems = widget.globalService.directoryService.directoryHook.value;
     super.initState();
     treeSubscriptHandler = widget.globalService.directoryService.directoryHook.subscribe(
-      (data) => setState(
+      (data, _) => setState(
         () => treeItems = data,
       ),
     );

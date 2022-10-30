@@ -34,7 +34,7 @@ class _ItemSectionState extends State<ItemSection> {
     super.initState();
     isActive = widget.globalService.chapterService.editChapterHook.value?.id == widget.chapter.id;
     unsubscribeCollect.addAll([
-      widget.globalService.chapterService.editChapterHook.subscribe((data) {
+      widget.globalService.chapterService.editChapterHook.subscribe((data, _) {
         final result = widget.globalService.chapterService.editChapterHook.value?.id == widget.chapter.id;
         bool isChange = false;
         if (result != isActive) {

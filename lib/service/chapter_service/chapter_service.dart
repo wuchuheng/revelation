@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
+import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
 import 'package:revelation/service/chapter_service/chapter_service_util.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
@@ -19,14 +20,28 @@ class ChapterService {
   Hook<List<ChapterModel>> chapterListHook = Hook([]);
   Hook<ChapterModel?> editChapterHook = Hook(null);
   SubjectHook<void> onAnimationToTopSubject = SubjectHook();
-  late Unsubscribe afterSetHandle;
+  List<Unsubscribe> unsubscribeCollectList = [];
 
-  distroy() => afterSetHandle.unsubscribe();
+  distroy() {
+    for (var element in unsubscribeCollectList) {
+      element.unsubscribe();
+    }
+    unsubscribeCollectList.clear();
+  }
 
   Future<void> init() async {
-    chapterListHook.set(ChapterDao().fetchAll());
-    afterSetHandle = _globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
+    final chapters = ChapterDao().fetchAll();
+    List<ChapterModel> fullDataChapters = chapters
+        .where(
+          (chapter) => DirectoryDao().has(id: chapter.directoryId) != null,
+        )
+        .toList();
+
+    chapterListHook.set(fullDataChapters);
+    unsubscribeCollectList.add(_globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscribe));
   }
+
+  Map<int, List<Function()>> directoryIdMapTask = {};
 
   Future<void> _afterSetSubscribe({
     required String key,
@@ -39,19 +54,33 @@ class ChapterService {
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       final oldData = ChapterDao().has(id: chapter.id);
       ChapterDao().save(chapter);
-      triggerUpdateChapterListHook();
-      if (oldData == null || chapter.deletedAt != null) {
-        _globalService.directoryService.triggerUpdateDirectoryHook();
+      void task() {
+        triggerUpdateChapterListHook();
+        if (oldData == null || chapter.deletedAt != null) {
+          _globalService.directoryService.triggerUpdateDirectoryHook();
+        }
+
+        if (chapter.id == editChapterHook.value?.id) {
+          if (chapter.deletedAt != null) {
+            editChapterHook.set(null);
+          } else if (oldData != null &&
+              chapter.content != oldData.content &&
+              oldData.updatedAt.millisecondsSinceEpoch < chapter.updatedAt.millisecondsSinceEpoch) {
+            editChapterHook.set(chapter);
+          }
+        }
       }
 
-      if (chapter.id == editChapterHook.value?.id) {
-        if (chapter.deletedAt != null) {
-          editChapterHook.set(null);
-        } else if (oldData != null &&
-            chapter.content != oldData.content &&
-            oldData.updatedAt.millisecondsSinceEpoch < chapter.updatedAt.millisecondsSinceEpoch) {
-          editChapterHook.set(chapter);
-        }
+      if (DirectoryDao().has(id: chapter.directoryId) == null) {
+        final unsubscribe = _globalService.directoryService.updatedDirectorySubject.subscribe((value, cancel) {
+          if (value.id == chapter.directoryId) {
+            task();
+            cancel();
+          }
+        });
+        unsubscribeCollectList.add(unsubscribe);
+      } else {
+        task();
       }
     }
   }
@@ -111,7 +140,9 @@ createdAt: ${DateTime.now().toString()}
     final nodeId = _globalService.directoryService.activeNodeHook.value.id;
     final isRootNode = DirectoryModel.rootNodeId == nodeId;
     final chapters = isRootNode ? ChapterDao().fetchAll() : ChapterDao().fetchByDirectoryId(nodeId);
-    setChapterList(chapters);
+    final fullDataChapters = chapters.where((chapter) => DirectoryDao().has(id: chapter.directoryId) != null).toList();
+
+    setChapterList(fullDataChapters);
   }
 
   void setChapterList(List<ChapterModel> chapters) {

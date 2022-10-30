@@ -26,10 +26,10 @@ class _CenterSectionState extends State<CenterSection> {
     super.initState();
     _scrollController = ScrollController();
     unsubscribeCollect.addAll([
-      widget.globalService.chapterService.chapterListHook.subscribe((data) {
+      widget.globalService.chapterService.chapterListHook.subscribe((data, _) {
         setState(() {});
       }),
-      widget.globalService.chapterService.onAnimationToTopSubject.subscribe((value) {
+      widget.globalService.chapterService.onAnimationToTopSubject.subscribe((value, _) {
         final pixels = _scrollController.position.pixels ~/ 3;
         final duration = Duration(milliseconds: pixels);
         _scrollController.animateTo(0, duration: duration, curve: Curves.linear);

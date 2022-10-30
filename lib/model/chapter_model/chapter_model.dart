@@ -42,7 +42,8 @@ class ChapterModel {
   }
 
   DirectoryModel get directory {
-    return DirectoryDao().has(id: directoryId)!;
+    final result = DirectoryDao().has(id: directoryId);
+    return result!;
   }
 
   factory ChapterModel.fromJson(Map<String, dynamic> json) {

@@ -17,7 +17,7 @@ class _SyncStateSectionState extends State<SyncStateSection> {
   void initState() {
     unsubscribeCollect = UnsubscribeCollect([
       widget.globalService.generalService.timerHook.subscribe(
-        (value) => setState(() {}),
+        (value, _) => setState(() {}),
       ),
     ]);
     super.initState();
