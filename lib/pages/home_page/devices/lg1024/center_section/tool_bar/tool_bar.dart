@@ -25,11 +25,11 @@ class _ToolBarState extends State<ToolBar> {
   String syncStatusToStr(SyncStatus syncStatus) {
     switch (syncStatus) {
       case SyncStatus.DOWNLOAD:
-        return '(下载中)';
+        return '(Downloading)';
       case SyncStatus.DOWNLOADED:
         return '';
       case SyncStatus.UPLOAD:
-        return '(上传中)';
+        return '(Uploading)';
       case SyncStatus.UPLOADED:
         return '';
     }

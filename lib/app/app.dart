@@ -31,7 +31,7 @@ class App extends StatelessWidget {
               ),
           ),
         ],
-        child: AppView(),
+        child: AppView(globalService: globalService),
       ),
     );
   }

@@ -25,6 +25,9 @@ class CacheService {
 
   late Unsubscribe unsubscribeLog;
   late UnsubscribeCollect syncStatusSubscriptionCollect;
+  bool isStartConnectListener = false;
+  Hook<DateTime> lastSyncAtHook = Hook(DateTime.now());
+  late ConnectConfig config;
 
   Future<ImapCacheService> connect({
     required String userName,
@@ -34,9 +37,10 @@ class CacheService {
     required bool isImapServerSecure,
   }) async {
     Logger.info('Connect to IMAP.');
+    isStartConnectListener = true;
     final directory = await getApplicationDocumentsDirectory();
     int syncIntervalSeconds = _globalService.generalService.syncIntervalHook.value;
-    final config = ConnectConfig(
+    config = ConnectConfig(
       userName: userName,
       password: password,
       imapServerHost: imapServerHost,
@@ -78,8 +82,14 @@ class CacheService {
       cacheServiceInstance.onDownload(() => syncStatus.set(SyncStatus.DOWNLOAD)),
       cacheServiceInstance.onUpdate(() => syncStatus.set(SyncStatus.UPLOAD)),
       cacheServiceInstance.onUpdated(() => syncStatus.set(SyncStatus.UPLOADED)),
+      cacheServiceInstance.onDownloaded(() => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.onDownload(() => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.onUpdate(() => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.onUpdated(() => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.beforeSync((Duration duration) => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.afterSync((Duration duration) => lastSyncAtHook.set(DateTime.now())),
     ]);
-
+    connectListener();
     return imapCacheInstance;
   }
 
@@ -89,5 +99,25 @@ class CacheService {
     await getImapCache().disconnect();
     _globalService.chapterService.distroy();
     _globalService.directoryService.distroy();
+    isStartConnectListener = false;
+  }
+
+  /// 连接监听
+  void connectListener() {
+    Timer.periodic(const Duration(seconds: 10), (timer) async {
+      if (!isStartConnectListener) {
+        timer.cancel();
+        return;
+      }
+      if (lastSyncAtHook.value.microsecondsSinceEpoch + (config.syncIntervalSeconds + 20) * 1000000 <
+          DateTime.now().microsecondsSinceEpoch) {
+        Logger.error('Try to connect.');
+        getImapCache().disconnect();
+        await Future.delayed(const Duration(seconds: 1));
+        await getImapCache().connectToServer(config);
+      }
+      Logger.info('ConnectListener is running.');
+      Logger.info('Last sync At: ${lastSyncAtHook.value.toString()}');
+    });
   }
 }
