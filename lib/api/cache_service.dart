@@ -114,7 +114,7 @@ class CacheService {
         Logger.error('Try to connect.');
         getImapCache().disconnect();
         await Future.delayed(const Duration(seconds: 1));
-        if (!isStartConnectListener) {
+        if (isStartConnectListener) {
           timer.cancel();
           return;
         }
