@@ -29,6 +29,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           );
           emit(const AuthenticationState.authenticated());
         } catch (_) {
+          _cacheService.disconnect();
           rethrow;
         }
         break;
@@ -63,6 +64,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       );
       emit(const AuthenticationState.authenticated());
     } catch (_) {
+      _cacheService.disconnect();
       emit(const AuthenticationState.unauthenticated());
     }
   }

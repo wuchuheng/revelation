@@ -25,6 +25,7 @@ class UserService {
         isImapServerSecure: accountInfo.tls,
       );
     } catch (e) {
+      _globalService.cacheService.disconnect();
       Logger.error(e.toString(), symbol: 'imap');
       final snackBar = SnackBar(
         content: const Text('Failed to connect to IMAP server.'),

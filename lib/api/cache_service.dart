@@ -100,18 +100,15 @@ class CacheService {
     _globalService.chapterService.distroy();
     _globalService.directoryService.distroy();
     isStartConnectListener = false;
+    connectListenerTimer?.cancel();
   }
 
   Timer? connectListenerTimer;
 
-  /// 连接监听
+  /// 连接监听并尝试断网重连
   void connectListener() {
     connectListenerTimer?.cancel();
     connectListenerTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-      if (!isStartConnectListener) {
-        timer.cancel();
-        return;
-      }
       if (lastSyncAtHook.value.microsecondsSinceEpoch + (config.syncIntervalSeconds + 20) * 1000000 <
           DateTime.now().microsecondsSinceEpoch) {
         Logger.error('Try to connect.');
@@ -119,13 +116,18 @@ class CacheService {
         await Future.delayed(const Duration(seconds: 1));
         connectListenerTimer?.cancel();
         lastSyncAtHook.set(DateTime.now());
-        await connect(
-          userName: config.userName,
-          password: config.password,
-          imapServerHost: config.imapServerHost,
-          imapServerPort: config.imapServerPort,
-          isImapServerSecure: config.isImapServerSecure,
-        );
+        try {
+          await connect(
+            userName: config.userName,
+            password: config.password,
+            imapServerHost: config.imapServerHost,
+            imapServerPort: config.imapServerPort,
+            isImapServerSecure: config.isImapServerSecure,
+          );
+        } catch (_) {
+          getImapCache().disconnect();
+          connectListener();
+        }
       }
       Logger.info('ConnectListener is running.');
       Logger.info('Last sync At: ${lastSyncAtHook.value.toString()}');
