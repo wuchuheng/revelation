@@ -1,5 +1,5 @@
 
-name: Flutter Deployment
+name: Dev
 
 on:
   push:

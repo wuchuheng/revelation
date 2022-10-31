@@ -1,5 +1,5 @@
 
-name: Flutter Release
+name: Release
 
 on:
   push:
