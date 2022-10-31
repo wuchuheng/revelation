@@ -1,6 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://badgen.net/badge/license/MIT/blue)
 <a href="https://github.com/wuchuheng/revelation/actions/workflows/release.yml"><img src="https://github.com/wuchuheng/revelation/actions/workflows/release.yml/badge.svg" alt="Build Status"></a>
 <a href="https://github.com/wuchuheng/revelation/actions/workflows/dev.yml"><img src="https://github.com/wuchuheng/revelation/actions/workflows/dev.yml/badge.svg" alt="Build Status"></a>
+<a href="https://github.com/wuchuheng/revelation"><img src="https://badgen.net/pub/flutter-platform/xml" alt="Build Status"></a>
 
 
 
