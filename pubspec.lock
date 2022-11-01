@@ -923,14 +923,14 @@ packages:
       name: wuchuheng_imap_cache
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.16"
+    version: "1.0.17"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
       name: wuchuheng_isolate_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.14"
+    version: "0.0.17"
   wuchuheng_local_cache:
     dependency: "direct main"
     description:
