@@ -916,7 +916,7 @@ packages:
       name: wuchuheng_hooks
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.7"
+    version: "0.0.8"
   wuchuheng_iconfont:
     dependency: "direct main"
     description:
@@ -930,14 +930,14 @@ packages:
       name: wuchuheng_imap_cache
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.18"
+    version: "1.0.20"
   wuchuheng_isolate_channel:
     dependency: transitive
     description:
       name: wuchuheng_isolate_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.18"
+    version: "0.0.19"
   wuchuheng_local_cache:
     dependency: "direct main"
     description:
