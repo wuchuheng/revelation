@@ -21,6 +21,7 @@ class ChapterService {
   Hook<ChapterModel?> editChapterHook = Hook(null);
   SubjectHook<void> onAnimationToTopSubject = SubjectHook();
   List<Unsubscribe> unsubscribeCollectList = [];
+  Hook<bool> isPreviewHook = Hook<bool>(false);
 
   distroy() {
     for (var element in unsubscribeCollectList) {
@@ -28,6 +29,8 @@ class ChapterService {
     }
     unsubscribeCollectList.clear();
   }
+
+  void setIsPreview(bool value) => isPreviewHook.set(value);
 
   Future<void> init() async {
     final chapters = ChapterDao().fetchAll();

@@ -6,6 +6,7 @@ import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/pages/chapter_detail_page/refresh_icon_section/refresh_icon_section.dart';
 import 'package:revelation/routes/route_path.dart';
 import 'package:revelation/service/global_service.dart';
+import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../config/config.dart';
 
@@ -19,13 +20,16 @@ class ChapterDetailPage extends StatefulWidget {
 }
 
 class _ChapterDetailPageState extends State<ChapterDetailPage> {
-  bool isPreview = true;
   void onPressed(BuildContext context) => pop(context);
 
   TextEditingController textEditingController = TextEditingController();
 
-  void onChangePreview() {
-    setState(() => isPreview = !isPreview);
+  UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
+
+  @override
+  void dispose() {
+    unsubscribeCollect.unsubscribe();
+    super.dispose();
   }
 
   void onBack(BuildContext context) => pop(context);
@@ -33,7 +37,8 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
   @override
   Widget build(BuildContext context) {
     final globalService = RepositoryProvider.of<GlobalService>(context);
-
+    final isPreview = globalService.chapterService.isPreviewHook.value;
+    unsubscribeCollect.add(globalService.chapterService.isPreviewHook.subscribe((_, __) => setState(() {})));
     final activeNodeTitle = globalService.directoryService.activeNodeHook.value.title;
     double toolBarHeight = 40 + MediaQuery.of(context).viewPadding.top;
     const double toolbarFontSize = 19;
@@ -108,7 +113,7 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                 child: !isPreview
                     ? const Icon(IconFont.icon_preview, color: Colors.grey, size: 38)
                     : const Icon(IconFont.icon_notes, color: Colors.grey, size: 30),
-                onPressed: () => onChangePreview(),
+                onPressed: () => globalService.chapterService.setIsPreview(!isPreview),
               ),
             ),
           ),

@@ -15,7 +15,7 @@ class ChapterItem extends StatelessWidget {
 
   void onTap(BuildContext context) {
     GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
-
+    globalService.chapterService.setIsPreview(true);
     globalService.chapterService.setEditChapter(chapter);
     pushChapterDetailPage(context);
   }

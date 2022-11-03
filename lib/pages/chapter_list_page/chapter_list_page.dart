@@ -39,6 +39,7 @@ class _ChapterListPageState extends State<ChapterListPage> {
   }
 
   void onCreate(BuildContext context) {
+    widget.globalService.chapterService.setIsPreview(false);
     widget.globalService.chapterService.create();
     pushChapterDetailPage(context);
   }
