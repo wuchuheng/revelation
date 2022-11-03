@@ -27,7 +27,7 @@ class GeneralService {
   }
 
   Future<void> setSyncInterval(int newInterval) async {
-    await _globalService.cacheService.getImapCache().setSyncInterval(newInterval);
+    await _globalService.cacheService.setSyncInterval(newInterval);
     syncIntervalHook.set(newInterval);
     setSyncState(syncStateHook.value);
   }

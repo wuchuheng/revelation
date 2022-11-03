@@ -28,6 +28,9 @@ class CacheService {
   bool isStartConnectListener = false;
   Hook<DateTime> lastSyncAtHook = Hook(DateTime.now());
   late ConnectConfig config;
+  late int syncInterval;
+
+  Future<void> setSyncInterval(int second) async => await getImapCache().setSyncInterval(second);
 
   Future<ImapCacheService> connect({
     required String userName,
@@ -108,8 +111,8 @@ class CacheService {
   /// 连接监听并尝试断网重连
   void connectListener() {
     connectListenerTimer?.cancel();
-    int intervalSeconds = config.syncIntervalSeconds * 2;
-    connectListenerTimer = Timer.periodic(Duration(seconds: intervalSeconds), (timer) async {
+    int intervalSeconds = _globalService.generalService.syncIntervalHook.value * 2;
+    connectListenerTimer = Timer(Duration(seconds: intervalSeconds), () async {
       if (lastSyncAtHook.value.microsecondsSinceEpoch + intervalSeconds * 1000000 <
           DateTime.now().microsecondsSinceEpoch) {
         Logger.error('Try to connect.');
@@ -127,9 +130,9 @@ class CacheService {
           );
         } catch (_) {
           getImapCache().disconnect();
-          connectListener();
         }
       }
+      connectListener();
       Logger.info('ConnectListener is running.');
       Logger.info('Last sync At: ${lastSyncAtHook.value.toString()}');
     });
