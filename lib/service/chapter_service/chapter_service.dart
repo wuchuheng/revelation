@@ -20,14 +20,11 @@ class ChapterService {
   Hook<List<ChapterModel>> chapterListHook = Hook([]);
   Hook<ChapterModel?> editChapterHook = Hook(null);
   SubjectHook<void> onAnimationToTopSubject = SubjectHook();
-  List<Unsubscribe> unsubscribeCollectList = [];
   Hook<bool> isPreviewHook = Hook<bool>(false);
+  late Unsubscribe unsubscribe;
 
   distroy() {
-    for (var element in unsubscribeCollectList) {
-      element.unsubscribe();
-    }
-    unsubscribeCollectList.clear();
+    unsubscribe.unsubscribe();
   }
 
   void setIsPreview(bool value) => isPreviewHook.set(value);
@@ -41,7 +38,7 @@ class ChapterService {
         .toList();
 
     chapterListHook.set(fullDataChapters);
-    unsubscribeCollectList.add(_globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscribe));
+    unsubscribe = _globalService.cacheService.getImapCache().afterSet(callback: _afterSetSubscribe);
   }
 
   Map<int, List<Function()>> directoryIdMapTask = {};
@@ -75,13 +72,12 @@ class ChapterService {
       }
 
       if (DirectoryDao().has(id: chapter.directoryId) == null) {
-        final unsubscribe = _globalService.directoryService.updatedDirectorySubject.subscribe((value, cancel) {
+        _globalService.directoryService.updatedDirectorySubject.subscribe((value, cancel) {
           if (value.id == chapter.directoryId) {
             task();
             cancel();
           }
         });
-        unsubscribeCollectList.add(unsubscribe);
       } else {
         task();
       }

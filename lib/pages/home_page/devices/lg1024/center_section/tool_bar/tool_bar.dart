@@ -37,8 +37,7 @@ class _ToolBarState extends State<ToolBar> {
 
   @override
   void initState() {
-    String title = widget.globalService.directoryService.activeNodeHook.value.title;
-    super.initState();
+    title = widget.globalService.directoryService.activeNodeHook.value.title;
     syncTip = syncStatusToStr(widget.globalService.cacheService.syncStatus.value);
     unsubscribeCollect.addAll([
       widget.globalService.cacheService.syncStatus.subscribe((value, _) {
@@ -48,9 +47,13 @@ class _ToolBarState extends State<ToolBar> {
         }
       }),
       widget.globalService.directoryService.activeNodeHook.subscribe((data, _) {
-        if (data.title != title) setState(() => title = data.title);
+        if (data.title != title) {
+          title = data.title;
+          setState(() {});
+        }
       }),
     ]);
+    super.initState();
   }
 
   @override
