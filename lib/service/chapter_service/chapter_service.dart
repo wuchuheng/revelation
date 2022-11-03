@@ -4,6 +4,7 @@ import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
 import 'package:revelation/service/chapter_service/chapter_service_util.dart';
+import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 import 'package:yaml/yaml.dart';
@@ -165,18 +166,23 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
     }
   }
 
+  Function(ChapterModel value)? _debounce;
   onSave(ChapterModel value) {
-    final chapter = _globalService.chapterService.editChapterHook.value;
-    if (chapter?.id == value.id) {
-      chapter!.content = value.content;
-      final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
-      final pregResult = regexp.firstMatch(chapter.content)?.group(0);
-      if (pregResult != null) {
-        var doc = loadYaml(pregResult) as Map;
-        chapter.title = doc['title'].toString() ?? '';
+    _debounce ??= Helper.debounce((ChapterModel value) {
+      final chapter = _globalService.chapterService.editChapterHook.value;
+      if (chapter?.id == value.id) {
+        chapter!.content = value.content;
+        final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
+        final pregResult = regexp.firstMatch(chapter.content)?.group(0);
+        if (pregResult != null) {
+          var doc = loadYaml(pregResult) as Map;
+          chapter.title = doc['title'].toString() ?? '';
+        }
+        chapter.updatedAt = DateTime.now();
+        _globalService.chapterService.setEditChapter(chapter);
       }
-      chapter.updatedAt = DateTime.now();
-      _globalService.chapterService.setEditChapter(chapter);
-    }
+    }, 500);
+
+    _debounce!(value);
   }
 }
