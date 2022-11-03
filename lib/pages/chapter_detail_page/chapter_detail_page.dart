@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:revelation/common/editor_section/editor_section.dart';
 import 'package:revelation/common/iconfont.dart';
+import 'package:revelation/pages/chapter_detail_page/refresh_icon_section/refresh_icon_section.dart';
 import 'package:revelation/routes/route_path.dart';
 import 'package:revelation/service/global_service.dart';
 
@@ -18,7 +19,7 @@ class ChapterDetailPage extends StatefulWidget {
 }
 
 class _ChapterDetailPageState extends State<ChapterDetailPage> {
-  bool isPreview = false;
+  bool isPreview = true;
   void onPressed(BuildContext context) => pop(context);
 
   TextEditingController textEditingController = TextEditingController();
@@ -49,6 +50,7 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
       );
     }
 
+    const double buttonSize = 42;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -73,7 +75,7 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
                     ],
                   ),
                 ),
-                IconButton(onPressed: onChangePreview, icon: const Icon(IconFont.icon_preview, size: toolbarFontSize))
+                RefreshIconSection(toolbarFontSize: toolbarFontSize, globalService: globalService),
               ],
             ),
           ),
@@ -90,6 +92,27 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
               ),
             ),
           ),
+        ],
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          SizedBox(
+            width: buttonSize,
+            height: buttonSize,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.white,
+                key: const Key('counterView_increment_floatingActionButton'),
+                child: !isPreview
+                    ? const Icon(IconFont.icon_preview, color: Colors.grey, size: 38)
+                    : const Icon(IconFont.icon_notes, color: Colors.grey, size: 30),
+                onPressed: () => onChangePreview(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
         ],
       ),
     );
