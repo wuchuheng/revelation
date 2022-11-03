@@ -9,6 +9,7 @@ import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
 import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/chapter_model.dart';
+import '../../utils/date_time_util.dart';
 import '../global_service.dart';
 
 class ChapterService {
@@ -96,7 +97,7 @@ class ChapterService {
       content: '''
 --- 
 title: New Note 
-createdAt: ${DateTime.now().toString()} 
+createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())} 
 
 --- 
 

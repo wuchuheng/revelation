@@ -61,7 +61,10 @@ class ChapterItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(chapter.title, style: const TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700)),
+              Text(
+                chapter.title == 'null' ? '(No Title)' : chapter.title,
+                style: const TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700),
+              ),
               Container(
                 margin: const EdgeInsets.only(top: spaceGap, bottom: spaceGap),
                 child: Text(
