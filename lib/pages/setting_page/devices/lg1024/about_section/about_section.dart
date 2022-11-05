@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:revelation/config/config.dart';
 
-class AboutSection extends StatelessWidget {
+class AboutSection extends StatefulWidget {
   const AboutSection({Key? key}) : super(key: key);
+
+  @override
+  State<AboutSection> createState() => _AboutSectionState();
+}
+
+class _AboutSectionState extends State<AboutSection> {
+  String version = '';
+
+  @override
+  void initState() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      version = packageInfo.version;
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +39,7 @@ class AboutSection extends StatelessWidget {
           Config.appName,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         )),
-        container(const Text('Version 1.2.5')),
+        container(Text('Version $version')),
         Padding(
           padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Text(
