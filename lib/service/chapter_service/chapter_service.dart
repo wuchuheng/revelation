@@ -120,10 +120,6 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
   /// Set the chapter currently being edited
   Future<void> setEditChapter(ChapterModel chapter) async {
     editChapterHook.set(chapter);
-    await _globalService.cacheService.getImapCache().set(
-          key: ChapterServiceUtil().getCacheKeyById(chapter.id),
-          value: jsonEncode(chapter),
-        );
   }
 
   Future<void> delete(ChapterModel chapter) async {
@@ -168,7 +164,7 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
 
   Function(ChapterModel value)? _debounce;
   onSave(ChapterModel value) {
-    _debounce ??= Helper.debounce((ChapterModel value) {
+    _debounce ??= Helper.debounce((ChapterModel value) async {
       final chapter = _globalService.chapterService.editChapterHook.value;
       if (chapter?.id == value.id) {
         chapter!.content = value.content;
@@ -180,6 +176,10 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
         }
         chapter.updatedAt = DateTime.now();
         _globalService.chapterService.setEditChapter(chapter);
+        await _globalService.cacheService.getImapCache().set(
+              key: ChapterServiceUtil().getCacheKeyById(chapter.id),
+              value: jsonEncode(chapter),
+            );
       }
     }, 500);
 

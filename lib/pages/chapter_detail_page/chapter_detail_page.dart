@@ -26,17 +26,25 @@ class _ChapterDetailPageState extends State<ChapterDetailPage> {
 
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
 
+
   @override
   void dispose() {
     unsubscribeCollect.unsubscribe();
+    unsubscribe?.unsubscribe();
     super.dispose();
   }
 
   void onBack(BuildContext context) => pop(context);
 
+  Unsubscribe? unsubscribe;
+
   @override
   Widget build(BuildContext context) {
     final globalService = RepositoryProvider.of<GlobalService>(context);
+    unsubscribe ??= globalService.chapterService.editChapterHook.subscribe((value, cancel) {
+      setState(() { });
+      });
+
     final isPreview = globalService.chapterService.isPreviewHook.value;
     unsubscribeCollect.add(globalService.chapterService.isPreviewHook.subscribe((_, __) => setState(() {})));
     final activeNodeTitle = globalService.directoryService.activeNodeHook.value.title;

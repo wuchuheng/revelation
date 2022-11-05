@@ -81,14 +81,22 @@ class CacheService {
     });
 
     syncStatusSubscriptionCollect = UnsubscribeCollect([
-      cacheServiceInstance.onDownloaded(() => syncStatus.set(SyncStatus.DOWNLOADED)),
-      cacheServiceInstance.onDownload(() => syncStatus.set(SyncStatus.DOWNLOAD)),
-      cacheServiceInstance.onUpdate(() => syncStatus.set(SyncStatus.UPLOAD)),
-      cacheServiceInstance.onUpdated(() => syncStatus.set(SyncStatus.UPLOADED)),
-      cacheServiceInstance.onDownloaded(() => lastSyncAtHook.set(DateTime.now())),
-      cacheServiceInstance.onDownload(() => lastSyncAtHook.set(DateTime.now())),
-      cacheServiceInstance.onUpdate(() => lastSyncAtHook.set(DateTime.now())),
-      cacheServiceInstance.onUpdated(() => lastSyncAtHook.set(DateTime.now())),
+      cacheServiceInstance.onDownloaded(() {
+        syncStatus.set(SyncStatus.DOWNLOADED);
+        lastSyncAtHook.set(DateTime.now());
+      }),
+      cacheServiceInstance.onDownload(() {
+        syncStatus.set(SyncStatus.DOWNLOAD);
+        lastSyncAtHook.set(DateTime.now());
+      }),
+      cacheServiceInstance.onUpdate(() {
+        syncStatus.set(SyncStatus.UPLOAD);
+        lastSyncAtHook.set(DateTime.now());
+      }),
+      cacheServiceInstance.onUpdated(() {
+        syncStatus.set(SyncStatus.UPLOADED);
+        lastSyncAtHook.set(DateTime.now());
+      }),
       cacheServiceInstance.beforeSync((Duration duration) => lastSyncAtHook.set(DateTime.now())),
       cacheServiceInstance.afterSync((Duration duration) => lastSyncAtHook.set(DateTime.now())),
     ]);
