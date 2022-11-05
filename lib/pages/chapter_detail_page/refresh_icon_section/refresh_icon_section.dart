@@ -33,18 +33,24 @@ class _RefreshIconSectionState extends State<RefreshIconSection> {
         });
       }
 
+      cancelTimer() {
+        if (timer != null) {
+          Timer(const Duration(seconds: 1), () => timer?.cancel());
+        }
+      }
+
       switch (widget._globalService.cacheService.syncStatus.value) {
         case SyncStatus.DOWNLOAD:
           animatedRotation();
           break;
         case SyncStatus.DOWNLOADED:
-          timer?.cancel();
+          cancelTimer();
           break;
         case SyncStatus.UPLOAD:
           animatedRotation();
           break;
         case SyncStatus.UPLOADED:
-          timer?.cancel();
+          cancelTimer();
           break;
       }
     });

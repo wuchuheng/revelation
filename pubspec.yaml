@@ -54,7 +54,7 @@ dependencies:
   wuchuheng_logger: ^1.0.5
   wuchuheng_hooks: ^0.0.7
   wuchuheng_env: ^1.0.4
-  wuchuheng_helper: ^0.0.2
+  wuchuheng_helper: ^0.0.3
   wuchuheng_ui: ^1.0.2
   sqlite3_flutter_libs: ^0.5.10
   flutter_bloc: ^8.1.1
