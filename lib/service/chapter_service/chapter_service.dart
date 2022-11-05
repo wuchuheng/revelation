@@ -164,7 +164,7 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
 
   Function(ChapterModel value)? _debounce;
   onSave(ChapterModel value) {
-    _debounce ??= Helper.debounce((ChapterModel value) async {
+    _debounce ??= debounce((ChapterModel value) async {
       final chapter = _globalService.chapterService.editChapterHook.value;
       if (chapter?.id == value.id) {
         chapter!.content = value.content;
