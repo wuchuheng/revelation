@@ -909,7 +909,7 @@ packages:
       name: wuchuheng_helper
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.2"
+    version: "0.0.3"
   wuchuheng_hooks:
     dependency: "direct main"
     description:
