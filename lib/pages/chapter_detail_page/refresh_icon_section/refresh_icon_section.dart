@@ -28,6 +28,7 @@ class _RefreshIconSectionState extends State<RefreshIconSection> {
     syncStatusSubscribe = widget._globalService.cacheService.syncStatus.subscribe((syncStatus, _) {
       animatedRotation() {
         timer?.cancel();
+        setState(() => turns += 1.0);
         timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           setState(() => turns += 1.0);
         });
