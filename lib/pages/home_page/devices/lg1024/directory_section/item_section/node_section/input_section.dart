@@ -5,12 +5,14 @@ import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 class InputSection extends StatelessWidget {
+  final double fontSize;
   final void Function(String? value) onFieldSubmitted;
   final String? initialValue;
   const InputSection({
     Key? key,
     required this.onFieldSubmitted,
     required this.initialValue,
+    required this.fontSize,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,7 @@ class InputSection extends StatelessWidget {
         autofocus: true,
         cursorColor: Colors.grey[700],
         maxLines: 1,
-        style: const TextStyle(fontSize: 10),
+        style: TextStyle(fontSize: fontSize),
         textAlignVertical: TextAlignVertical.center,
         decoration: const InputDecoration(
           filled: true,

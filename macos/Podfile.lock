@@ -4,6 +4,8 @@ PODS:
   - desktop_window (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
+  - package_info_plus (0.0.1):
+    - FlutterMacOS
   - path_provider_macos (0.0.1):
     - FlutterMacOS
   - sqlite3 (3.39.3):
@@ -26,6 +28,7 @@ DEPENDENCIES:
   - desktop_context_menu_macos (from `Flutter/ephemeral/.symlinks/plugins/desktop_context_menu_macos/macos`)
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - path_provider_macos (from `Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos`)
   - sqlite3_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/sqlite3_flutter_libs/macos`)
 
@@ -40,6 +43,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  package_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   path_provider_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_macos/macos
   sqlite3_flutter_libs:
@@ -49,6 +54,7 @@ SPEC CHECKSUMS:
   desktop_context_menu_macos: 75dc0a4697165c567eeb0e4cae511d1ecd5131fc
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
   FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
+  package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
   path_provider_macos: 3c0c3b4b0d4a76d2bf989a913c2de869c5641a19
   sqlite3: 50117e9e063a9ef2b865f7bdf2f2601e5d368e9a
   sqlite3_flutter_libs: cfe190df811dcc0a495dc7ab09d3cda5f92740d2

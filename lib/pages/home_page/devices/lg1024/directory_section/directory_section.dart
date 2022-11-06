@@ -38,25 +38,34 @@ class _TreeSectionState extends State<TreeSection> {
     treeSubscriptHandler.unsubscribe();
   }
 
+  void onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final newString = treeItems.removeAt(oldIndex);
+      treeItems.insert(newIndex, newString);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget TreeSection', symbol: 'build');
     GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
-    double LRMargin = 10;
+    const double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(
       height: MediaQuery.of(context).size.height - bottomBarHeight - Config.titleBarHeight,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (var treeItem in treeItems)
-              ItemSection(
-                key: ValueKey(treeItem.id),
-                data: treeItem,
-                globalService: globalService,
-              ),
-          ],
-        ),
+      child: ReorderableListView(
+        onReorder: onReorder,
+        children: [
+          for (var treeItem in treeItems)
+            ItemSection(
+              key: ValueKey(treeItem.id),
+              data: treeItem,
+              globalService: globalService,
+            ),
+        ],
       ),
     );
 

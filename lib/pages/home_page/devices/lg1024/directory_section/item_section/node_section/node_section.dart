@@ -48,6 +48,7 @@ class NodeSectionState extends StatelessWidget {
     Logger.info('Build widget NodeSectionState', symbol: 'build');
     double padding = (8 * level).toDouble();
     final activeTreeItem = RepositoryProvider.of<GlobalService>(context).directoryService.activeNodeHook.value;
+    const double fontSize = 17;
 
     final child = Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,13 +66,14 @@ class NodeSectionState extends StatelessWidget {
             FolderIconSection(isActive: isActive),
             isChangeNode
                 ? InputSection(
+                    fontSize: fontSize,
                     onFieldSubmitted: handleSaveNodeName,
                     initialValue: activeTreeItem.title,
                   )
-                : TitleSection(title: title, isActive: isActive)
+                : TitleSection(title: title, isActive: isActive, fontSize: fontSize)
           ],
         ),
-        CountSection(count: count, isActive: isActive),
+        CountSection(count: count, isActive: isActive, fontSize: fontSize),
       ],
     );
     return Listener(
