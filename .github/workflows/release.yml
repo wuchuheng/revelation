@@ -63,6 +63,12 @@ jobs:
         run: flutter build windows --release
       - name: Download sqlite3.dll
         run: (New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/tekartik/sqflite/master/sqflite_common_ffi/lib/src/windows/sqlite3.dll', "build/windows/runner/Release/sqlite3.dll")
+      - name: Copy VC redistributables to release directory for Windows
+        if: matrix.target == 'Windows'
+        run: |
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\msvcp140.dll') build\windows\runner\Release\
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140.dll') build\windows\runner\Release\
+          Copy-Item (vswhere -latest -find 'VC\Redist\MSVC\*\x64\*\vcruntime140_1.dll') build\windows\runner\Release\
       - name: Package Release
         uses: thedoctor0/zip-release@master
         with:
