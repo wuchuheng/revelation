@@ -12,11 +12,14 @@ class CountSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget CountSection', symbol: 'build');
-    return Text(
-      '$count',
-      style: TextStyle(
-        fontSize: fontSize,
-        color: Config.textGrey,
+    return SizedBox(
+      width: 50,
+      child: Text(
+        '$count',
+        style: TextStyle(
+          fontSize: fontSize,
+          color: Config.textGrey,
+        ),
       ),
     );
   }

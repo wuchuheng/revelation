@@ -101,7 +101,7 @@ class DirectoryService {
     await DirectoryServiceUtil.setLocalCache(directory, _globalService.cacheService);
   }
 
-  Future<void> update(String nodeName) async {
+  Future<void> updateName(String nodeName) async {
     final id = changedNodeHook.value!.id;
     final directory = DirectoryDao().has(id: id)!;
     directory.title = nodeName;
@@ -112,6 +112,19 @@ class DirectoryService {
         return data;
       });
     }
+  }
+
+  Future<void> updateMultiple(List<DirectoryModel> nodes) async {
+    int sortNum = 0;
+    for (var directory in nodes) {
+      if (directory.pid == 0) {
+        directory.sortNum = sortNum;
+        await DirectoryServiceUtil.setLocalCache(directory, _globalService.cacheService);
+        DirectoryDao().save(directory);
+        sortNum++;
+      }
+    }
+    triggerUpdateDirectoryHook();
   }
 
   void setActiveNode(DirectoryModel node) {

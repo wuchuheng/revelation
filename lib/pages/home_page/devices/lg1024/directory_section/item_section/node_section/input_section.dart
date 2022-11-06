@@ -24,7 +24,7 @@ class InputSection extends StatelessWidget {
       width: 200,
       margin: const EdgeInsets.only(left: 4),
       child: TextFormField(
-        onChanged: globalService.directoryService.update,
+        onChanged: globalService.directoryService.updateName,
         onFieldSubmitted: onFieldSubmitted,
         initialValue: initialValue,
         autofocus: true,

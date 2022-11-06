@@ -9,7 +9,8 @@ class DirectoryDao implements DirectoryDaoAbstract {
   List<DirectoryModel> fetchAll() {
     final tableName = DirectoryModel.tableName;
     final db = SQLiteDao.getDb();
-    final ResultSet fetchResult = db.select(''' select * from $tableName where deleted_at is null ''');
+    final ResultSet fetchResult =
+        db.select(''' select * from $tableName where deleted_at is null ORDER BY sort_num asc''');
     List<DirectoryModel> result = [];
     for (Row row in fetchResult) {
       result.add(DirectoryDaoUtil.rowConvertDirectoryModel(row));

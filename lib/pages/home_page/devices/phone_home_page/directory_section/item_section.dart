@@ -13,7 +13,8 @@ import '../../../../../model/directory_model/directory_model.dart';
 class ItemSection extends StatefulWidget {
   final DirectoryModel directory;
   final int level;
-  const ItemSection({Key? key, required this.directory, this.level = 0}) : super(key: key);
+  const ItemSection({Key? key, required this.directory, this.level = 0})
+      : super(key: key);
 
   @override
   State<ItemSection> createState() => _ItemSectionState();
@@ -40,7 +41,7 @@ class _ItemSectionState extends State<ItemSection> {
   onRename(String newName, BuildContext context) {
     GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
     globalService.directoryService.setChangeNodeHook(widget.directory);
-    globalService.directoryService.update(newName);
+    globalService.directoryService.updateName(newName);
   }
 
   void onCreateChapter(BuildContext context) async {
@@ -78,7 +79,8 @@ class _ItemSectionState extends State<ItemSection> {
     final items = <BottomSheetItem>[
       BottomSheetItem(title: createNodeKey, key: createNodeKey),
       BottomSheetItem(title: createChapterKey, key: createChapterKey),
-      if (DirectoryModel.rootNodeId != widget.directory.id) BottomSheetItem(title: renameKey, key: renameKey),
+      if (DirectoryModel.rootNodeId != widget.directory.id)
+        BottomSheetItem(title: renameKey, key: renameKey),
       if (DirectoryModel.rootNodeId != widget.directory.id)
         BottomSheetItem(title: deleteKey, color: Colors.red, key: deleteKey),
     ];
@@ -131,7 +133,8 @@ class _ItemSectionState extends State<ItemSection> {
     const double height = 43;
     final item = Container(
       height: height,
-      padding: EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
+      padding:
+          EdgeInsets.only(left: padding + 10.0 * widget.level, right: padding),
       child: LayoutBuilder(builder: (context, constraints) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,21 +149,29 @@ class _ItemSectionState extends State<ItemSection> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(children: [const Icon(IconFont.icon_file_directory), Text(' ${widget.directory.title}')]),
+                    Row(children: [
+                      const Icon(IconFont.icon_file_directory),
+                      Text(' ${widget.directory.title}')
+                    ]),
                     Text('${widget.directory.count}'),
                   ],
                 ),
               ),
             ),
             GestureDetector(
-              onTap: () => widget.directory.children.isNotEmpty ? onOpenFolder() : null,
+              onTap: () =>
+                  widget.directory.children.isNotEmpty ? onOpenFolder() : null,
               child: SizedBox(
                 width: iconWrapperWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     widget.directory.children.isNotEmpty
-                        ? SizedBox(child: isOpen ? Transform.rotate(angle: pi * -0.5, child: icon) : icon)
+                        ? SizedBox(
+                            child: isOpen
+                                ? Transform.rotate(
+                                    angle: pi * -0.5, child: icon)
+                                : icon)
                         : const Text(''),
                   ],
                 ),
@@ -175,7 +186,9 @@ class _ItemSectionState extends State<ItemSection> {
       children: [
         item,
         if (isOpen)
-          ...widget.directory.children.map((e) => ItemSection(directory: e, level: widget.level + 1)).toList(),
+          ...widget.directory.children
+              .map((e) => ItemSection(directory: e, level: widget.level + 1))
+              .toList(),
       ],
     );
   }

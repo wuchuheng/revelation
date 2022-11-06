@@ -21,6 +21,7 @@ class TreeSection extends StatefulWidget {
 class _TreeSectionState extends State<TreeSection> {
   List<DirectoryModel> treeItems = [];
   late Unsubscribe treeSubscriptHandler;
+  GlobalService? globalService;
   @override
   void initState() {
     treeItems = widget.globalService.directoryService.directoryHook.value;
@@ -39,19 +40,19 @@ class _TreeSectionState extends State<TreeSection> {
   }
 
   void onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
-      final newString = treeItems.removeAt(oldIndex);
-      treeItems.insert(newIndex, newString);
-    });
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+    final newItem = treeItems.removeAt(oldIndex);
+    treeItems.insert(newIndex, newItem);
+    globalService!.directoryService.updateMultiple(treeItems).then((value) {});
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     Logger.info('Build widget TreeSection', symbol: 'build');
-    GlobalService globalService = RepositoryProvider.of<GlobalService>(context);
+    globalService = RepositoryProvider.of<GlobalService>(context);
     const double LRMargin = 10;
     const double bottomBarHeight = 40;
     final list = SizedBox(
@@ -63,7 +64,7 @@ class _TreeSectionState extends State<TreeSection> {
             ItemSection(
               key: ValueKey(treeItem.id),
               data: treeItem,
-              globalService: globalService,
+              globalService: globalService!,
             ),
         ],
       ),
