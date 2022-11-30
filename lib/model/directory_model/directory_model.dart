@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
 
-part 'index.g.dart';
+part 'directory_model.g.dart';
 
 @JsonSerializable()
 class DirectoryModel {

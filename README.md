@@ -24,6 +24,9 @@
 `macos/Runner/Assets.xcassets/AppIcon.appiconset`图标在这里进行更换，
 如果没有相关的格式的工具，可以借助[appicon](https://appicon.co/) 来生成相关大小格式的图片.
 
+## 2 修改model
+model的json转换是自动生成的，需要声明好属性后使用: `flutter  pub run build_runner build `
+
 
 ## 2 发布
 

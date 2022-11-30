@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
 
-part 'index.g.dart';
+part 'chapter_model.g.dart';
 
 @JsonSerializable()
 class ChapterModel {
@@ -13,12 +13,14 @@ class ChapterModel {
   String content;
   DateTime updatedAt;
   DateTime? deletedAt;
+  String uuid;
   int sortNum;
   int directoryId;
 
   ChapterModel({
     required this.title,
     required this.updatedAt,
+    required this.uuid,
     this.deletedAt,
     required this.sortNum,
     required this.id,

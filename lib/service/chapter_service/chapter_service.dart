@@ -4,6 +4,7 @@ import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
 import 'package:revelation/service/chapter_service/chapter_service_util.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
@@ -88,9 +89,12 @@ class ChapterService {
   Future<void> create() async {
     final directoryId = _globalService.directoryService.activeNodeHook.value.id;
     final id = DateTime.now().microsecondsSinceEpoch;
+    const uuid = Uuid();
+
     ChapterModel chapter = ChapterModel(
       title: 'New Note',
       directoryId: directoryId,
+      uuid: uuid.v4(),
       id: id,
       sortNum: 0,
       deletedAt: null,

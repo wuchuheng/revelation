@@ -9,15 +9,15 @@ part of 'user_model.dart';
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       userName: json['userName'] as String,
       password: json['password'] as String,
-      host: json['imapServerHost'] as String,
-      port: json['imapServerPort'] as int,
-      tls: json['isImapServerSecure'] as bool,
+      host: json['host'] as String,
+      port: json['port'] as int,
+      tls: json['tls'] as bool,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'userName': instance.userName,
       'password': instance.password,
-      'imapServerHost': instance.host,
-      'imapServerPort': instance.port,
-      'isImapServerSecure': instance.tls,
+      'host': instance.host,
+      'port': instance.port,
+      'tls': instance.tls,
     };

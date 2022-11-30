@@ -10,6 +10,7 @@ class ChapterDaoUtil {
       id: row['id'],
       title: row['title'],
       content: row['content'],
+      uuid: row['uuid'] ?? '',
       updatedAt: DateTimeUtil.convertTimeStr(updatedAt),
       deletedAt: deletedAt != null ? DateTimeUtil.convertTimeStr(deletedAt) : null,
       sortNum: row['sort_num'],

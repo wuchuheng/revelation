@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:revelation/service/global_service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 
 import '../../model/chapter_model/chapter_model.dart';
@@ -26,9 +27,11 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
   final textEditingController = TextEditingController();
   ChapterModel? chapter;
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
+  late String uuid;
 
   @override
   void initState() {
+    uuid = Uuid().v4();
     chapter = widget.chapterService.editChapterHook.value;
     if (chapter != null) {
       textEditingController.text = chapter!.content;
@@ -38,7 +41,8 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
         if (chapter != null &&
             data?.content != chapter?.content &&
             data != null &&
-            textEditingController.text != data.content) {
+            textEditingController.text != data.content &&
+            data.uuid != uuid) {
           textEditingController.text = data.content;
           widget.onChange(data.content);
         }
@@ -66,6 +70,7 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
       onChanged: (String value) {
         final chapter = globalService.chapterService.editChapterHook.value!;
         chapter.content = value;
+        chapter.uuid = uuid;
         widget.onChange(chapter.content);
         globalService.chapterService.onSave(chapter);
       },

@@ -63,7 +63,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         isImapServerSecure: user.tls,
       );
       emit(const AuthenticationState.authenticated());
-    } catch (_) {
+    } catch (_, stack) {
+      print(stack);
       _cacheService.disconnect();
       emit(const AuthenticationState.unauthenticated());
     }
