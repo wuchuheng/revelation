@@ -51,22 +51,19 @@ class _EditorSectionState extends State<EditorSection> {
     final updateAt = widget.globalService.chapterService.editChapterHook.value!.updatedAt;
 
     const double tipHeight = 20;
+
+    final editor = EditorFieldSection(
+      content: content,
+      onChange: (String newContent) => setState(() => content = newContent),
+      chapterService: widget.globalService.chapterService,
+    );
     return SizedBox(
       width: width,
       child: Stack(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(top: tipHeight),
-            child: SingleChildScrollView(
-              child: Container(
-                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                child: EditorFieldSection(
-                  content: content,
-                  onChange: (String newContent) => setState(() => content = newContent),
-                  chapterService: widget.globalService.chapterService,
-                ),
-              ),
-            ),
+            child: editor,
           ),
           Positioned(
             top: 0,
