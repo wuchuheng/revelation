@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:revelation/config/config.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
 import '../../../../dao/user_dao/user_dao.dart';
@@ -218,9 +217,9 @@ class _FormSectionState extends State<FormSection> {
           children: [
             SizedBox(
               height: itemHeight,
-              child: Text(
-                'Welcome to ${Config.appName}',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              child: const Text(
+                'A note based on an email',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
               ),
             ),
             _getUserNameField(),
