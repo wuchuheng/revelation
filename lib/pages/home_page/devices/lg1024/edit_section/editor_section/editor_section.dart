@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revelation/common/editor_section/editor_section.dart';
+import 'package:revelation/config/config.dart';
 import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -20,6 +21,7 @@ class _EditorSectionState extends State<EditorSection> {
   late bool isSplittingPreview;
   late String content;
   late bool isPreview;
+  final titleController = TextEditingController();
 
   @override
   void initState() {
@@ -29,6 +31,9 @@ class _EditorSectionState extends State<EditorSection> {
     unsubscribeCollect.addAll([
       widget.globalService.chapterService.editChapterHook.subscribe((value, _) {
         content = value?.content ?? '';
+        if (titleController.text != value?.title) {
+          titleController.text = value!.title;
+        }
         setState(() {});
       }),
       widget.globalService.floatingToolBarService.isSplittingPreviewHook.subscribe((value, _) {
@@ -46,11 +51,16 @@ class _EditorSectionState extends State<EditorSection> {
     super.dispose();
   }
 
+  void onChangeTitle(String value) {
+    final chapter = widget.globalService.chapterService.editChapterHook.value!;
+    chapter.title = value;
+    widget.globalService.chapterService.onSave(chapter);
+  }
+
   Widget getTextFormField(double width) {
     Logger.info('Build TextFormField', symbol: 'build');
-    final updateAt = widget.globalService.chapterService.editChapterHook.value!.updatedAt;
 
-    const double tipHeight = 20;
+    const double tipHeight = Config.centerSectionToolBarHeight;
 
     final editor = EditorFieldSection(
       content: content,
@@ -67,15 +77,32 @@ class _EditorSectionState extends State<EditorSection> {
           ),
           Positioned(
             top: 0,
-            child: SizedBox(
+            left: 0,
+            child: Container(
               height: tipHeight,
-              width: width,
-              child: Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Last updated at ${updateAt.hour}:${updateAt.minute}',
-                  style: TextStyle(color: Colors.grey[500], fontSize: 12),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1, color: Config.borderColor),
                 ),
+              ),
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              width: width,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: width * .9,
+                    child: TextField(
+                      onChanged: onChangeTitle,
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        hintText: 'Untitled',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  const Spacer(), // use Spacer
+                  Text("2"),
+                ],
               ),
             ),
           )

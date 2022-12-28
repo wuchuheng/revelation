@@ -8,10 +8,8 @@ import 'package:uuid/uuid.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_imap_cache/wuchuheng_imap_cache.dart';
-import 'package:yaml/yaml.dart';
 
 import '../../model/chapter_model/chapter_model.dart';
-import '../../utils/date_time_util.dart';
 import '../global_service.dart';
 
 class ChapterService {
@@ -98,14 +96,7 @@ class ChapterService {
       id: id,
       sortNum: 0,
       deletedAt: null,
-      content: '''
---- 
-title: New Note 
-createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())} 
-
---- 
-
-''',
+      content: '',
       updatedAt: DateTime.now(),
     );
     await _globalService.cacheService.getImapCache().set(
@@ -172,13 +163,8 @@ createdAt: ${DateTimeUtil.formatDateTime(DateTime.now())}
       final chapter = _globalService.chapterService.editChapterHook.value;
       if (chapter?.id == value.id) {
         chapter!.content = value.content;
-        final regexp = RegExp(r'(?<=---)(.*?)(?=---)', multiLine: true, dotAll: true);
-        final pregResult = regexp.firstMatch(chapter.content)?.group(0);
-        if (pregResult != null) {
-          var doc = loadYaml(pregResult) as Map;
-          chapter.title = doc['title'].toString() ?? '';
-        }
         chapter.updatedAt = DateTime.now();
+        chapter.title = value.title;
         _globalService.chapterService.setEditChapter(chapter);
         await _globalService.cacheService.getImapCache().set(
               key: ChapterServiceUtil().getCacheKeyById(chapter.id),

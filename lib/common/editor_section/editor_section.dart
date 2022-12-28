@@ -31,7 +31,7 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
 
   @override
   void initState() {
-    uuid = Uuid().v4();
+    uuid = const Uuid().v4();
     chapter = widget.chapterService.editChapterHook.value;
     if (chapter != null) {
       textEditingController.text = chapter!.content;
