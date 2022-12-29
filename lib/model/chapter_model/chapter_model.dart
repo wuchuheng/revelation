@@ -13,6 +13,7 @@ class ChapterModel {
   String content;
   DateTime updatedAt;
   DateTime? deletedAt;
+  DateTime createdAt;
   String uuid;
   int sortNum;
   int directoryId;
@@ -21,6 +22,7 @@ class ChapterModel {
     required this.title,
     required this.updatedAt,
     required this.uuid,
+    required this.createdAt,
     this.deletedAt,
     required this.sortNum,
     required this.id,

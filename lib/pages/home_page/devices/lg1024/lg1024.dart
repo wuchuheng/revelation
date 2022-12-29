@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/center_section/center_section.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/directory_section/directory_section.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/edit_section/drawer_menu/drawer_menu.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/edit_section/edit_section.dart';
 import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
@@ -21,6 +22,7 @@ class _LG1024HomePageState extends State<LG1024HomePage> {
     Logger.info('Build widget LG1024HomePage', symbol: 'build');
     final GlobalService globalService = RepositoryProvider.of(context);
     return Scaffold(
+      endDrawer: DrawerMenu(globalService: globalService),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

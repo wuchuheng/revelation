@@ -13,7 +13,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Logger.info('Build Widget App', symbol: 'build');
-
     GlobalService globalService = GlobalService();
 
     return MultiRepositoryProvider(

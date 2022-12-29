@@ -5,7 +5,9 @@ import 'package:revelation/service/global_service.dart';
 import 'package:wuchuheng_hooks/wuchuheng_hooks.dart';
 import 'package:wuchuheng_logger/wuchuheng_logger.dart';
 
+import '../../../../../../common/iconfont.dart';
 import '../../../../../../common/markdown_section/markdown_section.dart';
+import '../../float_buttons_section/button_section.dart';
 
 class EditorSection extends StatefulWidget {
   final double width;
@@ -90,7 +92,7 @@ class _EditorSectionState extends State<EditorSection> {
               child: Row(
                 children: <Widget>[
                   SizedBox(
-                    width: width * .9,
+                    width: width * .8,
                     child: TextField(
                       onChanged: onChangeTitle,
                       controller: titleController,
@@ -101,7 +103,14 @@ class _EditorSectionState extends State<EditorSection> {
                     ),
                   ),
                   const Spacer(), // use Spacer
-                  Text("2"),
+                  RotationTransition(
+                    turns: const AlwaysStoppedAnimation(90 / 360),
+                    child: ButtonSection(
+                      isActive: isSplittingPreview,
+                      iconData: IconFont.icon_menu,
+                      onTap: () => widget.globalService.chapterService.onOpenChapterMenu(context),
+                    ),
+                  ),
                 ],
               ),
             ),

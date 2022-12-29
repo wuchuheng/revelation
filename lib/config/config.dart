@@ -27,4 +27,6 @@ class Config {
   /// developer options
   static bool isDebug = true;
   static String appName = 'My Revelation';
+
+  static const borderRadius = BorderRadius.all(Radius.circular(5));
 }

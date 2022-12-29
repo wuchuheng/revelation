@@ -2,6 +2,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
 import 'package:revelation/model/chapter_model/chapter_model.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
+import 'package:revelation/model/history_chapter_model/history_chapter_model.dart';
 import 'package:revelation/model/user_model/user_model.dart';
 import 'package:sqlite3/sqlite3.dart';
 
@@ -14,6 +15,11 @@ class SQLiteDao {
     return _db!;
   }
 
+  static ResultSet checkTableByTableName(String tableName) {
+    final db = getDb();
+    return db.select("SELECT name FROM sqlite_master WHERE type='table' AND name='$tableName'");
+  }
+
   static Future<Database> init() async {
     if (_db != null) {
       return getDb();
@@ -21,19 +27,14 @@ class SQLiteDao {
     final directory = await getApplicationDocumentsDirectory();
     final file = '${directory.path}/sqlite3.so';
     _db = sqlite3.open(file);
-    final db = getDb();
-    final hasUserTable = db.select(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='${UserModel.tableName}'",
-    );
+    final hasUserTable = checkTableByTableName(UserModel.tableName);
     if (hasUserTable.isEmpty) _createUserTable();
-    final hasChapterTable = db.select(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='${ChapterModel.tableName}'",
-    );
+    final hasChapterTable = checkTableByTableName(ChapterModel.tableName);
     if (hasChapterTable.isEmpty) _createChapterTable();
-    final hasDirectoryTable = db.select(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='${DirectoryModel.tableName}'",
-    );
+    final hasDirectoryTable = checkTableByTableName(DirectoryModel.tableName);
     if (hasDirectoryTable.isEmpty) _createDirectory();
+    final hasHistoryChapterTable = checkTableByTableName(HistoryChapterModel.tableName);
+    if (hasHistoryChapterTable.isEmpty) _createHistoryChapterTable();
 
     return getDb();
   }
@@ -63,6 +64,22 @@ class SQLiteDao {
         "sort_num" INTEGER,
         "updated_at" DATE,
         "deleted_at" DATE,
+        "created_at" DATE,
+        PRIMARY KEY ("id")
+      );
+  ''');
+  }
+
+  static void _createHistoryChapterTable() {
+    final tableName = HistoryChapterModel.tableName;
+    final db = getDb();
+    db.execute('''
+      CREATE TABLE $tableName (
+        "id" INTEGER NOT NULL,
+        "pid" INTEGER NOT NULL,
+        "title" TEXT,
+        "content" TEXT,
+        "created_at" DATE,
         PRIMARY KEY ("id")
       );
   ''');

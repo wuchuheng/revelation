@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:revelation/dao/chapter_dao/chapter_dao.dart';
 import 'package:revelation/dao/directory_dao/directory_dao.dart';
+import 'package:revelation/dao/history_chapter_dao/history_chapter_dao.dart';
 import 'package:revelation/model/directory_model/directory_model.dart';
+import 'package:revelation/model/history_chapter_model/history_chapter_model.dart';
 import 'package:revelation/service/chapter_service/chapter_service_util.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wuchuheng_helper/wuchuheng_helper.dart';
@@ -53,6 +57,9 @@ class ChapterService {
       Map<String, dynamic> jsonMapData = jsonDecode(value);
       ChapterModel chapter = ChapterModel.fromJson(jsonMapData);
       final oldData = ChapterDao().has(id: chapter.id);
+      if (oldData != null) {
+        onSaveHistoryChapter(oldData);
+      }
       ChapterDao().save(chapter);
       void task() {
         triggerUpdateChapterListHook();
@@ -98,6 +105,7 @@ class ChapterService {
       deletedAt: null,
       content: '',
       updatedAt: DateTime.now(),
+      createdAt: DateTime.now(),
     );
     await _globalService.cacheService.getImapCache().set(
           key: ChapterServiceUtil().getCacheKeyById(chapter.id),
@@ -174,5 +182,31 @@ class ChapterService {
     }, 500);
 
     _debounce!(value);
+  }
+
+  ///  Open the menu of chapter.
+  void onOpenChapterMenu(BuildContext context) {
+    Scaffold.of(context).openEndDrawer();
+  }
+
+  /// save historical versions for later rollback.
+  void onSaveHistoryChapter(ChapterModel value) {
+    double updateDurationSeconds = 60 * 5;
+    final HistoryChapterModel? historyChapter = HistoryChapterDao().findLastByPid(value.id);
+    if (historyChapter != null) {
+      double elapsedSeconds =
+          (DateTime.now().microsecondsSinceEpoch - historyChapter.createdAt.microsecondsSinceEpoch) / 1000000;
+      if (elapsedSeconds < updateDurationSeconds) {
+        return;
+      }
+    }
+    final HistoryChapterModel newHistoryChapter = HistoryChapterModel(
+      id: 0,
+      pid: value.id,
+      title: value.title,
+      content: value.content,
+      createdAt: DateTime.now(),
+    );
+    HistoryChapterDao().save(newHistoryChapter);
   }
 }

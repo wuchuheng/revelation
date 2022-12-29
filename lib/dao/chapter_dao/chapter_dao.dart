@@ -19,8 +19,9 @@ class ChapterDao implements ChapterDaoAbstract {
         updated_at,
         deleted_at,
         sort_num,
-        directory_id
-      ) values ( ?, ?, ?, ?, ?, ?, ? )
+        directory_id,
+        created_at
+      ) values ( ?, ?, ?, ?, ?, ?, ?, ? )
       ''', [
         chapter.id,
         chapter.title,
@@ -29,6 +30,7 @@ class ChapterDao implements ChapterDaoAbstract {
         chapter.deletedAt?.toString(),
         chapter.sortNum,
         chapter.directoryId,
+        chapter.createdAt.toString(),
       ]);
     } else {
       db.execute('''

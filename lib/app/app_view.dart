@@ -57,6 +57,7 @@ class _AppViewState extends State<AppView> with WidgetsBindingObserver {
       },
       builder: (context, state) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           navigatorKey: _navigatorKey,
           theme: themeData,
           navigatorObservers: [BotToastNavigatorObserver()],
