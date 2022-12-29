@@ -116,7 +116,7 @@ class _EditorSectionState extends State<EditorSection> {
         children: <Widget>[
           titleBar,
           Container(
-            margin: const EdgeInsets.only(top: tipHeight),
+            margin: const EdgeInsets.only(top: tipHeight, left: 4, right: 4),
             child: editor,
           ),
         ],
