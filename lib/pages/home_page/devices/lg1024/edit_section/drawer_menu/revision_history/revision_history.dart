@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:revelation/config/config.dart';
 import 'package:revelation/dao/history_chapter_dao/history_chapter_dao.dart';
 import 'package:revelation/model/history_chapter_model/history_chapter_model.dart';
+import 'package:revelation/pages/home_page/devices/lg1024/center_section/empty_section.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/edit_section/drawer_menu/revision_history/revision_history_content/revision_history_content.dart';
 import 'package:revelation/service/global_service.dart';
 import 'package:revelation/utils/date_time_util.dart';
@@ -72,6 +73,7 @@ class _RevisionHistoryState extends State<RevisionHistory> {
   @override
   Widget build(BuildContext context) {
     const double width = 800;
+
     return SizedBox(
       width: width,
       child: ConstrainedBox(
@@ -79,30 +81,32 @@ class _RevisionHistoryState extends State<RevisionHistory> {
           maxWidth: width,
           maxHeight: 500,
         ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: ListView(
+        child: items.isEmpty
+            ? const EmptySection()
+            : Row(
                 children: [
-                  for (int i = 0; i < items.length; i++)
-                    Item(items[i], isActive: activeIndex == i, onTap: () => onTapItem(i)),
+                  Expanded(
+                    flex: 1,
+                    child: ListView(
+                      children: [
+                        for (int i = 0; i < items.length; i++)
+                          Item(items[i], isActive: activeIndex == i, onTap: () => onTapItem(i)),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(left: BorderSide(width: 1, color: Config.borderColor)),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                        padding: EdgeInsets.only(left: padding),
+                        child: RevisionHistoryContent(historyChapter: items[activeIndex])),
+                  ),
                 ],
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(left: BorderSide(width: 1, color: Config.borderColor)),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                  padding: EdgeInsets.only(left: padding),
-                  child: RevisionHistoryContent(historyChapter: items[activeIndex])),
-            ),
-          ],
-        ),
       ),
     );
   }
