@@ -37,4 +37,9 @@ model的json转换是自动生成的，需要声明好属性后使用: `flutter 
 后，放在`build/windows/runner/Debug`和`build/windows/runner/Release`就可以了。
 
 
-    
+### 3.2 ios版本号不生效的问题
+```bash
+$ flutter clean
+$ flutter build ios 
+
+```
