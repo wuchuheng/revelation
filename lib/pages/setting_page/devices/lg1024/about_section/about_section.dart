@@ -40,6 +40,8 @@ class _AboutSectionState extends State<AboutSection> {
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         )),
         container(Text('Version $version')),
+        container(const Text('Developer: wuchuheng<root@wuchuheng.com>')),
+        container(const Text('Official website: https://wuchuheng.com/revelation/')),
         Padding(
           padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Text(
