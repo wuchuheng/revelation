@@ -10,6 +10,8 @@ abstract class HistoryChapterDaoAbstract {
   HistoryChapterModel? findLastByPid(int pid);
 
   List<HistoryChapterModel> fetchListByPid(int pid);
+
+  int getTotalByPid(int pid);
 }
 
 class HistoryChapterDao implements HistoryChapterDaoAbstract {
@@ -61,5 +63,12 @@ class HistoryChapterDao implements HistoryChapterDaoAbstract {
     }
 
     return result;
+  }
+
+  @override
+  int getTotalByPid(int pid) {
+    final ResultSet fetchResult = db.select('''SELECT count(*) as total FROM $tableName WHERE pid = $pid;''');
+
+    return fetchResult[0]['total'];
   }
 }

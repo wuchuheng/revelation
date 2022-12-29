@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:revelation/common/iconfont.dart';
 import 'package:revelation/config/config.dart';
+import 'package:revelation/dao/history_chapter_dao/history_chapter_dao.dart';
 import 'package:revelation/model/chapter_model/chapter_model.dart';
 import 'package:revelation/model/history_chapter_model/history_chapter_model.dart';
 import 'package:revelation/pages/home_page/devices/lg1024/edit_section/drawer_menu/revision_history/revision_history.dart';
@@ -22,18 +23,28 @@ class _DrawerMenuState extends State<DrawerMenu> {
   UnsubscribeCollect unsubscribeCollect = UnsubscribeCollect([]);
   final double itemContainerMarginTop = 10;
 
+  int historyTotal = 0;
+
+  void calculateHistoryTotalByChapter(ChapterModel? chapterModel) {
+    if (chapterModel != null) historyTotal = HistoryChapterDao().getTotalByPid(chapterModel.id);
+  }
+
   @override
   void initState() {
     super.initState();
     chapter = widget.globalService.chapterService.editChapterHook.value;
-    unsubscribeCollect = UnsubscribeCollect([
-      widget.globalService.chapterService.editChapterHook.subscribe((value, cancel) {
-        if (value?.id != chapter?.id) {
-          chapter = value;
-          setState(() {});
-        }
-      }),
-    ]);
+    calculateHistoryTotalByChapter(chapter);
+    unsubscribeCollect = UnsubscribeCollect(
+      [
+        widget.globalService.chapterService.editChapterHook.subscribe((value, cancel) {
+          if (value?.id != chapter?.id) {
+            chapter = value;
+            calculateHistoryTotalByChapter(value);
+            setState(() {});
+          }
+        }),
+      ],
+    );
   }
 
   @override
@@ -155,7 +166,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MenuItem(
-                  child: Text('Revision History'),
+                  child: Text('Revision History ($historyTotal)'),
                   context: context,
                 )
               ],
