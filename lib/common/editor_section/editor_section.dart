@@ -38,18 +38,17 @@ class _EditorFieldSectionState extends State<EditorFieldSection> {
     }
     unsubscribeCollect = UnsubscribeCollect([
       widget.chapterService.editChapterHook.subscribe((data, cancel) {
-        if (chapter != null &&
-            data?.content != chapter?.content &&
-            data != null &&
-            textEditingController.text != data.content &&
-            data.uuid != uuid) {
+        final bool isChapterNotNull = chapter != null;
+        final bool isContentDifferent = data?.content != chapter?.content;
+        final bool isDataNotNull = data != null;
+        final bool isEditTextDifferent = textEditingController.text != data?.content;
+        final bool isUUidDifferent = data?.uuid != uuid;
+
+        if (isChapterNotNull && isContentDifferent && isDataNotNull && isEditTextDifferent && isUUidDifferent) {
           textEditingController.text = data.content;
           widget.onChange(data.content);
         }
-        if (chapter?.id != data?.id) {
-          chapter = data;
-          setState(() {});
-        }
+        chapter = data;
       }),
     ]);
     super.initState();

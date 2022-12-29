@@ -30,6 +30,7 @@ class _EditorSectionState extends State<EditorSection> {
     isPreview = widget.globalService.floatingToolBarService.isPreviewHook.value;
     isSplittingPreview = widget.globalService.floatingToolBarService.isSplittingPreviewHook.value;
     content = widget.globalService.chapterService.editChapterHook.value?.content ?? '';
+    titleController.text = widget.globalService.chapterService.editChapterHook.value?.title ?? '';
     unsubscribeCollect.addAll([
       widget.globalService.chapterService.editChapterHook.subscribe((value, _) {
         content = value?.content ?? '';
@@ -69,52 +70,55 @@ class _EditorSectionState extends State<EditorSection> {
       onChange: (String newContent) => setState(() => content = newContent),
       chapterService: widget.globalService.chapterService,
     );
+
+    final Widget titleBar = Positioned(
+      top: 0,
+      left: 0,
+      child: Container(
+        height: tipHeight,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1, color: Config.borderColor),
+          ),
+        ),
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        width: width,
+        child: Row(
+          children: <Widget>[
+            SizedBox(
+              width: width * .8,
+              child: TextField(
+                onChanged: onChangeTitle,
+                controller: titleController,
+                decoration: const InputDecoration(
+                  hintText: 'Untitled',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            const Spacer(), // use Spacer
+            RotationTransition(
+              turns: const AlwaysStoppedAnimation(90 / 360),
+              child: ButtonSection(
+                isActive: isSplittingPreview,
+                iconData: IconFont.icon_menu,
+                onTap: () => widget.globalService.chapterService.onOpenChapterMenu(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
     return SizedBox(
       width: width,
       child: Stack(
         children: <Widget>[
+          titleBar,
           Container(
             margin: const EdgeInsets.only(top: tipHeight),
             child: editor,
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            child: Container(
-              height: tipHeight,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1, color: Config.borderColor),
-                ),
-              ),
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              width: width,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: width * .8,
-                    child: TextField(
-                      onChanged: onChangeTitle,
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        hintText: 'Untitled',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  const Spacer(), // use Spacer
-                  RotationTransition(
-                    turns: const AlwaysStoppedAnimation(90 / 360),
-                    child: ButtonSection(
-                      isActive: isSplittingPreview,
-                      iconData: IconFont.icon_menu,
-                      onTap: () => widget.globalService.chapterService.onOpenChapterMenu(context),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );
